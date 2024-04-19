@@ -1,0 +1,41 @@
+Gestion de comptes :
+B - Création de compte (entrée dans une table de données)
+B - Connexion au compte (lecture dans une table de données)
+F - Vérification de si l'utilisateur est connecté (lecture dans le localStorage)
+F - Déconnexion (clear du localStorage)
+B - Supprimer son compte (delete line)
+
+- Certification compte (page profil, booléen est certifié)
+
+
+Compte certif :
+B- Ajouter catégorie forum (entrée dans une teable de données)
+
+Modération :
+B - Supprimer cat forum (délétion...)
+B - Edition cat forum (edit ...)
+
+
+B - Supprimer un compte (delete line)
+B - Ban un compte (edit line)
+- Supprimer un post (delete line)
+- Supprimer un commentaire (delete line)
+
+
+
+POST :
+- Ajouter post forum (entrée ...) -> pleins de données qui vont calculer un niveau dangerosité
+- Supprimer post forum (délétion ...)
+- Edition post forum (edit ...)
+- Liker le post (edit ...)
+- Dislike le post (edit ...)
+- Ajouter commentaire
+- Liker commentaire
+(-supprimer commentaire)
+(-editer commentaire)
+
+Filtres :
+- beauté
+- danger
+- type d'habitation
+(- distance)
