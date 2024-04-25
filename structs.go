@@ -1,4 +1,4 @@
-package Forum
+package main
 
 type Categorie struct {
 	Id    int
