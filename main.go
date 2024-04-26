@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"net/http"
 )
 
@@ -11,6 +12,15 @@ func main() {
 }
 
 func createAccountHandler(w http.ResponseWriter, r *http.Request) {
+	if r.Method == http.MethodPost {
+		// Check if the pseudo already exists in the database
+		email := r.FormValue("email")
+		pseudo := r.FormValue("pseudo")
+		password := r.FormValue("password")
+		fmt.Println(email, pseudo, password)
+		http.Redirect(w, r, "/connect-account", http.StatusSeeOther)
+	}
+
 	if r.Method != "POST" {
 		http.Error(w, "Invalid request method", http.StatusMethodNotAllowed)
 		return
