@@ -1,4 +1,4 @@
-package db
+package dbmanagement
 
 type Categorie struct {
 	Id    int
@@ -29,7 +29,6 @@ type Post struct {
 }
 
 type User struct {
-	Id          int
 	Pseudo      string
 	Email       string
 	Password    string

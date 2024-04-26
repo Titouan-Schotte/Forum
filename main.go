@@ -5,11 +5,11 @@ import (
 	"net/http"
 )
 
-func main() {
-	http.HandleFunc("/create-account", createAccountHandler)
-	http.HandleFunc("/connect-account", connectAccountHandler)
-	http.ListenAndServe(":8080", nil)
-}
+//func main() {
+//	http.HandleFunc("/create-account", createAccountHandler)
+//	http.HandleFunc("/connect-account", connectAccountHandler)
+//	http.ListenAndServe(":8080", nil)
+//}
 
 func createAccountHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method == http.MethodPost {
