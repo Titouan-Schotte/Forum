@@ -1,4 +1,4 @@
-package main
+package db
 
 type Categorie struct {
 	Id    int
