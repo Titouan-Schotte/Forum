@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <link href="https://fonts.googleapis.com/css2?family=Permanent+Marker&display=swap" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profil</title>
+    <link rel="stylesheet" href="profile.css">
+    <script src="profile.js" defer></script>
+</head>
+<body class="dark-mode">
+<div class="main-container">
+    <aside class="sidebar">
+        <h1>Forum</h1>
+        <nav>
+            <ul>
+                <li><a href="profile.html"><img src="/images/home.png" alt="Profil" class="icon"> Profil</a></li>
+                <li><a href="ajouterpost.html"><img src="icons/add.png" alt="Ajouter un Post" class="icon"> Ajouter un Post</a></li>
+                <li><button id="toggleMode"><img src="icons/mode.png" alt="Mode" class="icon"> Mode Sombre/Clair</button></li>
+                <li><a href="logout.html"><img src="icons/logout.png" alt="Déconnexion" class="icon"> Déconnexion</a></li>
+            </ul>
+        </nav>
+    </aside>
+    <main class="content">
+        <div class="profile-header">
+            <h2 id="username">Pseudo de l'utilisateur</h2>
+            <div class="profile-stats">
+                <span>Abonnés: <strong id="followers">123</strong></span>
+                <span>Abonnements: <strong id="following">456</strong></span>
+                <span>Posts créés: <strong id="posts">78</strong></span>
+                <span>Likes reçus: <strong id="likes">910</strong></span>
+            </div>
+        </div>
+        <div class="posts">
+            <h3>Posts Créés</h3>
+            <div id="created-posts">
+                <!-- Afficher ici les posts créés -->
+            </div>
+            <h3>Posts Likés</h3>
+            <div id="liked-posts">
+                <!-- Afficher ici les posts likés -->
+            </div>
+        </div>
+    </main>
+</div>
+</body>
+</html>
