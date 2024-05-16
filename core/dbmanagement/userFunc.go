@@ -68,3 +68,15 @@ func (user *User) DeleteAccount() (bool, string) {
 	// Si la suppression est réussie, retourner true
 	return true, ""
 }
+
+func IsUserConnected(emailLocalstorage, passwordLocalstorage string) (User, bool) {
+	user, ok, _ := DB.GetUser(emailLocalstorage)
+	return user, ok && user.Password == passwordLocalstorage
+}
+
+func (user *User) IsUserAdminGranted() bool {
+	return user.IsAdmin
+}
+func (user *User) IsUserModoGranted() bool {
+	return user.IsModo
+}

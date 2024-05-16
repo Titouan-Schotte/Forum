@@ -1,17 +1,19 @@
 package dbmanagement
 
 type Categorie struct {
-	Id    int
-	Nom   string
-	Posts []Post
+	Id             int
+	Nom            string
+	Posts          []Post
+	UserManipuling User
 }
 
 type Comment struct {
-	Id      int
-	Content string
-	Author  User
-	Like    int
-	Dislike int
+	Id         int
+	Content    string
+	Author     User
+	PostOrigin Post
+	Like       int
+	Dislike    int
 }
 
 type Post struct {
@@ -23,16 +25,16 @@ type Post struct {
 	Beauty      int
 	Like        int
 	Dislike     int
-	Categories  []Categorie
+	Categorie   Categorie
 	Author      User
 	Comments    []Comment
+	AuthorEmail string
 }
 
 type User struct {
 	Pseudo      string
 	Email       string
 	Password    string
-	Posts       []Post
 	IsCertified bool
 	IsModo      bool
 	IsAdmin     bool

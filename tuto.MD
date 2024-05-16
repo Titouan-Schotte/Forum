@@ -61,3 +61,12 @@ Ban un compte modo
 	user.BanAnotherAccountModo("mich@gmail.com")
 
 ```
+
+> Admin
+
+Rank/Unrank to modo
+
+```go
+user.RankModo("gui@gmail.com")
+user.UnrankModo("gui@gmail.com")
+```
