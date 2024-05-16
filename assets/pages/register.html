@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <link href="https://fonts.googleapis.com/css2?family=Permanent+Marker&display=swap" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>S'inscrire</title>
+    <link rel="stylesheet" href="register.css">
+</head>
+<body>
+<video autoplay muted loop id="bgVideo">
+    <source src="videofondpost.mp4" type="video/mp4">
+    Your browser does not support HTML5 video.
+</video>
+<div class="container">
+    <h1>S'inscrire</h1>
+    <form action="/submit-register" method="POST">
+        <div class="form-group">
+            <label for="pseudo">Pseudo:</label>
+            <input type="email" id="pseudo" name="pseudo" required>
+        </div>
+        <div class="form-group">
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required>
+        </div>
+        <div class="form-group">
+            <label for="password">Mot de passe:</label>
+            <input type="password" id="password" name="password" required>
+        </div>
+        <div class="form-group">
+            <label for="confirm-password">Confirmer le mot de passe:</label>
+            <input type="password" id="confirm-password" name="confirm-password" required>
+        </div>
+        <button type="submit">S'inscrire</button>
+    </form>
+    <p>Déjà inscrit ? <a href="login.html">Se connecter</a></p>
+</div>
+</body>
+</html>
