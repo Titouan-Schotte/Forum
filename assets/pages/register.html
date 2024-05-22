@@ -38,21 +38,5 @@
     </form>
     <p>Déjà inscrit ? <a href="login.html">Se connecter</a></p>
 </div>
-
-<script>
-    // Passer les valeurs du template Go vers le JavaScript
-    const registerSuccess = {{.RegisterSuccess}}
-    const userLog = {
-        email: "{{.UserLog.Email}}",
-        password: "{{.UserLog.Password}}"
-    };
-
-    if (registerSuccess) {
-        // Stocker l'email et le mot de passe dans le localStorage
-        localStorage.setItem('email', userLog.email);
-        localStorage.setItem('password', userLog.password);
-        document.location = "/"
-    }
-</script>
 </body>
 </html>

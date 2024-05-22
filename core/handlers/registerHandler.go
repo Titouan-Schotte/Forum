@@ -6,36 +6,30 @@ import (
 	"net/http"
 )
 
-type RegisterData struct {
-	ErrorMessage    string
-	RegisterSuccess bool
-	UserLog         dbmanagement.User
-}
-
-var registerData = RegisterData{
-	ErrorMessage:    "",
-	RegisterSuccess: false,
-	UserLog:         dbmanagement.User{},
-}
-
 func RegisterHandler(w http.ResponseWriter, r *http.Request) {
-	//Request IN
 	if r.Method == http.MethodPost {
 		pseudoIn := r.FormValue("pseudo")
 		emailIn := r.FormValue("email")
 		passwordIn := r.FormValue("password")
 		confirmPasswordIn := r.FormValue("confirm-password")
+
 		if passwordIn != confirmPasswordIn {
-			registerData.ErrorMessage = "Mots de passes différents"
-		}
-		user, success, errorMsg := dbmanagement.DB.CreateAccount(pseudoIn, emailIn, passwordIn)
-		if success {
-			registerData.UserLog = user
-			registerData.RegisterSuccess = true
+			loginData.ErrorMessage = "Mots de passes différents"
 		} else {
-			registerData.UserLog = dbmanagement.User{}
-			registerData.RegisterSuccess = false
-			registerData.ErrorMessage = "Error create :" + errorMsg
+			user, success, errorMsg := dbmanagement.DB.CreateAccount(pseudoIn, emailIn, passwordIn)
+			if success {
+				loginData.UserLog = user
+				loginData.RegisterSuccess = true
+
+				// Redirect to login page with query parameters
+				redirectURL := "/login?email=" + user.Email + "&password=" + user.Password + "&registerSuccess=true"
+				http.Redirect(w, r, redirectURL, http.StatusSeeOther)
+				return
+			} else {
+				loginData.UserLog = dbmanagement.User{}
+				loginData.RegisterSuccess = false
+				loginData.ErrorMessage = "Error create :" + errorMsg
+			}
 		}
 	}
 
@@ -44,8 +38,8 @@ func RegisterHandler(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
-	// Execute the template using the game data (dataGame)
-	err = tmpl.Execute(w, registerData)
+
+	err = tmpl.Execute(w, loginData)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
