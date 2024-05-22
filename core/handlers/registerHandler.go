@@ -44,6 +44,7 @@ func RegisterHandler(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
+	// Execute the template using the game data (dataGame)
 	err = tmpl.Execute(w, registerData)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
