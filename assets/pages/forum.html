@@ -5,24 +5,57 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Forum</title>
-    <link rel="stylesheet" href="forum.css">
-    <script src="forum.js" defer></script>
+    <link rel="stylesheet" href="../css/forum.css">
+    <script src="../js/forum.js" defer></script>
 </head>
 <body class="dark-mode">
 <div class="main-container">
     <aside class="sidebar">
-        <h1>Forum</h1>
+        <div class="logo-container">
+            <img src="../images/logo.png" alt="Logo" class="logo">
+            <h1>Forum</h1>
+        </div>
         <nav>
             <ul>
-                <li><a href="profile.html"><img src="icons/home.png" alt="Profil" class="icon"> Profil</a></li>
-                <li><a href="ajouterpost.html"><img src="icons/add.png" alt="Ajouter un Post" class="icon"> Ajouter un Post</a></li>
-                <li><button id="toggleMode"><img src="icons/mode.png" alt="Mode" class="icon"> Mode Sombre/Clair</button></li>
-                <li><a href="logout.html"><img src="icons/logout.png" alt="Déconnexion" class="icon"> Déconnexion</a></li>
+                <li><a href="forum.html"><img src="../images/home.png" alt="Accueil" class="icon"> Accueil</a></li>
+                <li><a href="profil.html"><img src="../images/profil.png" alt="Profil" class="icon"> Profil</a></li>
+                <li><a href="postajout.html"><img src="../images/addposte.png" alt="Ajouter un Post" class="icon"> Ajouter un Post</a></li>
+                <li><button id="toggleMode"><img src="../images/sombreclair.png" alt="Mode" class="icon"> Mode Sombre/Clair</button></li>
+                <li><a href="parametre.html"><img src="../images/parametre.png" alt="Paramètres" class="icon"> Paramètres</a></li>
+                <li><a href="login.html"><img src="../images/deconnexion.png" alt="Déconnexion" class="icon"> Déconnexion</a></li>
             </ul>
         </nav>
     </aside>
     <main class="content">
-        <!-- Contenu du forum ici -->
+        <div class="tabs">
+            <button class="tablink active" onclick="openTab(event, 'latest')">Derniers Posts</button>
+            <button class="tablink" onclick="openTab(event, 'featured')">À la Une</button>
+            <button class="tablink" onclick="openTab(event, 'popular')">Posts Populaires</button>
+        </div>
+        <div id="latest" class="tabcontent">
+            <div class="feed-section">
+                <h2>Derniers Posts</h2>
+                <div class="post">Post 1 récent</div>
+                <div class="post">Post 2 récent</div>
+                <div class="post">Post 3 récent</div>
+            </div>
+        </div>
+        <div id="featured" class="tabcontent" style="display:none">
+            <div class="feed-section">
+                <h2>À la Une</h2>
+                <div class="post">Post 1 à la une</div>
+                <div class="post">Post 2 à la une</div>
+                <div class="post">Post 3 à la une</div>
+            </div>
+        </div>
+        <div id="popular" class="tabcontent" style="display:none">
+            <div class="feed-section">
+                <h2>Posts Populaires</h2>
+                <div class="post">Post 1 populaire</div>
+                <div class="post">Post 2 populaire</div>
+                <div class="post">Post 3 populaire</div>
+            </div>
+        </div>
     </main>
 </div>
 </body>

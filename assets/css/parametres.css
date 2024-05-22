@@ -1,0 +1,230 @@
+/* Mise en page globale et couleurs de base */
+body, html {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    display: flex;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+body.dark-mode {
+    background-color: #333;
+    color: #fff;
+}
+
+body.light-mode {
+    background-color: #fff;
+    color: #000;
+}
+
+.main-container {
+    display: flex;
+    width: 100%;
+    height: 100vh;
+}
+
+.sidebar {
+    width: 250px;
+    background: rgba(47, 79, 79, 0.9); /* Vert ardoise foncé, semi-transparent */
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.logo-container {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.logo {
+    width: 40px;
+    height: 40px;
+    margin-right: 10px;
+}
+
+.sidebar h1 {
+    font-family: 'Permanent Marker', cursive; /* Police de type 'tag' */
+    color: #32CD32; /* Vert lime */
+}
+
+.sidebar nav ul {
+    list-style-type: none;
+    padding: 0;
+    width: 100%;
+}
+
+.sidebar nav ul li {
+    margin-bottom: 15px;
+}
+
+.sidebar nav ul li a,
+.sidebar nav ul li button {
+    background: #6B8E23; /* Vert olive terne */
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    transition: background 0.3s;
+    width: 100%;
+    text-align: left;
+}
+
+.sidebar nav ul li a:hover,
+.sidebar nav ul li button:hover {
+    background: #556B2F; /* Vert olive foncé */
+}
+
+.sidebar .icon {
+    width: 24px;
+    height: 24px;
+    margin-right: 10px;
+}
+
+.button {
+    background: #6B8E23; /* Vert olive terne */
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    transition: background 0.3s;
+    width: 100%;
+    text-align: left;
+}
+
+.button:hover {
+    background: #556B2F; /* Vert olive foncé */
+}
+
+#toggleMode {
+    background: #6B8E23; /* Vert olive terne */
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    transition: background 0.3s;
+    width: 100%;
+    text-align: left;
+}
+
+#toggleMode:hover {
+    background: #556B2F; /* Vert olive foncé */
+}
+
+.content {
+    flex: 1;
+    padding: 20px;
+    overflow-y: auto;
+}
+
+.back-button {
+    background: #6B8E23; /* Vert olive terne */
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-bottom: 20px;
+}
+
+.back-button:hover {
+    background: #556B2F; /* Vert olive foncé */
+}
+
+h1 {
+    font-family: 'Permanent Marker', cursive;
+    color: #32CD32;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.settings {
+    background: rgba(47, 79, 79, 0.9); /* Vert ardoise foncé, semi-transparent */
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.settings form {
+    margin-bottom: 20px;
+}
+
+.settings label {
+    display: block;
+    margin-bottom: 5px;
+    color: #ADD8E6; /* Bleu clair */
+}
+
+.settings input[type="file"],
+.settings input[type="password"],
+.settings input[type="text"] {
+    width: 100%;
+    padding: 8px;
+    border: none;
+    border-radius: 4px;
+    background: #333333; /* Fond sombre */
+    color: #ffffff;
+    margin-bottom: 10px;
+}
+
+.settings button {
+    width: 100%;
+    padding: 10px;
+    background: #6B8E23; /* Vert olive terne */
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.settings button:hover {
+    background: #556B2F; /* Vert olive foncé */
+}
+
+h2 {
+    font-family: 'Permanent Marker', cursive;
+    color: #32CD32;
+    margin-bottom: 10px;
+}
+
+.blocked-users {
+    list-style-type: none;
+    padding: 0;
+    background: rgba(0, 0, 0, 0.1);
+    border-radius: 4px;
+    padding: 10px;
+}
+
+/* Responsive Design pour petits écrans */
+@media (max-width: 600px) {
+    .sidebar {
+        width: 100%;
+        height: auto;
+    }
+
+    .sidebar nav ul {
+        flex-direction: column;
+    }
+
+    .content {
+        padding: 10px;
+    }
+}

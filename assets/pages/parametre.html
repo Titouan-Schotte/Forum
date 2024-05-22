@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <link href="https://fonts.googleapis.com/css2?family=Permanent+Marker&display=swap" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Paramètres</title>
+    <link rel="stylesheet" href="../css/parametres.css">
+</head>
+<body class="dark-mode">
+<div class="main-container">
+    <aside class="sidebar">
+        <div class="logo-container">
+            <img src="../images/logo.png" alt="Logo" class="logo">
+            <h1>Forum</h1>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="forum.html"><img src="../images/home.png" alt="Accueil" class="icon"> Accueil</a></li>
+                <li><a href="profil.html"><img src="../images/profil.png" alt="Profil" class="icon"> Profil</a></li>
+                <li><a href="postajout.html"><img src="../images/addposte.png" alt="Ajouter un Post" class="icon"> Ajouter un Post</a></li>
+                <li><button id="toggleMode"><img src="../images/sombreclair.png" alt="Mode" class="icon"> Mode Sombre/Clair</button></li>
+                <li><a href="parametre.html"><img src="../images/parametre.png" alt="Paramètres" class="icon"> Paramètres</a></li>
+                <li><a href="login.html"><img src="../images/deconnexion.png" alt="Déconnexion" class="icon"> Déconnexion</a></li>
+            </ul>
+        </nav>
+    </aside>
+    <main class="content">
+        <button class="back-button" onclick="window.location.href='forum.html'">Retour</button>
+        <h1>Paramètres</h1>
+        <div class="settings">
+            <form action="/delete-account" method="POST">
+                <button type="submit" class="delete-account-button">Supprimer le compte définitivement</button>
+            </form>
+            <form action="/change-profile-picture" method="POST" enctype="multipart/form-data">
+                <label for="profile-picture">Changer la photo de profil:</label>
+                <input type="file" id="profile-picture" name="profile-picture">
+                <button type="submit">Changer la photo</button>
+            </form>
+            <form action="/change-password" method="POST">
+                <label for="current-password">Mot de passe actuel:</label>
+                <input type="password" id="current-password" name="current-password" required>
+                <label for="new-password">Nouveau mot de passe:</label>
+                <input type="password" id="new-password" name="new-password" required>
+                <label for="confirm-new-password">Confirmer le nouveau mot de passe:</label>
+                <input type="password" id="confirm-new-password" name="confirm-new-password" required>
+                <button type="submit">Changer le mot de passe</button>
+            </form>
+            <form action="/change-username" method="POST">
+                <label for="new-username">Nouveau pseudo:</label>
+                <input type="text" id="new-username" name="new-username" required>
+                <button type="submit">Changer le pseudo</button>
+            </form>
+            <h2>Utilisateurs bloqués</h2>
+            <ul class="blocked-users">
+                <!-- Liste des utilisateurs bloqués -->
+            </ul>
+        </div>
+    </main>
+</div>
+</body>
+</html>
