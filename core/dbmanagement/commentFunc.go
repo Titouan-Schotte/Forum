@@ -106,10 +106,10 @@ func (comment *Comment) LikeComment(email string, password string) bool {
 		return false
 	}
 	//Enregistrer le like
-	rows, _ := DB.core.Query("SELECT PostId, AuthorEmail FROM LikesComments WHERE AuthorEmail = ? AND PostId = ?", email, comment.Id)
+	rows, _ := DB.core.Query("SELECT CommentId, AuthorEmail FROM LikesComments WHERE AuthorEmail = ? AND CommentId = ?", email, comment.Id)
 
 	if !rows.Next() && !rows.Next() {
-		stmt, _ := DB.core.Prepare("INSERT INTO LikesComments(PostId, AuthorEmail) VALUES(?, ?)")
+		stmt, _ := DB.core.Prepare("INSERT INTO LikesComments(CommentId, AuthorEmail) VALUES(?, ?)")
 		defer stmt.Close()
 		stmt.Exec(comment.Id, user.Email)
 		return true
@@ -128,9 +128,9 @@ func (comment *Comment) DislikeComment(email string, password string) bool {
 		return false
 	}
 	//Enregistrer le like
-	rows, _ := DB.core.Query("SELECT PostId, AuthorEmail FROM DislikesComments WHERE AuthorEmail = ? AND PostId = ?", user.Email, comment.Id)
+	rows, _ := DB.core.Query("SELECT CommentId, AuthorEmail FROM DislikesComments WHERE AuthorEmail = ? AND CommentId = ?", user.Email, comment.Id)
 	if !rows.Next() && !rows.Next() {
-		stmt, _ := DB.core.Prepare("INSERT INTO DislikesComments(PostId, AuthorEmail) VALUES(?, ?)")
+		stmt, _ := DB.core.Prepare("INSERT INTO DislikesComments(CommentId, AuthorEmail) VALUES(?, ?)")
 		defer stmt.Close()
 		stmt.Exec(comment.Id, user.Email)
 		return true
@@ -251,7 +251,7 @@ func (db *DBForum) GetCommentById(email, password string, id int) Comment {
 		// Scan des colonnes de la table Post dans les champs correspondants de la structure Post
 		err := rows.Scan(&comment.Id, &comment.Content, &comment.Like, &comment.Dislike, &authorEmail, &postId)
 		if err != nil {
-			return Post{}
+			return Comment{}
 		}
 
 		comment.Author = GetUserBasicInfo(authorEmail)

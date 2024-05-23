@@ -4,9 +4,10 @@ import "net/http"
 import "html/template"
 
 type CoreDatas struct {
+	NameTitle string
 }
 
-var coreDatas = CoreDatas{}
+var coreDatas = CoreDatas{NameTitle: "Page de Forum"}
 
 func ForumHandler(w http.ResponseWriter, r *http.Request) {
 	// Load the home page template
