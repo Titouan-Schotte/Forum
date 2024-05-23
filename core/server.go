@@ -26,6 +26,7 @@ func (s WebServer) Router() {
 	s.Core.HandleFunc("/login", handlers.LoginHandler)
 	s.Core.HandleFunc("/register", handlers.RegisterHandler)
 	s.Core.HandleFunc("/", handlers.ForumHandler)
+	s.Core.HandleFunc("/profil", handlers.ProfilHandler)
 }
 
 // Launch starts the web server.

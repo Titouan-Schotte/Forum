@@ -74,16 +74,44 @@ func (post *Post) LikePost(email string, password string) bool {
 	// Incrémenter le compteur de likes du post
 	post.Like++
 	post.EditPost(email, password)
+
+	user, success := IsUserConnected(email, password)
+	if !success || user.IsBan || post.Author.Email != user.Email {
+		return false
+	}
+	//Enregistrer le like
+	rows, _ := DB.core.Query("SELECT PostId, AuthorEmail FROM Likes WHERE AuthorEmail = ? AND PostId = ?", email, post.Id)
+
+	if !rows.Next() && !rows.Next() {
+		stmt, _ := DB.core.Prepare("INSERT INTO Likes(PostId, AuthorEmail) VALUES(?, ?)")
+		defer stmt.Close()
+		stmt.Exec(post.Id, user.Email)
+		return true
+
+	}
 	// Retourner le post mis à jour et true pour indiquer que l'opération a réussi
-	return true
+	return false
 }
 
 func (post *Post) DislikePost(email string, password string) bool {
 	// Incrémenter le compteur de dislikes du post
 	post.Dislike++
 	post.EditPost(email, password)
+	user, success := IsUserConnected(email, password)
+	if !success || user.IsBan || post.Author.Email != user.Email {
+		return false
+	}
+	//Enregistrer le like
+	rows, _ := DB.core.Query("SELECT PostId, AuthorEmail FROM Dislikes WHERE AuthorEmail = ? AND PostId = ?", user.Email, post.Id)
+	if !rows.Next() && !rows.Next() {
+		stmt, _ := DB.core.Prepare("INSERT INTO Dislikes(PostId, AuthorEmail) VALUES(?, ?)")
+		defer stmt.Close()
+		stmt.Exec(post.Id, user.Email)
+		return true
+
+	}
 	// Retourner le post mis à jour et true pour indiquer que l'opération a réussi
-	return true
+	return false
 }
 
 func (post *Post) DeletePost(email string) bool {
@@ -176,4 +204,101 @@ func (db *DBForum) GetPostsOfCategory(categorie Categorie) []Post {
 	}
 
 	return posts
+}
+
+func (post *Post) GetAllLikesUsers() []User {
+	// Connexion à la base de données
+
+	// Exécution de la requête SQL pour récupérer les posts de la catégorie donnée
+	rows, err := DB.core.Query("SELECT AuthorEmail FROM Likes WHERE PostId = ?", post.Id)
+	if err != nil {
+		return nil
+	}
+	defer rows.Close()
+
+	// Création d'une slice pour stocker les posts récupérés
+	var users []User
+
+	// Parcours des résultats et création des structures Post
+	for rows.Next() {
+		var user User
+
+		// Scan des colonnes de la table Post dans les champs correspondants de la structure Post
+		rows.Scan(&user.Email)
+		user = GetUserBasicInfo(user.Email)
+		// Ajout du post à la slice des posts
+		users = append(users, user)
+	}
+
+	// Vérification des erreurs éventuelles lors du parcours des résultats
+	return users
+}
+
+func (post *Post) GetAllDislikesUsers() []User {
+	// Connexion à la base de données
+
+	// Exécution de la requête SQL pour récupérer les posts de la catégorie donnée
+	rows, err := DB.core.Query("SELECT AuthorEmail FROM Dislikes WHERE PostId = ?", post.Id)
+	if err != nil {
+		return nil
+	}
+	defer rows.Close()
+
+	// Création d'une slice pour stocker les posts récupérés
+	var users []User
+
+	// Parcours des résultats et création des structures Post
+	for rows.Next() {
+		var user User
+
+		// Scan des colonnes de la table Post dans les champs correspondants de la structure Post
+		rows.Scan(&user.Email)
+		user = GetUserBasicInfo(user.Email)
+		// Ajout du post à la slice des posts
+		users = append(users, user)
+	}
+
+	// Vérification des erreurs éventuelles lors du parcours des résultats
+	return users
+}
+
+func (db *DBForum) GetPostById(email, password string, id int) Post {
+	// Connexion à la base de données
+
+	// Exécution de la requête SQL pour récupérer les posts de la catégorie donnée
+	rows, err := db.core.Query("SELECT Id, Title, Description, Danger, Beauty, LikeCount, DislikeCount, AuthorEmail, Photos, Categorie FROM Post WHERE Id = ?", id)
+	if err != nil {
+		return Post{}
+	}
+	defer rows.Close()
+
+	// Création d'une slice pour stocker les posts récupérés
+	var post Post
+
+	// Parcours des résultats et création des structures Post
+	if rows.Next() {
+		var photos string // Stockage des photos en tant que chaîne séparée par des points-virgules
+		var catInt int
+		// Scan des colonnes de la table Post dans les champs correspondants de la structure Post
+		err := rows.Scan(&post.Id, &post.Title, &post.Description, &post.Danger, &post.Beauty, &post.Like, &post.Dislike, &post.AuthorEmail, &photos, &catInt)
+		if err != nil {
+			return Post{}
+		}
+
+		post.Author = GetUserBasicInfo(post.AuthorEmail)
+
+		// Diviser la chaîne de photos en une slice de chaînes
+		post.Photos = strings.Split(photos, ";")
+
+		post.Comments = post.LoadComments()
+		post.Categorie, _ = db.GetCategorie(email, password, id)
+		// Ajout du post à la slice des posts
+	}
+
+	// Vérification des erreurs éventuelles lors du parcours des résultats
+	if err := rows.Err(); err != nil {
+		return Post{}
+	}
+
+	return post
 }

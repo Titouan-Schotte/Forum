@@ -32,11 +32,15 @@ type Post struct {
 }
 
 type User struct {
-	Pseudo      string
-	Email       string
-	Password    string
-	IsCertified bool
-	IsModo      bool
-	IsAdmin     bool
-	IsBan       bool
+	Pseudo       string
+	Email        string
+	Password     string
+	IsCertified  bool
+	IsModo       bool
+	IsAdmin      bool
+	IsBan        bool
+	Followers    int
+	Subscription int
+	Posts        []Post
+	Likes        []Post
 }

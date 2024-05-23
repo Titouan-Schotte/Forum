@@ -80,3 +80,59 @@ func (user *User) IsUserAdminGranted() bool {
 func (user *User) IsUserModoGranted() bool {
 	return user.IsModo
 }
+
+func (user *User) GetAllLikedPosts() []Post {
+	// Connexion à la base de données
+
+	// Exécution de la requête SQL pour récupérer les posts de la catégorie donnée
+	rows, err := DB.core.Query("SELECT PostId FROM Likes WHERE AuthorEmail = ?", user.Email)
+	if err != nil {
+		return nil
+	}
+	defer rows.Close()
+
+	// Création d'une slice pour stocker les posts récupérés
+	var posts []Post
+
+	// Parcours des résultats et création des structures Post
+	for rows.Next() {
+		var post Post
+
+		// Scan des colonnes de la table Post dans les champs correspondants de la structure Post
+		rows.Scan(&post.Id)
+		post = DB.GetPostById(user.Email, user.Password, post.Id)
+		// Ajout du post à la slice des posts
+		posts = append(posts, post)
+	}
+
+	// Vérification des erreurs éventuelles lors du parcours des résultats
+	return posts
+}
+
+func (user *User) GetAllDislikedPosts() []Post {
+	// Connexion à la base de données
+
+	// Exécution de la requête SQL pour récupérer les posts de la catégorie donnée
+	rows, err := DB.core.Query("SELECT PostId FROM Dislikes WHERE AuthorEmail = ?", user.Email)
+	if err != nil {
+		return nil
+	}
+	defer rows.Close()
+
+	// Création d'une slice pour stocker les posts récupérés
+	var posts []Post
+
+	// Parcours des résultats et création des structures Post
+	for rows.Next() {
+		var post Post
+
+		// Scan des colonnes de la table Post dans les champs correspondants de la structure Post
+		rows.Scan(&post.Id)
+		post = DB.GetPostById(user.Email, user.Password, post.Id)
+		// Ajout du post à la slice des posts
+		posts = append(posts, post)
+	}
+
+	// Vérification des erreurs éventuelles lors du parcours des résultats
+	return posts
+}
