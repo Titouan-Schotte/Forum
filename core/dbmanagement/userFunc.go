@@ -56,7 +56,23 @@ func (db *DBForum) ConnectToAccount(email string, password string) (User, bool, 
 	// Si l'utilisateur est trouvé, retourner la structure User et true
 	return user, true, ""
 }
+func (user *User) EditUser() bool {
+	// Vérifier les autorisations de l'utilisateur
+	// Préparer la requête de mise à jour du nombre de likes du commentaire
+	stmt, err := DB.core.Prepare("UPDATE User SET Pseudo = ?, Email = ?, Password = ?, IsCertified = ?, IsModo = ?, IsAdmin = ?, IsBan = ? WHERE Email = ?")
+	if err != nil {
+		return false
+	}
+	defer stmt.Close()
 
+	// Exécuter la requête de mise à jour du nombre de likes du commentaire
+	_, err = stmt.Exec(user.Pseudo, user.Email, user.Password, user.IsCertified, user.IsModo, user.IsAdmin, user.IsBan, user.Email)
+	if err != nil {
+		return false
+	}
+	// Retourner true pour indiquer que l'édition du post a réussi
+	return true
+}
 func (user *User) DeleteAccount() (bool, string) {
 	// Préparer la requête de suppression de l'utilisateur avec l'email et le mot de passe spécifiés
 	stmt, err := DB.core.Prepare("DELETE FROM User WHERE Email=? AND Password=?")

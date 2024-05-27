@@ -68,7 +68,7 @@ func (post *Post) EditPost(email string, password string) bool {
 	defer stmt.Close()
 
 	// Exécuter la requête de mise à jour du nombre de likes du commentaire
-	_, err = stmt.Exec(post.Title, post.Description, post.Danger, post.Beauty, post.Like, post.Dislike, post.Author.Email, photoText, post.Categorie.Id, post.Id, post.Date)
+	_, err = stmt.Exec(post.Title, post.Description, post.Danger, post.Beauty, post.Like, post.Dislike, post.Author.Email, photoText, post.Categorie.Id, post.Date, post.Id)
 	if err != nil {
 		return false
 	}
