@@ -19,8 +19,13 @@ func (user *User) AddPost(email string, password string, titlePost string, descr
 	defer stmt.Close()
 
 	photoText := strings.Join(photosPost, ";")
+
+	// Obtenir la date et l'heure actuelles
+	currentTime := time.Now()
+	formattedTime := currentTime.Format("2006-01-02 15:04:05")
+
 	// Exécuter la requête d'insertion du nouveau commentaire
-	result, err := stmt.Exec(titlePost, descriptionPost, dangerPost, beauty, 0, 0, user.Email, photoText, categorie.Id, time.DateTime)
+	result, err := stmt.Exec(titlePost, descriptionPost, dangerPost, beauty, 0, 0, user.Email, photoText, categorie.Id, formattedTime)
 	if err != nil {
 		log.Fatal("Erreur lors de l'exécution de la requête d'insertion du commentaire:", err)
 	}
@@ -41,7 +46,7 @@ func (user *User) AddPost(email string, password string, titlePost string, descr
 		Beauty:      beauty,
 		Author:      *user,
 		Categorie:   categorie,
-		Date:        time.DateTime,
+		Date:        formattedTime,
 	}
 
 	// Retourner le nouveau post et true pour indiquer que l'opération a réussi
@@ -303,4 +308,122 @@ func (db *DBForum) GetPostById(email, password string, id int) Post {
 	}
 
 	return post
+}
+
+func (db *DBForum) GetMostRecentsPosts(numberOfPost int) []Post {
+	rows, err := db.core.Query("SELECT Id, Title, Description, Danger, Beauty, LikeCount, DislikeCount, AuthorEmail, Photos, DatePost FROM Post ORDER BY DatePost DESC LIMIT ?", numberOfPost)
+	if err != nil {
+		return nil
+	}
+	defer rows.Close()
+
+	// Création d'une slice pour stocker les posts récupérés
+	var posts []Post
+
+	// Parcours des résultats et création des structures Post
+	for rows.Next() {
+		var post Post
+		var photos string // Stockage des photos en tant que chaîne séparée par des points-virgules
+
+		// Scan des colonnes de la table Post dans les champs correspondants de la structure Post
+		err := rows.Scan(&post.Id, &post.Title, &post.Description, &post.Danger, &post.Beauty, &post.Like, &post.Dislike, &post.AuthorEmail, &photos, &post.Date)
+		if err != nil {
+			return nil
+		}
+
+		post.Author = GetUserBasicInfo(post.AuthorEmail)
+
+		// Diviser la chaîne de photos en une slice de chaînes
+		post.Photos = strings.Split(photos, ";")
+
+		post.Comments = post.LoadComments()
+		// Ajout du post à la slice des posts
+		posts = append(posts, post)
+	}
+
+	// Vérification des erreurs éventuelles lors du parcours des résultats
+	if err := rows.Err(); err != nil {
+		return nil
+	}
+
+	return posts
+}
+
+func (db *DBForum) GetTopPosts(numberOfPost int) []Post {
+	rows, err := db.core.Query("SELECT Id, Title, Description, Danger, Beauty, LikeCount, DislikeCount, AuthorEmail, Photos, DatePost FROM Post ORDER BY LikeCount DESC LIMIT ?", numberOfPost)
+	if err != nil {
+		return nil
+	}
+	defer rows.Close()
+
+	// Création d'une slice pour stocker les posts récupérés
+	var posts []Post
+
+	// Parcours des résultats et création des structures Post
+	for rows.Next() {
+		var post Post
+		var photos string // Stockage des photos en tant que chaîne séparée par des points-virgules
+
+		// Scan des colonnes de la table Post dans les champs correspondants de la structure Post
+		err := rows.Scan(&post.Id, &post.Title, &post.Description, &post.Danger, &post.Beauty, &post.Like, &post.Dislike, &post.AuthorEmail, &photos, &post.Date)
+		if err != nil {
+			return nil
+		}
+
+		post.Author = GetUserBasicInfo(post.AuthorEmail)
+
+		// Diviser la chaîne de photos en une slice de chaînes
+		post.Photos = strings.Split(photos, ";")
+
+		post.Comments = post.LoadComments()
+		// Ajout du post à la slice des posts
+		posts = append(posts, post)
+	}
+
+	// Vérification des erreurs éventuelles lors du parcours des résultats
+	if err := rows.Err(); err != nil {
+		return nil
+	}
+
+	return posts
+}
+func (db *DBForum) GetRandomPosts(numberOfPost int) []Post {
+	// Exécution de la requête SQL pour récupérer des posts aléatoires et limiter le nombre de résultats
+	query := "SELECT Id, Title, Description, Danger, Beauty, LikeCount, DislikeCount, AuthorEmail, Photos, DatePost FROM Post ORDER BY RANDOM() LIMIT ?"
+	rows, err := db.core.Query(query, numberOfPost)
+	if err != nil {
+		return nil
+	}
+	defer rows.Close()
+
+	// Création d'une slice pour stocker les posts récupérés
+	var posts []Post
+
+	// Parcours des résultats et création des structures Post
+	for rows.Next() {
+		var post Post
+		var photos string // Stockage des photos en tant que chaîne séparée par des points-virgules
+
+		// Scan des colonnes de la table Post dans les champs correspondants de la structure Post
+		err := rows.Scan(&post.Id, &post.Title, &post.Description, &post.Danger, &post.Beauty, &post.Like, &post.Dislike, &post.AuthorEmail, &photos, &post.Date)
+		if err != nil {
+			return nil
+		}
+
+		post.Author = GetUserBasicInfo(post.AuthorEmail)
+
+		// Diviser la chaîne de photos en une slice de chaînes
+		post.Photos = strings.Split(photos, ";")
+
+		post.Comments = post.LoadComments()
+		// Ajout du post à la slice des posts
+		posts = append(posts, post)
+	}
+
+	// Vérification des erreurs éventuelles lors du parcours des résultats
+	if err := rows.Err(); err != nil {
+		return nil
+	}
+
+	return posts
 }
