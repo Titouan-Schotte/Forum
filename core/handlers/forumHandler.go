@@ -1,15 +1,17 @@
 package handlers
 
-import "net/http"
+import (
+	"net/http"
+)
 import "html/template"
 
-type CoreDatas struct {
-	NameTitle string
-}
-
-var coreDatas = CoreDatas{NameTitle: "Page de Forum"}
-
 func ForumHandler(w http.ResponseWriter, r *http.Request) {
+
+	//LOGIN IN !!
+	if loginData.UserLog.Email != "" {
+
+	}
+
 	// Load the home page template
 	tmpl, err := template.ParseFiles("./assets/pages/forum.html")
 	if err != nil {
@@ -17,7 +19,7 @@ func ForumHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	// Execute the template using the game data (dataGame)
-	err = tmpl.Execute(w, coreDatas)
+	err = tmpl.Execute(w, loginData)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return

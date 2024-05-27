@@ -29,6 +29,7 @@ type Post struct {
 	Author      User
 	Comments    []Comment
 	AuthorEmail string
+	Date        string
 }
 
 type User struct {
@@ -39,8 +40,8 @@ type User struct {
 	IsModo       bool
 	IsAdmin      bool
 	IsBan        bool
-	Followers    int
-	Subscription int
+	Followers    []User
+	Subscription []User
 	Posts        []Post
 	Likes        []Post
 }

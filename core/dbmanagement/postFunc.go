@@ -3,6 +3,7 @@ package dbmanagement
 import (
 	"log"
 	"strings"
+	"time"
 )
 
 func (user *User) AddPost(email string, password string, titlePost string, descriptionPost string, photosPost []string, dangerPost int, beauty int, categorie Categorie) (Post, bool) {
@@ -11,7 +12,7 @@ func (user *User) AddPost(email string, password string, titlePost string, descr
 		return Post{}, false
 	}
 	// Préparer la requête d'insertion du nouveau commentaire
-	stmt, err := DB.core.Prepare("INSERT INTO Post(Title, Description, Danger, Beauty, LikeCount, DislikeCount, AuthorEmail, Photos, Categorie) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)")
+	stmt, err := DB.core.Prepare("INSERT INTO Post(Title, Description, Danger, Beauty, LikeCount, DislikeCount, AuthorEmail, Photos, Categorie, DatePost) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)")
 	if err != nil {
 		log.Fatal("Erreur lors de la préparation de la requête d'insertion du commentaire:", err)
 	}
@@ -19,7 +20,7 @@ func (user *User) AddPost(email string, password string, titlePost string, descr
 
 	photoText := strings.Join(photosPost, ";")
 	// Exécuter la requête d'insertion du nouveau commentaire
-	result, err := stmt.Exec(titlePost, descriptionPost, dangerPost, beauty, 0, 0, user.Email, photoText, categorie.Id)
+	result, err := stmt.Exec(titlePost, descriptionPost, dangerPost, beauty, 0, 0, user.Email, photoText, categorie.Id, time.DateTime)
 	if err != nil {
 		log.Fatal("Erreur lors de l'exécution de la requête d'insertion du commentaire:", err)
 	}
@@ -40,6 +41,7 @@ func (user *User) AddPost(email string, password string, titlePost string, descr
 		Beauty:      beauty,
 		Author:      *user,
 		Categorie:   categorie,
+		Date:        time.DateTime,
 	}
 
 	// Retourner le nouveau post et true pour indiquer que l'opération a réussi
@@ -54,14 +56,14 @@ func (post *Post) EditPost(email string, password string) bool {
 	}
 	photoText := strings.Join(post.Photos, ";")
 	// Préparer la requête de mise à jour du nombre de likes du commentaire
-	stmt, err := DB.core.Prepare("UPDATE Post SET Title = ?, Description = ?, Danger = ?, Beauty = ?, LikeCount = ?, DislikeCount = ?, AuthorEmail = ?, Photos = ?, Categorie = ? WHERE Id = ?")
+	stmt, err := DB.core.Prepare("UPDATE Post SET Title = ?, Description = ?, Danger = ?, Beauty = ?, LikeCount = ?, DislikeCount = ?, AuthorEmail = ?, Photos = ?, Categorie = ?, DatePost = ? WHERE Id = ?")
 	if err != nil {
 		return false
 	}
 	defer stmt.Close()
 
 	// Exécuter la requête de mise à jour du nombre de likes du commentaire
-	_, err = stmt.Exec(post.Title, post.Description, post.Danger, post.Beauty, post.Like, post.Dislike, post.Author.Email, photoText, post.Categorie.Id, post.Id)
+	_, err = stmt.Exec(post.Title, post.Description, post.Danger, post.Beauty, post.Like, post.Dislike, post.Author.Email, photoText, post.Categorie.Id, post.Id, post.Date)
 	if err != nil {
 		return false
 	}
@@ -167,7 +169,7 @@ func (db *DBForum) GetPostsOfCategory(categorie Categorie) []Post {
 	// Connexion à la base de données
 
 	// Exécution de la requête SQL pour récupérer les posts de la catégorie donnée
-	rows, err := db.core.Query("SELECT Id, Title, Description, Danger, Beauty, LikeCount, DislikeCount, AuthorEmail, Photos FROM Post WHERE Categorie = ?", categorie.Id)
+	rows, err := db.core.Query("SELECT Id, Title, Description, Danger, Beauty, LikeCount, DislikeCount, AuthorEmail, Photos,DatePost FROM Post WHERE Categorie = ?", categorie.Id)
 	if err != nil {
 		return nil
 	}
@@ -182,7 +184,7 @@ func (db *DBForum) GetPostsOfCategory(categorie Categorie) []Post {
 		var photos string // Stockage des photos en tant que chaîne séparée par des points-virgules
 
 		// Scan des colonnes de la table Post dans les champs correspondants de la structure Post
-		err := rows.Scan(&post.Id, &post.Title, &post.Description, &post.Danger, &post.Beauty, &post.Like, &post.Dislike, &post.AuthorEmail, &photos)
+		err := rows.Scan(&post.Id, &post.Title, &post.Description, &post.Danger, &post.Beauty, &post.Like, &post.Dislike, &post.AuthorEmail, &photos, &post.Date)
 		if err != nil {
 			return nil
 		}
@@ -266,7 +268,7 @@ func (db *DBForum) GetPostById(email, password string, id int) Post {
 	// Connexion à la base de données
 
 	// Exécution de la requête SQL pour récupérer les posts de la catégorie donnée
-	rows, err := db.core.Query("SELECT Id, Title, Description, Danger, Beauty, LikeCount, DislikeCount, AuthorEmail, Photos, Categorie FROM Post WHERE Id = ?", id)
+	rows, err := db.core.Query("SELECT Id, Title, Description, Danger, Beauty, LikeCount, DislikeCount, AuthorEmail, Photos, Categorie, DatePost FROM Post WHERE Id = ?", id)
 	if err != nil {
 		return Post{}
 	}
@@ -280,7 +282,7 @@ func (db *DBForum) GetPostById(email, password string, id int) Post {
 		var photos string // Stockage des photos en tant que chaîne séparée par des points-virgules
 		var catInt int
 		// Scan des colonnes de la table Post dans les champs correspondants de la structure Post
-		err := rows.Scan(&post.Id, &post.Title, &post.Description, &post.Danger, &post.Beauty, &post.Like, &post.Dislike, &post.AuthorEmail, &photos, &catInt)
+		err := rows.Scan(&post.Id, &post.Title, &post.Description, &post.Danger, &post.Beauty, &post.Like, &post.Dislike, &post.AuthorEmail, &photos, &catInt, &post.Date)
 		if err != nil {
 			return Post{}
 		}
