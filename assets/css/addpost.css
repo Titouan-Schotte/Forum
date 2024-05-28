@@ -1,0 +1,141 @@
+/* Mise en page globale et couleurs de base */
+body, html {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #2F4F4F; /* Vert ardoise foncé */
+    background: linear-gradient(45deg, #2F4F4F, #556B2F); /* Ajout d'un dégradé subtil */
+}
+
+video#bgVideo {
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    min-width: 100%;
+    min-height: 100%;
+    width: auto;
+    height: auto;
+    z-index: -100;
+    background-size: cover;
+    filter: brightness(50%) grayscale(30%); /* Assombrir légèrement et désaturer la vidéo */
+}
+
+.main-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+}
+
+.container {
+    width: 90%;
+    max-width: 600px;
+    background: rgba(47, 79, 79, 0.9); /* Vert ardoise foncé, semi-transparent */
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Ombre douce */
+}
+
+.back-button {
+    background: #6B8E23; /* Vert olive terne */
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-bottom: 20px;
+    display: block;
+}
+
+.back-button:hover {
+    background: #556B2F; /* Vert olive foncé */
+}
+
+h1 {
+    font-family: 'Permanent Marker', cursive; /* Police de type 'tag' */
+    color: #32CD32; /* Vert lime */
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* Styles des éléments du formulaire */
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    color: #ADD8E6; /* Bleu clair */
+}
+
+.form-group input[type="email"],
+.form-group input[type="text"],
+.form-group input[type="file"],
+.form-group textarea {
+    width: 100%;
+    padding: 8px;
+    border: none;
+    border-radius: 4px;
+    background: #333333; /* Fond sombre */
+    color: #ffffff;
+}
+
+textarea {
+    height: 100px;
+    resize: none; /* Empêcher le redimensionnement */
+}
+
+.category-rating {
+    margin-bottom: 15px;
+}
+
+.category-rating label {
+    display: block;
+    margin-bottom: 5px;
+    color: #ADD8E6; /* Bleu clair */
+}
+
+.beauty-rating span,
+.danger-rating span {
+    font-size: 24px;
+    cursor: pointer;
+    opacity: 0.3; /* Opacité par défaut pour les emojis */
+    transition: opacity 0.3s;
+}
+
+.selected {
+    opacity: 1; /* Opacité maximale pour les emojis sélectionnés */
+}
+
+button[type="submit"] {
+    width: 100%;
+    padding: 10px;
+    background: #6B8E23; /* Vert olive terne */
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+button[type="submit"]:hover {
+    background: #556B2F; /* Vert olive foncé */
+}
+
+/* Responsive Design pour petits écrans */
+@media (max-width: 600px) {
+    .container {
+        width: 100%;
+        border-radius: 0;
+    }
+}
