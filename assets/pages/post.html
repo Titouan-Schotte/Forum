@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <link href="https://fonts.googleapis.com/css2?family=Permanent+Marker&display=swap" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Post - Urbex</title>
+    <link rel="stylesheet" href="/assets/css/post.css">
+</head>
+<body>
+<div class="post-container">
+    <h1>Titre du Post</h1>
+    <div class="post-content">
+        <div class="post-images">
+            <button class="carousel-prev" onclick="changeCarouselImage(-1)">&#10094;</button>
+            <div id="frame">
+                <div id="carousel">
+                    <img class="carousel-image" src="https://picsum.photos/id/1025/600/400" alt="">
+                    <img class="carousel-image" src="https://picsum.photos/id/1020/600/400" alt="">
+                    <img class="carousel-image" src="https://picsum.photos/id/237/600/400" alt="">
+                    <img class="carousel-image" src="https://picsum.photos/id/1003/600/400" alt="">
+                    <img class="carousel-image" src="https://picsum.photos/id/1084/600/400" alt="">
+                </div>
+            </div>
+            <button class="carousel-next" onclick="changeCarouselImage(1)">&#10095;</button>
+        </div>
+        <div class="post-description">
+            <p>Description hutvt</p>
+        </div>
+        <div class="post-actions">
+            <button onclick="toggleLike(this)"><img src="/assets/images/likevide.png" alt="Like" class="action-button"></button>
+            <button onclick="toggleDislike(this)"><img src="/assets/images/dislikevide.png" alt="Dislike" class="action-button"></button>
+            <button class="comment-button" onclick="toggleComments()"><img src="/assets/images/comment.png" alt="Commentaire" class="action-button"></button>
+        </div>
+        <div class="comments-section" id="comments-section" style="display: none;">
+            <h2>Commentaires</h2>
+            <div class="comment">
+                <p><strong>Utilisateur 1:</strong> Super post!</p>
+                <div class="comment-actions">
+                    <button onclick="toggleLike(this)"><img src="/assets/images/likevide.png" alt="Like" class="action-button"></button>
+                    <button onclick="toggleDislike(this)"><img src="/assets/images/dislikevide.png" alt="Dislike" class="action-button"></button>
+                </div>
+            </div>
+            <div class="comment">
+                <p><strong>Utilisateur 2:</strong> J'adore les photos!</p>
+                <div class="comment-actions">
+                    <button onclick="toggleLike(this)"><img src="/assets/images/likevide.png" alt="Like" class="action-button"></button>
+                    <button onclick="toggleDislike(this)"><img src="/assets/images/dislikevide.png" alt="Dislike" class="action-button"></button>
+                </div>
+            </div>
+            <div class="add-comment">
+                <label for="new-comment">Ajouter un commentaire:</label>
+                <textarea id="new-comment" rows="4"></textarea>
+                <button class="submit-comment">Envoyer</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="/assets/js/post.js" defer></script>
+</body>
+</html>

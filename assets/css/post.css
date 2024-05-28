@@ -1,0 +1,177 @@
+body, html {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f9;
+}
+
+.post-container {
+    width: 90%;
+    max-width: 800px;
+    margin: 20px auto;
+    background: rgba(47, 79, 79, 0.9); /* Vert ardoise foncé, semi-transparent */
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    color: white;
+}
+
+h1 {
+    font-family: 'Permanent Marker', cursive; /* Police de type 'tag' */
+    color: #32CD32; /* Vert lime */
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.post-content {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.post-images {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#frame {
+    width: 100%;
+    max-width: 600px;
+    overflow: hidden;
+}
+
+#carousel {
+    display: flex;
+    transition: transform 0.5s ease;
+}
+
+.carousel-image {
+    display: none;
+    width: 100%;
+    border-radius: 8px;
+}
+
+.carousel-prev,
+.carousel-next {
+    cursor: pointer;
+    position: absolute;
+    top: 50%;
+    width: auto;
+    padding: 16px;
+    margin-top: -22px;
+    color: white;
+    font-weight: bold;
+    font-size: 24px;
+    transition: 0.6s ease;
+    user-select: none;
+    background-color: rgba(0, 0, 0, 0.5);
+    border: none;
+}
+
+.carousel-prev {
+    left: 0;
+    border-radius: 3px 0 0 3px;
+}
+
+.carousel-next {
+    right: 0;
+    border-radius: 0 3px 3px 0;
+}
+
+.carousel-prev:hover,
+.carousel-next:hover {
+    background-color: rgba(0, 0, 0, 0.8);
+}
+
+.post-description p {
+    margin: 0;
+}
+
+.post-actions {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.post-actions button {
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+}
+
+.action-button {
+    width: 32px;
+    height: 32px;
+}
+
+.comments-section {
+    margin-top: 20px;
+    padding: 10px;
+    background: rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+}
+
+.comments-section h2 {
+    font-family: 'Permanent Marker', cursive;
+    color: #32CD32;
+    margin-bottom: 10px;
+}
+
+.comment {
+    margin-bottom: 10px;
+    padding: 10px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+}
+
+.comment-actions {
+    display: flex;
+    justify-content: flex-start;
+    gap: 10px;
+    margin-top: 5px;
+}
+
+.comment-actions button {
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+}
+
+.add-comment {
+    margin-top: 20px;
+}
+
+.add-comment label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.add-comment textarea {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #333; /* Fond sombre */
+    color: #fff; /* Texte blanc */
+    resize: none; /* Empêcher le redimensionnement */
+}
+
+.add-comment .submit-comment {
+    background-color: #5c67f2;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.3s;
+    margin-top: 10px;
+}
+
+.add-comment .submit-comment:hover {
+    background-color: #4a54e1;
+}
