@@ -48,10 +48,11 @@ func (db *DBForum) AddCategorie(email string, password string, nomCat string) (C
 	return newCat, true
 }
 
-func (cat *Categorie) EditCategorie(newNameCat string) (Categorie, bool) {
+func (cat *Categorie) EditCategorie(email, password, newNameCat string) (Categorie, bool) {
 
 	// Vérifier si l'utilisateur est un administrateur
-	if !cat.UserManipuling.IsUserAdminGranted() {
+	user, _, _ := DB.ConnectToAccount(email, password)
+	if !user.IsUserAdminGranted() {
 		return Categorie{}, false
 	}
 
@@ -79,11 +80,11 @@ func (cat *Categorie) EditCategorie(newNameCat string) (Categorie, bool) {
 	return editedCat, true
 }
 
-func (cat *Categorie) DeleteCategorie() bool {
+func (cat *Categorie) DeleteCategorie(email, password string) bool {
 
 	// Vérifier si l'utilisateur est un administrateur
-	fmt.Println(cat.UserManipuling.IsUserAdminGranted())
-	if !cat.UserManipuling.IsUserAdminGranted() {
+	user, _, _ := DB.ConnectToAccount(email, password)
+	if !user.IsUserAdminGranted() {
 		return false
 	}
 
@@ -104,11 +105,8 @@ func (cat *Categorie) DeleteCategorie() bool {
 	return true
 }
 
-func (db *DBForum) GetCategorie(email string, password string, id int) (Categorie, bool) {
-	user, success := IsUserConnected(email, password)
-	if !success {
-		return Categorie{}, false
-	}
+func (db *DBForum) GetCategorie(id int) (Categorie, bool) {
+
 	row := db.core.QueryRow("SELECT Nom FROM Categorie WHERE Id = ?", id)
 
 	// Créer une structure User pour stocker les données de l'utilisateur
@@ -117,7 +115,6 @@ func (db *DBForum) GetCategorie(email string, password string, id int) (Categori
 	row.Scan(&categorie.Nom)
 
 	categorie.Id = id
-	categorie.UserManipuling = user
 
 	categorie.Posts = DB.GetPostsOfCategory(categorie)
 
@@ -127,10 +124,7 @@ func (db *DBForum) GetCategorie(email string, password string, id int) (Categori
 func (db *DBForum) GetCategories(email string, password string) []Categorie {
 	// Créer une slice pour stocker les utilisateurs récupérés
 	var categories []Categorie
-	user, success := IsUserConnected(email, password)
-	if !success {
-		return []Categorie{}
-	}
+
 	rows, err := db.core.Query("SELECT Id,Nom FROM Categorie")
 	if err != nil {
 		return categories
@@ -145,8 +139,54 @@ func (db *DBForum) GetCategories(email string, password string) []Categorie {
 		if err != nil {
 			return categories
 		}
-		categorie.UserManipuling = user
 		categorie.Posts = DB.GetPostsOfCategory(categorie)
+		// Ajouter l'utilisateur à la slice
+		categories = append(categories, categorie)
+	}
+	// Vérifier les erreurs éventuelles lors du parcours des lignes
+	if err := rows.Err(); err != nil {
+		return categories
+	}
+
+	return categories
+}
+
+func (post *Post) addToCategorie(categorie Categorie) {
+	stmt, err := DB.core.Prepare("INSERT INTO PostCategorie(PostId, CategorieId) VALUES(?, ?)")
+	if err != nil {
+		log.Fatal("Erreur lors de la préparation de la requête d'insertion de la catégorie:", err)
+	}
+	defer stmt.Close()
+
+	// Exécuter la requête d'insertion de la nouvelle catégorie
+	stmt.Exec(post.Id, categorie.Id)
+
+}
+func (post *Post) deleteOfCategorie(categorie Categorie) {
+	stmt, err := DB.core.Prepare("DELETE FROM PostCategorie WHERE PostId = ? AND CategorieId = ?")
+	if err != nil {
+		log.Fatal("Erreur lors de la préparation de la requête d'insertion de la catégorie:", err)
+	}
+	defer stmt.Close()
+
+	// Exécuter la requête d'insertion de la nouvelle catégorie
+	stmt.Exec(post.Id, categorie.Id)
+}
+
+func (post *Post) getCategories() []Categorie {
+	// Créer une slice pour stocker les utilisateurs récupérés
+	rows, _ := DB.core.Query("SELECT CategorieId FROM PostCategorie WHERE PostId = ?", post.Id)
+	defer rows.Close()
+	var categories []Categorie
+	// Parcourir les lignes résultantes
+	for rows.Next() {
+		var categorie Categorie
+		// Scanner les valeurs des colonnes dans la structure User
+		err := rows.Scan(&categorie.Id)
+		if err != nil {
+			return categories
+		}
+		categorie, _ = DB.GetCategorie(categorie.Id)
 		// Ajouter l'utilisateur à la slice
 		categories = append(categories, categorie)
 	}

@@ -1,10 +1,9 @@
 package dbmanagement
 
 type Categorie struct {
-	Id             int
-	Nom            string
-	Posts          []Post
-	UserManipuling User
+	Id    int
+	Nom   string
+	Posts []Post
 }
 
 type Comment struct {
@@ -25,7 +24,7 @@ type Post struct {
 	Beauty      int
 	Like        int
 	Dislike     int
-	Categorie   Categorie
+	Categories  []Categorie
 	Author      User
 	Comments    []Comment
 	AuthorEmail string
@@ -44,4 +43,5 @@ type User struct {
 	Subscription []User
 	Posts        []Post
 	Likes        []Post
+	TotalLikes   int
 }

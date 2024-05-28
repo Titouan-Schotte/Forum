@@ -52,6 +52,10 @@ func (db *DBForum) ConnectToAccount(email string, password string) (User, bool, 
 	user.Subscription = user.GetAllFollowedAccount()
 	user.Posts = user.GetAllUserPosts()
 	user.Likes = user.GetAllLikedPosts()
+	user.TotalLikes = 0
+	for _, v := range user.Posts {
+		user.TotalLikes += v.Like
+	}
 
 	// Si l'utilisateur est trouvé, retourner la structure User et true
 	return user, true, ""
