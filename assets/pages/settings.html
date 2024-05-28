@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Paramètres</title>
-    <link rel="stylesheet" href="/assets/css/parametres.css">
+    <link rel="stylesheet" href="/assets/css/settings.css">
 </head>
 <body class="dark-mode">
 <div class="main-container">
@@ -20,7 +20,7 @@
                 <li><a href="profil.html"><img src="/assets/images/profil.png" alt="Profil" class="icon"> Profil</a></li>
                 <li><a href="postajout.html"><img src="/assets/images/addposte.png" alt="Ajouter un Post" class="icon"> Ajouter un Post</a></li>
                 <li><button id="toggleMode"><img src="/assets/images/sombreclair.png" alt="Mode" class="icon"> Mode Sombre/Clair</button></li>
-                <li><a href="parametre.html"><img src="/assets/images/parametre.png" alt="Paramètres" class="icon"> Paramètres</a></li>
+                <li><a href="settings.html"><img src="/assets/images/parametre.png" alt="Paramètres" class="icon"> Paramètres</a></li>
                 <li><a href="login.html"><img src="/assets/images/deconnexion.png" alt="Déconnexion" class="icon"> Déconnexion</a></li>
             </ul>
         </nav>
@@ -29,15 +29,15 @@
         <button class="back-button" onclick="window.location.href='forum.html'">Retour</button>
         <h1>Paramètres</h1>
         <div class="settings">
-            <form action="/delete-account" method="POST">
+            <form action="/settings-deleteaccount" method="POST">
                 <button type="submit" class="delete-account-button">Supprimer le compte définitivement</button>
             </form>
-            <form action="/change-profile-picture" method="POST" enctype="multipart/form-data">
-                <label for="profile-picture">Changer la photo de profil:</label>
-                <input type="file" id="profile-picture" name="profile-picture">
-                <button type="submit">Changer la photo</button>
-            </form>
-            <form action="/change-password" method="POST">
+<!--            <form action="/change-profile-picture" method="POST" enctype="multipart/form-data">-->
+<!--                <label for="profile-picture">Changer la photo de profil:</label>-->
+<!--                <input type="file" id="profile-picture" name="profile-picture">-->
+<!--                <button type="submit">Changer la photo</button>-->
+<!--            </form>-->
+            <form action="/settings-password" method="POST">
                 <label for="current-password">Mot de passe actuel:</label>
                 <input type="password" id="current-password" name="current-password" required>
                 <label for="new-password">Nouveau mot de passe:</label>
@@ -46,15 +46,15 @@
                 <input type="password" id="confirm-new-password" name="confirm-new-password" required>
                 <button type="submit">Changer le mot de passe</button>
             </form>
-            <form action="/change-username" method="POST">
+            <form action="/settings-pseudo" method="POST">
                 <label for="new-username">Nouveau pseudo:</label>
                 <input type="text" id="new-username" name="new-username" required>
                 <button type="submit">Changer le pseudo</button>
             </form>
-            <h2>Utilisateurs bloqués</h2>
-            <ul class="blocked-users">
-                <!-- Liste des utilisateurs bloqués -->
-            </ul>
+<!--            <h2>Utilisateurs bloqués</h2>-->
+<!--            <ul class="blocked-users">-->
+<!--                &lt;!&ndash; Liste des utilisateurs bloqués &ndash;&gt;-->
+<!--            </ul>-->
         </div>
     </main>
 </div>

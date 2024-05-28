@@ -96,18 +96,48 @@ func (comment *Comment) EditComment(email string, password string) bool {
 }
 
 func (comment *Comment) LikeComment(email string, password string) bool {
-	// Incrémenter le nombre de likes dans la structure Comment
+
+	// Incrémenter le compteur de likes du post
 	comment.Like++
 	comment.EditComment(email, password)
-	// Retourner le commentaire mis à jour et true pour indiquer que l'opération a réussi
-	return true
+
+	user, success := IsUserConnected(email, password)
+	if !success || user.IsBan || comment.Author.Email != user.Email {
+		return false
+	}
+	//Enregistrer le like
+	rows, _ := DB.core.Query("SELECT CommentId, AuthorEmail FROM LikesComments WHERE AuthorEmail = ? AND CommentId = ?", email, comment.Id)
+
+	if !rows.Next() && !rows.Next() {
+		stmt, _ := DB.core.Prepare("INSERT INTO LikesComments(CommentId, AuthorEmail) VALUES(?, ?)")
+		defer stmt.Close()
+		stmt.Exec(comment.Id, user.Email)
+		return true
+
+	}
+	// Retourner le post mis à jour et true pour indiquer que l'opération a réussi
+	return false
 }
+
 func (comment *Comment) DislikeComment(email string, password string) bool {
-	// Incrémenter le nombre de likes dans la structure Comment
+	// Incrémenter le compteur de dislikes du post
 	comment.Dislike++
 	comment.EditComment(email, password)
-	// Retourner le commentaire mis à jour et true pour indiquer que l'opération a réussi
-	return true
+	user, success := IsUserConnected(email, password)
+	if !success || user.IsBan || comment.Author.Email != user.Email {
+		return false
+	}
+	//Enregistrer le like
+	rows, _ := DB.core.Query("SELECT CommentId, AuthorEmail FROM DislikesComments WHERE AuthorEmail = ? AND CommentId = ?", user.Email, comment.Id)
+	if !rows.Next() && !rows.Next() {
+		stmt, _ := DB.core.Prepare("INSERT INTO DislikesComments(CommentId, AuthorEmail) VALUES(?, ?)")
+		defer stmt.Close()
+		stmt.Exec(comment.Id, user.Email)
+		return true
+
+	}
+	// Retourner le post mis à jour et true pour indiquer que l'opération a réussi
+	return false
 }
 
 func (post *Post) LoadComments() []Comment {
@@ -143,4 +173,96 @@ func (post *Post) LoadComments() []Comment {
 	}
 
 	return comments
+}
+
+func (comment *Comment) GetAllLikesUsers() []User {
+	// Connexion à la base de données
+
+	// Exécution de la requête SQL pour récupérer les posts de la catégorie donnée
+	rows, err := DB.core.Query("SELECT AuthorEmail FROM LikesComments WHERE CommentId = ?", comment.Id)
+	if err != nil {
+		return nil
+	}
+	defer rows.Close()
+
+	// Création d'une slice pour stocker les posts récupérés
+	var users []User
+
+	// Parcours des résultats et création des structures Post
+	for rows.Next() {
+		var user User
+
+		// Scan des colonnes de la table Post dans les champs correspondants de la structure Post
+		rows.Scan(&user.Email)
+		user = GetUserBasicInfo(user.Email)
+		// Ajout du post à la slice des posts
+		users = append(users, user)
+	}
+
+	// Vérification des erreurs éventuelles lors du parcours des résultats
+	return users
+}
+
+func (comment *Comment) GetAllDislikesUsers() []User {
+	// Connexion à la base de données
+
+	// Exécution de la requête SQL pour récupérer les posts de la catégorie donnée
+	rows, err := DB.core.Query("SELECT AuthorEmail FROM DislikesComments WHERE CommentId = ?", comment.Id)
+	if err != nil {
+		return nil
+	}
+	defer rows.Close()
+
+	// Création d'une slice pour stocker les posts récupérés
+	var users []User
+
+	// Parcours des résultats et création des structures Post
+	for rows.Next() {
+		var user User
+
+		// Scan des colonnes de la table Post dans les champs correspondants de la structure Post
+		rows.Scan(&user.Email)
+		user = GetUserBasicInfo(user.Email)
+		// Ajout du post à la slice des posts
+		users = append(users, user)
+	}
+
+	// Vérification des erreurs éventuelles lors du parcours des résultats
+	return users
+}
+
+func (db *DBForum) GetCommentById(email, password string, id int) Comment {
+	// Connexion à la base de données
+
+	// Exécution de la requête SQL pour récupérer les posts de la catégorie donnée
+	rows, err := db.core.Query("SELECT Id, Content, LikeCount, DislikeCount, AuthorEmail, PostId FROM Comment WHERE Id = ?", id)
+	if err != nil {
+		return Comment{}
+	}
+	defer rows.Close()
+
+	// Création d'une slice pour stocker les posts récupérés
+	var comment Comment
+
+	// Parcours des résultats et création des structures Post
+	if rows.Next() {
+		var authorEmail string // Stockage des photos en tant que chaîne séparée par des points-virgules
+		var postId int
+		// Scan des colonnes de la table Post dans les champs correspondants de la structure Post
+		err := rows.Scan(&comment.Id, &comment.Content, &comment.Like, &comment.Dislike, &authorEmail, &postId)
+		if err != nil {
+			return Comment{}
+		}
+
+		comment.Author = GetUserBasicInfo(authorEmail)
+		comment.PostOrigin = db.GetPostById(email, password, postId)
+		// Ajout du post à la slice des posts
+	}
+
+	// Vérification des erreurs éventuelles lors du parcours des résultats
+	if err := rows.Err(); err != nil {
+		return Comment{}
+	}
+
+	return comment
 }

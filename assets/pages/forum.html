@@ -6,7 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Forum</title>
     <link rel="stylesheet" href="/assets/css/forum.css">
-    <script src="/assets/js/forum.js" defer></script>
 </head>
 <body class="dark-mode">
 <div class="main-container">
@@ -21,7 +20,7 @@
                 <li><a href="profil.html"><img src="/assets/images/profil.png" alt="Profil" class="icon"> Profil</a></li>
                 <li><a href="postajout.html"><img src="/assets/images/addposte.png" alt="Ajouter un Post" class="icon"> Ajouter un Post</a></li>
                 <li><button id="toggleMode"><img src="/assets/images/sombreclair.png" alt="Mode" class="icon"> Mode Sombre/Clair</button></li>
-                <li><a href="parametre.html"><img src="/assets/images/parametre.png" alt="Paramètres" class="icon"> Paramètres</a></li>
+                <li><a href="settings.html"><img src="/assets/images/parametre.png" alt="Paramètres" class="icon"> Paramètres</a></li>
                 <li><a href="login.html"><img src="/assets/images/deconnexion.png" alt="Déconnexion" class="icon"> Déconnexion</a></li>
             </ul>
         </nav>
@@ -35,28 +34,56 @@
         <div id="latest" class="tabcontent">
             <div class="feed-section">
                 <h2>Derniers Posts</h2>
-                <div class="post">Post 1 récent</div>
-                <div class="post">Post 2 récent</div>
-                <div class="post">Post 3 récent</div>
+                {{ range .RecentPosts }}
+                <div class="post">{{ .Title }}</div>
+                {{ end }}
             </div>
         </div>
         <div id="featured" class="tabcontent" style="display:none">
             <div class="feed-section">
                 <h2>À la Une</h2>
-                <div class="post">Post 1 à la une</div>
-                <div class="post">Post 2 à la une</div>
-                <div class="post">Post 3 à la une</div>
+                {{ range .UnePosts }}
+                <div class="post">{{ .Title }}</div>
+                {{ end }}
             </div>
         </div>
         <div id="popular" class="tabcontent" style="display:none">
             <div class="feed-section">
                 <h2>Posts Populaires</h2>
-                <div class="post">Post 1 populaire</div>
-                <div class="post">Post 2 populaire</div>
-                <div class="post">Post 3 populaire</div>
+                {{ range .TopPosts }}
+                <div class="post">{{ .Title }}</div>
+                {{ end }}
+
             </div>
         </div>
     </main>
 </div>
 </body>
 </html>
+<script src="../js/forum.js" defer></script>
+<script>
+    //TODO A FIX TOM
+    function openTab(evt, tabName) {
+        // Déclaration de toutes les variables
+        let i, tabcontent, tablinks;
+
+        // Récupère tous les éléments avec la classe "tabcontent" et les cache
+        tabcontent = document.getElementsByClassName('tabcontent');
+        for (i = 0; i < tabcontent.length; i++) {
+            tabcontent[i].style.display = 'none';
+        }
+
+        // Récupère tous les éléments avec la classe "tablink" et enlève la classe "active"
+        tablinks = document.getElementsByClassName('tablink');
+        for (i = 0; i < tablinks.length; i++) {
+            tablinks[i].className = tablinks[i].className.replace(' active', '');
+        }
+
+        // Affiche l'onglet courant, et ajoute une classe "active" au bouton qui a ouvert l'onglet
+        document.getElementById(tabName).style.display = 'block';
+        evt.currentTarget.className += ' active';
+    }
+
+    // Définit l'onglet par défaut (Derniers Posts)
+    document.querySelector('.tablink.active').click();
+</script>

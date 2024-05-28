@@ -21,7 +21,7 @@
                 <li><a href="profil.html"><img src="/assets/images/profil.png" alt="Profil" class="icon"> Profil</a></li>
                 <li><a href="postajout.html"><img src="/assets/images/addposte.png" alt="Ajouter un Post" class="icon"> Ajouter un Post</a></li>
                 <li><button id="toggleMode"><img src="/assets/images/sombreclair.png" alt="Mode" class="icon"> Mode Sombre/Clair</button></li>
-                <li><a href="parametre.html"><img src="/assets/images/parametre.png" alt="Paramètres" class="icon"> Paramètres</a></li>
+                <li><a href="settings.html"><img src="/assets/images/parametre.png" alt="Paramètres" class="icon"> Paramètres</a></li>
                 <li><a href="login.html"><img src="/assets/images/deconnexion.png" alt="Déconnexion" class="icon"> Déconnexion</a></li>
             </ul>
         </nav>
@@ -32,22 +32,26 @@
                 <img src="/assets/images/profil.png" alt="Photo de Profil" id="profile-picture" class="profile-picture">
                 <input type="file" id="change-profile-picture" style="display: none;">
             </div>
-            <h2 id="username">Pseudo de l'utilisateur</h2>
+            <h2 id="username">{{.UserLog.Pseudo}}</h2>
             <div class="profile-stats">
-                <span>Abonnés: <strong id="followers">123</strong></span>
-                <span>Abonnements: <strong id="following">456</strong></span>
-                <span>Posts créés: <strong id="posts">78</strong></span>
-                <span>Likes reçus: <strong id="likes">910</strong></span>
+                <span>Abonnés: <strong id="followers">{{len .UserLog.Followers}}</strong></span>
+                <span>Abonnements: <strong id="following">{{len .UserLog.Subscription}}</strong></span>
+                <span>Posts créés: <strong id="posts">{{len .UserLog.Posts}}</strong></span>
+                <span>Likes reçus: <strong id="likes">{{len .UserLog.Likes}}</strong></span>
             </div>
         </div>
         <div class="posts">
             <h3>Posts Créés</h3>
             <div id="created-posts">
-                <!-- Afficher ici les posts créés -->
+                {{ range .UserLog.Posts }}
+                <li>{{ .Title }}</li>
+                {{ end }}
             </div>
             <h3>Posts Likés</h3>
             <div id="liked-posts">
-                <!-- Afficher ici les posts likés -->
+                {{ range .UserLog.Likes }}
+                <li>{{ .Title }}</li>
+                {{ end }}
             </div>
         </div>
     </main>

@@ -29,14 +29,19 @@ type Post struct {
 	Author      User
 	Comments    []Comment
 	AuthorEmail string
+	Date        string
 }
 
 type User struct {
-	Pseudo      string
-	Email       string
-	Password    string
-	IsCertified bool
-	IsModo      bool
-	IsAdmin     bool
-	IsBan       bool
+	Pseudo       string
+	Email        string
+	Password     string
+	IsCertified  bool
+	IsModo       bool
+	IsAdmin      bool
+	IsBan        bool
+	Followers    []User
+	Subscription []User
+	Posts        []Post
+	Likes        []Post
 }
