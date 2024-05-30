@@ -52,6 +52,10 @@ func (db *DBForum) ConnectToAccount(email string, password string) (User, bool, 
 	user.Subscription = user.GetAllFollowedAccount()
 	user.Posts = user.GetAllUserPosts()
 	user.Likes = user.GetAllLikedPosts()
+	user.TotalLikes = 0
+	for _, v := range user.Posts {
+		user.TotalLikes += v.Like
+	}
 
 	// Si l'utilisateur est trouvé, retourner la structure User et true
 	return user, true, ""
@@ -356,4 +360,67 @@ func (user *User) GetAllFollowedAccount() []User {
 
 	// Vérification des erreurs éventuelles lors du parcours des résultats
 	return users
+}
+
+func (User *User) IsLikedComment(id int) bool {
+	// Connexion à la base de données
+	// Exécution de la requête SQL pour récupérer les posts de la catégorie donnée
+	rows, _ := DB.core.Query("SELECT * FROM LikesComments WHERE CommentId = ? AND AuthorEmail = ?", id, User.Email)
+
+	defer rows.Close()
+
+	// Parcours des résultats et création des structures Post
+
+	if rows.Next() {
+		return true
+	}
+
+	return false
+}
+
+func (User *User) IsDislikedComment(id int) bool {
+	// Connexion à la base de données
+	// Exécution de la requête SQL pour récupérer les posts de la catégorie donnée
+	rows, _ := DB.core.Query("SELECT * FROM DislikesComments WHERE CommentId = ? AND AuthorEmail = ?", id, User.Email)
+
+	defer rows.Close()
+
+	// Parcours des résultats et création des structures Post
+
+	if rows.Next() {
+		return true
+	}
+
+	return false
+}
+func (User *User) IsLikedPost(id int) bool {
+	// Connexion à la base de données
+	// Exécution de la requête SQL pour récupérer les posts de la catégorie donnée
+	rows, _ := DB.core.Query("SELECT * FROM Likes WHERE PostId = ? AND AuthorEmail = ?", id, User.Email)
+
+	defer rows.Close()
+
+	// Parcours des résultats et création des structures Post
+
+	if rows.Next() {
+		return true
+	}
+
+	return false
+}
+
+func (User *User) IsDislikedPost(id int) bool {
+	// Connexion à la base de données
+	// Exécution de la requête SQL pour récupérer les posts de la catégorie donnée
+	rows, _ := DB.core.Query("SELECT * FROM Dislikes WHERE PostId = ? AND AuthorEmail = ?", id, User.Email)
+
+	defer rows.Close()
+
+	// Parcours des résultats et création des structures Post
+
+	if rows.Next() {
+		return true
+	}
+
+	return false
 }

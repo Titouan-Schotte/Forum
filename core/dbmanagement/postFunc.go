@@ -1,18 +1,19 @@
 package dbmanagement
 
 import (
+	"fmt"
 	"log"
 	"strings"
 	"time"
 )
 
-func (user *User) AddPost(email string, password string, titlePost string, descriptionPost string, photosPost []string, dangerPost int, beauty int, categorie Categorie) (Post, bool) {
+func (user *User) AddPost(email string, password string, titlePost string, descriptionPost string, photosPost []string, dangerPost int, beauty int, categorie []int) (Post, bool) {
 	// Vérifier les autorisations de l'utilisateur
 	if user.Email != email || user.Password != password || user.IsBan {
 		return Post{}, false
 	}
 	// Préparer la requête d'insertion du nouveau commentaire
-	stmt, err := DB.core.Prepare("INSERT INTO Post(Title, Description, Danger, Beauty, LikeCount, DislikeCount, AuthorEmail, Photos, Categorie, DatePost) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)")
+	stmt, err := DB.core.Prepare("INSERT INTO Post(Title, Description, Danger, Beauty, LikeCount, DislikeCount, AuthorEmail, Photos, DatePost) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)")
 	if err != nil {
 		log.Fatal("Erreur lors de la préparation de la requête d'insertion du commentaire:", err)
 	}
@@ -25,7 +26,8 @@ func (user *User) AddPost(email string, password string, titlePost string, descr
 	formattedTime := currentTime.Format("2006-01-02 15:04:05")
 
 	// Exécuter la requête d'insertion du nouveau commentaire
-	result, err := stmt.Exec(titlePost, descriptionPost, dangerPost, beauty, 0, 0, user.Email, photoText, categorie.Id, formattedTime)
+	result, err := stmt.Exec(titlePost, descriptionPost, dangerPost, beauty, 0, 0, user.Email, photoText, formattedTime)
+
 	if err != nil {
 		log.Fatal("Erreur lors de l'exécution de la requête d'insertion du commentaire:", err)
 	}
@@ -45,10 +47,13 @@ func (user *User) AddPost(email string, password string, titlePost string, descr
 		Danger:      dangerPost,
 		Beauty:      beauty,
 		Author:      *user,
-		Categorie:   categorie,
 		Date:        formattedTime,
 	}
-
+	for _, v := range categorie {
+		cat, _ := DB.GetCategorie(v)
+		newPost.addToCategorie(cat)
+	}
+	newPost.Categories = newPost.getCategories()
 	// Retourner le nouveau post et true pour indiquer que l'opération a réussi
 	return newPost, true
 }
@@ -61,14 +66,14 @@ func (post *Post) EditPost(email string, password string) bool {
 	}
 	photoText := strings.Join(post.Photos, ";")
 	// Préparer la requête de mise à jour du nombre de likes du commentaire
-	stmt, err := DB.core.Prepare("UPDATE Post SET Title = ?, Description = ?, Danger = ?, Beauty = ?, LikeCount = ?, DislikeCount = ?, AuthorEmail = ?, Photos = ?, Categorie = ?, DatePost = ? WHERE Id = ?")
+	stmt, err := DB.core.Prepare("UPDATE Post SET Title = ?, Description = ?, Danger = ?, Beauty = ?, LikeCount = ?, DislikeCount = ?, AuthorEmail = ?, Photos = ?, DatePost = ? WHERE Id = ?")
 	if err != nil {
 		return false
 	}
 	defer stmt.Close()
 
 	// Exécuter la requête de mise à jour du nombre de likes du commentaire
-	_, err = stmt.Exec(post.Title, post.Description, post.Danger, post.Beauty, post.Like, post.Dislike, post.Author.Email, photoText, post.Categorie.Id, post.Date, post.Id)
+	_, err = stmt.Exec(post.Title, post.Description, post.Danger, post.Beauty, post.Like, post.Dislike, post.Author.Email, photoText, post.Date, post.Id)
 	if err != nil {
 		return false
 	}
@@ -77,7 +82,6 @@ func (post *Post) EditPost(email string, password string) bool {
 }
 
 func (post *Post) LikePost(email string, password string) bool {
-
 	// Incrémenter le compteur de likes du post
 	post.Like++
 	post.EditPost(email, password)
@@ -86,17 +90,18 @@ func (post *Post) LikePost(email string, password string) bool {
 	if !success || user.IsBan || post.Author.Email != user.Email {
 		return false
 	}
-	//Enregistrer le like
-	rows, _ := DB.core.Query("SELECT PostId, AuthorEmail FROM Likes WHERE AuthorEmail = ? AND PostId = ?", email, post.Id)
-
-	if !rows.Next() && !rows.Next() {
-		stmt, _ := DB.core.Prepare("INSERT INTO Likes(PostId, AuthorEmail) VALUES(?, ?)")
-		defer stmt.Close()
-		stmt.Exec(post.Id, user.Email)
+	// Vérifier si l'utilisateur a déjà aimé le post
+	var count int
+	DB.core.QueryRow("SELECT COUNT(*) FROM Likes WHERE AuthorEmail = ? AND PostId = ?", email, post.Id).Scan(&count)
+	if count == 0 {
+		// Enregistrer le like
+		_, err := DB.core.Exec("INSERT INTO Likes(PostId, AuthorEmail) VALUES(?, ?)", post.Id, user.Email)
+		if err != nil {
+			return false
+		}
 		return true
-
 	}
-	// Retourner le post mis à jour et true pour indiquer que l'opération a réussi
+	// Retourner false si l'utilisateur a déjà aimé le post
 	return false
 }
 
@@ -104,20 +109,73 @@ func (post *Post) DislikePost(email string, password string) bool {
 	// Incrémenter le compteur de dislikes du post
 	post.Dislike++
 	post.EditPost(email, password)
+
 	user, success := IsUserConnected(email, password)
 	if !success || user.IsBan || post.Author.Email != user.Email {
 		return false
 	}
-	//Enregistrer le like
-	rows, _ := DB.core.Query("SELECT PostId, AuthorEmail FROM Dislikes WHERE AuthorEmail = ? AND PostId = ?", user.Email, post.Id)
-	if !rows.Next() && !rows.Next() {
-		stmt, _ := DB.core.Prepare("INSERT INTO Dislikes(PostId, AuthorEmail) VALUES(?, ?)")
-		defer stmt.Close()
-		stmt.Exec(post.Id, user.Email)
+	// Vérifier si l'utilisateur a déjà disliké le post
+	var count int
+	DB.core.QueryRow("SELECT COUNT(*) FROM Dislikes WHERE AuthorEmail = ? AND PostId = ?", email, post.Id).Scan(&count)
+	if count == 0 {
+		// Enregistrer le dislike
+		_, err := DB.core.Exec("INSERT INTO Dislikes(PostId, AuthorEmail) VALUES(?, ?)", post.Id, user.Email)
+		if err != nil {
+			return false
+		}
 		return true
-
 	}
-	// Retourner le post mis à jour et true pour indiquer que l'opération a réussi
+	// Retourner false si l'utilisateur a déjà disliké le post
+	return false
+}
+
+func (post *Post) UnlikePost(email string, password string) bool {
+	// Décrémenter le compteur de likes du post
+	if post.Like > 0 {
+		post.Like--
+		post.EditPost(email, password)
+
+		user, success := IsUserConnected(email, password)
+		if !success || user.IsBan || post.Author.Email != user.Email {
+			return false
+		}
+		// Vérifier si l'utilisateur a déjà aimé le post
+		var count int
+		DB.core.QueryRow("SELECT COUNT(*) FROM Likes WHERE AuthorEmail = ? AND PostId = ?", email, post.Id).Scan(&count)
+		if count > 0 {
+			// Supprimer le like enregistré
+			_, err := DB.core.Exec("DELETE FROM Likes WHERE AuthorEmail = ? AND PostId = ?", email, post.Id)
+			if err != nil {
+				return false
+			}
+			return true
+		}
+	}
+	return false
+}
+
+func (post *Post) UndislikePost(email string, password string) bool {
+	// Décrémenter le compteur de dislikes du post
+	if post.Dislike > 0 {
+		post.Dislike--
+		post.EditPost(email, password)
+
+		user, success := IsUserConnected(email, password)
+		if !success || user.IsBan || post.Author.Email != user.Email {
+			return false
+		}
+		// Vérifier si l'utilisateur a déjà disliké le post
+		var count int
+		DB.core.QueryRow("SELECT COUNT(*) FROM Dislikes WHERE AuthorEmail = ? AND PostId = ?", email, post.Id).Scan(&count)
+		if count > 0 {
+			// Supprimer le dislike enregistré
+			_, err := DB.core.Exec("DELETE FROM Dislikes WHERE AuthorEmail = ? AND PostId = ?", email, post.Id)
+			if err != nil {
+				return false
+			}
+			return true
+		}
+	}
 	return false
 }
 
@@ -174,7 +232,7 @@ func (db *DBForum) GetPostsOfCategory(categorie Categorie) []Post {
 	// Connexion à la base de données
 
 	// Exécution de la requête SQL pour récupérer les posts de la catégorie donnée
-	rows, err := db.core.Query("SELECT Id, Title, Description, Danger, Beauty, LikeCount, DislikeCount, AuthorEmail, Photos,DatePost FROM Post WHERE Categorie = ?", categorie.Id)
+	rows, err := db.core.Query("SELECT PostId FROM PostCategorie WHERE CategorieId = ?", categorie.Id)
 	if err != nil {
 		return nil
 	}
@@ -187,10 +245,15 @@ func (db *DBForum) GetPostsOfCategory(categorie Categorie) []Post {
 	for rows.Next() {
 		var post Post
 		var photos string // Stockage des photos en tant que chaîne séparée par des points-virgules
-
-		// Scan des colonnes de la table Post dans les champs correspondants de la structure Post
-		err := rows.Scan(&post.Id, &post.Title, &post.Description, &post.Danger, &post.Beauty, &post.Like, &post.Dislike, &post.AuthorEmail, &photos, &post.Date)
+		rows.Scan(&post.Id)
+		rowsPost, err := db.core.Query("SELECT Title, Description, Danger, Beauty, LikeCount, DislikeCount, AuthorEmail, Photos,DatePost FROM Post WHERE PostId = ?", post.Id)
 		if err != nil {
+			return nil
+		}
+		defer rowsPost.Close()
+		// Scan des colonnes de la table Post dans les champs correspondants de la structure Post
+		err2 := rowsPost.Scan(&post.Title, &post.Description, &post.Danger, &post.Beauty, &post.Like, &post.Dislike, &post.AuthorEmail, &photos, &post.Date)
+		if err2 != nil {
 			return nil
 		}
 
@@ -200,7 +263,6 @@ func (db *DBForum) GetPostsOfCategory(categorie Categorie) []Post {
 		post.Photos = strings.Split(photos, ";")
 
 		post.Comments = post.LoadComments()
-		post.Categorie = categorie
 		// Ajout du post à la slice des posts
 		posts = append(posts, post)
 	}
@@ -271,39 +333,40 @@ func (post *Post) GetAllDislikesUsers() []User {
 
 func (db *DBForum) GetPostById(email, password string, id int) Post {
 	// Connexion à la base de données
-
+	fmt.Println(id)
 	// Exécution de la requête SQL pour récupérer les posts de la catégorie donnée
-	rows, err := db.core.Query("SELECT Id, Title, Description, Danger, Beauty, LikeCount, DislikeCount, AuthorEmail, Photos, Categorie, DatePost FROM Post WHERE Id = ?", id)
+	rows, err := db.core.Query("SELECT Id, Title, Description, Danger, Beauty, LikeCount, DislikeCount, AuthorEmail, Photos, DatePost FROM Post WHERE Id = ?", id)
 	if err != nil {
+		log.Fatal("Erreur lors de l'exécution de la requête de récupération du post:", err)
 		return Post{}
 	}
 	defer rows.Close()
 
 	// Création d'une slice pour stocker les posts récupérés
 	var post Post
-
 	// Parcours des résultats et création des structures Post
+
 	if rows.Next() {
 		var photos string // Stockage des photos en tant que chaîne séparée par des points-virgules
-		var catInt int
+
 		// Scan des colonnes de la table Post dans les champs correspondants de la structure Post
-		err := rows.Scan(&post.Id, &post.Title, &post.Description, &post.Danger, &post.Beauty, &post.Like, &post.Dislike, &post.AuthorEmail, &photos, &catInt, &post.Date)
+		err := rows.Scan(&post.Id, &post.Title, &post.Description, &post.Danger, &post.Beauty, &post.Like, &post.Dislike, &post.AuthorEmail, &photos, &post.Date)
 		if err != nil {
+			log.Fatal("Erreur lors du scan des données du post:", err)
 			return Post{}
 		}
 
 		post.Author = GetUserBasicInfo(post.AuthorEmail)
-
 		// Diviser la chaîne de photos en une slice de chaînes
 		post.Photos = strings.Split(photos, ";")
 
 		post.Comments = post.LoadComments()
-		post.Categorie, _ = db.GetCategorie(email, password, id)
-		// Ajout du post à la slice des posts
+		post.Categories = post.getCategories()
 	}
 
 	// Vérification des erreurs éventuelles lors du parcours des résultats
 	if err := rows.Err(); err != nil {
+		log.Fatal("Erreur lors du parcours des résultats:", err)
 		return Post{}
 	}
 
@@ -335,7 +398,7 @@ func (db *DBForum) GetMostRecentsPosts(numberOfPost int) []Post {
 
 		// Diviser la chaîne de photos en une slice de chaînes
 		post.Photos = strings.Split(photos, ";")
-
+		post.Categories = post.getCategories()
 		post.Comments = post.LoadComments()
 		// Ajout du post à la slice des posts
 		posts = append(posts, post)
@@ -374,7 +437,7 @@ func (db *DBForum) GetTopPosts(numberOfPost int) []Post {
 
 		// Diviser la chaîne de photos en une slice de chaînes
 		post.Photos = strings.Split(photos, ";")
-
+		post.Categories = post.getCategories()
 		post.Comments = post.LoadComments()
 		// Ajout du post à la slice des posts
 		posts = append(posts, post)
@@ -414,7 +477,7 @@ func (db *DBForum) GetRandomPosts(numberOfPost int) []Post {
 
 		// Diviser la chaîne de photos en une slice de chaînes
 		post.Photos = strings.Split(photos, ";")
-
+		post.Categories = post.getCategories()
 		post.Comments = post.LoadComments()
 		// Ajout du post à la slice des posts
 		posts = append(posts, post)

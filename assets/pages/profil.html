@@ -19,7 +19,7 @@
             <ul>
                 <li><a href="forum.html"><img src="/assets/images/home.png" alt="Accueil" class="icon"> Accueil</a></li>
                 <li><a href="profil.html"><img src="/assets/images/profil.png" alt="Profil" class="icon"> Profil</a></li>
-                <li><a href="postajout.html"><img src="/assets/images/addposte.png" alt="Ajouter un Post" class="icon"> Ajouter un Post</a></li>
+                <li><a href="addpost.html"><img src="/assets/images/addposte.png" alt="Ajouter un Post" class="icon"> Ajouter un Post</a></li>
                 <li><button id="toggleMode"><img src="/assets/images/sombreclair.png" alt="Mode" class="icon"> Mode Sombre/Clair</button></li>
                 <li><a href="settings.html"><img src="/assets/images/parametre.png" alt="Paramètres" class="icon"> Paramètres</a></li>
                 <li><a href="login.html"><img src="/assets/images/deconnexion.png" alt="Déconnexion" class="icon"> Déconnexion</a></li>
@@ -37,7 +37,7 @@
                 <span>Abonnés: <strong id="followers">{{len .UserLog.Followers}}</strong></span>
                 <span>Abonnements: <strong id="following">{{len .UserLog.Subscription}}</strong></span>
                 <span>Posts créés: <strong id="posts">{{len .UserLog.Posts}}</strong></span>
-                <span>Likes reçus: <strong id="likes">{{len .UserLog.Likes}}</strong></span>
+                <span>Likes reçus: <strong id="likes">{{.UserLog.TotalLikes}}</strong></span>
             </div>
         </div>
         <div class="posts">

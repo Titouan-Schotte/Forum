@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <link href="https://fonts.googleapis.com/css2?family=Permanent+Marker&display=swap" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Post - Urbex</title>
+    <link rel="stylesheet" href="/assets/css/viewpost.css">
+</head>
+<body>
+<div class="post-container">
+    <h1>{{ .Post.Title }}</h1>
+    <div class="post-content">
+        <div class="post-images">
+            <button class="carousel-prev" onclick="changeCarouselImage(-1)">&#10094;</button>
+            <div id="frame">
+                <div id="carousel">
+                    {{ range .Post.Photos }}
+                    <img class="carousel-image" src="./assets/storage/{{ . }}" alt="">
+                    {{ end }}
+                </div>
+            </div>
+            <button class="carousel-next" onclick="changeCarouselImage(1)">&#10095;</button>
+        </div>
+        <div class="post-description">
+            <p>{{ .Post.Description }}</p>
+        </div>
+        de {{ .Post.Author.Pseudo }} le {{ .Post.Date }} <br>
+        🌸 {{ .Post.Beauty }} <br>
+        ☠️ {{ .Post.Danger }}
+        Dans {{ range .Post.Categories }} {{ .Nom }}, {{ end }}
+
+        <div class="post-actions">
+            {{ .Post.Like }}
+            <button id="like-button" onclick="toggleLike(this, {{ .Post.Id }})" class="{{if .IsUserLiked}}liked{{end}}">
+                <img src="/assets/images/likevide.png" alt="Like" class="action-button">
+            </button>
+            {{ .Post.Dislike }}
+            <button id="dislike-button" onclick="toggleDislike(this, {{ .Post.Id }})" class="{{if .IsUserDisliked}}disliked{{end}}">
+                <img src="/assets/images/dislikevide.png" alt="Dislike" class="action-button">
+            </button>
+            <button class="comment-button" onclick="toggleComments()">
+                <img src="/assets/images/comment.png" alt="Commentaire" class="action-button">
+            </button>
+        </div>
+        <div class="comments-section" id="comments-section" style="display: none;">
+            <h2>Commentaires</h2>
+            {{ range $index, $comment := .Post.Comments }}
+            <div class="comment">
+                <p><strong>{{ $comment.Author.Pseudo }}:</strong> {{ $comment.Content }}</p>
+                <div class="comment-actions">
+                    <button onclick="toggleLike(this, {{ $comment.Id }}, true)" class="{{if index $.IsUserLikedCommentaries $index}}liked{{end}}">
+                        <img src="/assets/images/likevide.png" alt="Like" class="action-button">
+                    </button>
+                    <button onclick="toggleDislike(this, {{ $comment.Id }}, true)" class="{{if index $.IsUserDislikedCommentaries $index}}disliked{{end}}">
+                        <img src="/assets/images/dislikevide.png" alt="Dislike" class="action-button">
+                    </button>
+                </div>
+            </div>
+            {{ end }}
+            <div class="add-comment">
+                <label for="new-comment">Ajouter un commentaire:</label>
+                <textarea id="new-comment" rows="4"></textarea>
+                <button class="submit-comment">Envoyer</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="/assets/js/post.js" defer></script>
+<script>
+    let currentCarouselIndex = 0;
+
+    function toggleComments() {
+        const commentsSection = document.getElementById('comments-section');
+        commentsSection.style.display = (commentsSection.style.display === 'none' || commentsSection.style.display === '') ? 'block' : 'none';
+    }
+
+    function toggleLike(button, id, isComment = false) {
+        const img = button.querySelector('img');
+        const isLiked = img.src.includes('like.png');
+        img.src = isLiked ? '/assets/images/likevide.png' : '/assets/images/like.png';
+
+        // Toggle the class for CSS styling if needed
+        button.classList.toggle('liked', !isLiked);
+
+        const url = isComment ? `/likecomment?id=${id}` : `/likepost?id=${id}`;
+        fetch(url, { method: 'GET' })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.text();
+            })
+            .catch(error => console.error('Error:', error));
+    }
+
+    function toggleDislike(button, id, isComment = false) {
+        const img = button.querySelector('img');
+        const isDisliked = img.src.includes('dislike.png');
+        img.src = isDisliked ? '/assets/images/dislikevide.png' : '/assets/images/dislike.png';
+
+        // Toggle the class for CSS styling if needed
+        button.classList.toggle('disliked', !isDisliked);
+
+        const url = isComment ? `/dislikecomment?id=${id}` : `/dislikepost?id=${id}`;
+        fetch(url, { method: 'GET' })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.text();
+            })
+            .catch(error => console.error('Error:', error));
+    }
+
+    function changeCarouselImage(direction) {
+        const images = document.querySelectorAll('.carousel-image');
+        images[currentCarouselIndex].style.display = 'none';
+        currentCarouselIndex = (currentCarouselIndex + direction + images.length) % images.length;
+        images[currentCarouselIndex].style.display = 'block';
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const images = document.querySelectorAll('.carousel-image');
+        images[currentCarouselIndex].style.display = 'block';
+
+        // Initialize like and dislike states for the post
+        const isUserLiked = {{.IsUserLiked}};
+        const isUserDisliked = {{.IsUserDisliked}};
+
+        if (isUserLiked) {
+            toggleLike(document.getElementById('like-button'), {{ .Post.Id }});
+        }
+
+        if (isUserDisliked) {
+            toggleDislike(document.getElementById('dislike-button'), {{ .Post.Id }});
+        }
+
+        // Initialize like and dislike states for comments
+        const isUserLikedCommentaries = {{.IsUserLikedCommentaries}};
+        const isUserDislikedCommentaries = {{.IsUserDislikedCommentaries}};
+
+        const commentLikeButtons = document.querySelectorAll('.comment .comment-actions button:nth-child(1)');
+        const commentDislikeButtons = document.querySelectorAll('.comment .comment-actions button:nth-child(2)');
+
+        isUserLikedCommentaries.forEach(function(liked, index) {
+            if (liked) {
+                toggleLike(commentLikeButtons[index], commentLikeButtons[index].dataset.id, true);
+            }
+        });
+
+        isUserDislikedCommentaries.forEach(function(disliked, index) {
+            if (disliked) {
+                toggleDislike(commentDislikeButtons[index], commentDislikeButtons[index].dataset.id, true);
+            }
+        });
+    });
+</script>
+</body>
+</html>
