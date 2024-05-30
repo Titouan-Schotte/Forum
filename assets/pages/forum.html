@@ -18,6 +18,7 @@
             <ul>
                 <li><a href="forum.html"><img src="/assets/images/home.png" alt="Accueil" class="icon"> Accueil</a></li>
                 <li><a href="profil.html"><img src="/assets/images/profil.png" alt="Profil" class="icon"> Profil</a></li>
+                <li><a href="javascript:void(0);" onclick="openNotifications()"><img src="/assets/images/notification.png" alt="Notifications" class="icon"> Notifications <span id="notification-count" class="badge">3</span></a></li>
                 <li><a href="addpost.html"><img src="/assets/images/addposte.png" alt="Ajouter un Post" class="icon"> Ajouter un Post</a></li>
                 <li><button id="toggleMode"><img src="/assets/images/sombreclair.png" alt="Mode" class="icon"> Mode Sombre/Clair</button></li>
                 <li><a href="settings.html"><img src="/assets/images/parametre.png" alt="Paramètres" class="icon"> Paramètres</a></li>
@@ -26,6 +27,33 @@
         </nav>
     </aside>
     <main class="content">
+        <div class="search-container">
+            <input type="text" id="search-bar" placeholder="Rechercher des posts...">
+        </div>
+        <div class="categories">
+            <div class="category-group">
+                <span>Beauté:</span>
+                <div class="beauty-rating">
+                    <span class="beauty-icon" data-value="1">🌸</span>
+                    <span class="beauty-icon" data-value="2">🌸</span>
+                    <span class="beauty-icon" data-value="3">🌸</span>
+                    <span class="beauty-icon" data-value="4">🌸</span>
+                    <span class="beauty-icon" data-value="5">🌸</span>
+                </div>
+            </div>
+            <div class="category-group">
+                <span>Danger:</span>
+                <div class="danger-rating">
+                    <span class="danger-icon" data-value="1">☠️</span>
+                    <span class="danger-icon" data-value="2">☠️</span>
+                    <span class="danger-icon" data-value="3">☠️</span>
+                    <span class="danger-icon" data-value="4">☠️</span>
+                    <span class="danger-icon" data-value="5">☠️</span>
+                </div>
+            </div>
+            <label><input type="checkbox" class="category" value="house"> Maison 🏠</label>
+            <label><input type="checkbox" class="category" value="building"> Immeuble 🏢</label>
+        </div>
         <div class="tabs">
             <button class="tablink active" onclick="openTab(event, 'latest')">Derniers Posts</button>
             <button class="tablink" onclick="openTab(event, 'featured')">À la Une</button>
@@ -35,7 +63,7 @@
             <div class="feed-section">
                 <h2>Derniers Posts</h2>
                 {{ range .RecentPosts }}
-                <div class="post">{{ .Title }}</div>
+                <div class="post" data-categories="{{ .Categories }}" data-beauty="{{ .Beauty }}" data-danger="{{ .Danger }}">{{ .Title }}</div>
                 {{ end }}
             </div>
         </div>
@@ -43,7 +71,7 @@
             <div class="feed-section">
                 <h2>À la Une</h2>
                 {{ range .UnePosts }}
-                <div class="post">{{ .Title }}</div>
+                <div class="post" data-categories="{{ .Categories }}" data-beauty="{{ .Beauty }}" data-danger="{{ .Danger }}">{{ .Title }}</div>
                 {{ end }}
             </div>
         </div>
@@ -51,39 +79,20 @@
             <div class="feed-section">
                 <h2>Posts Populaires</h2>
                 {{ range .TopPosts }}
-                <div class="post">{{ .Title }}</div>
+                <div class="post" data-categories="{{ .Categories }}" data-beauty="{{ .Beauty }}" data-danger="{{ .Danger }}">{{ .Title }}</div>
                 {{ end }}
-
             </div>
         </div>
     </main>
 </div>
+<div id="notifications-panel" class="notifications-panel">
+    <h2>Notifications</h2>
+    <div id="notifications-list">
+        <!-- Les notifications seront ajoutées ici -->
+    </div>
+    <button class="close-button" onclick="closeNotifications()">Fermer</button>
+</div>
+<script src="/assets/js/forum.js" defer></script>
+<script src="/assets/js/notifications.js" defer></script>
 </body>
 </html>
-<script src="../js/forum.js" defer></script>
-<script>
-    //TODO A FIX TOM
-    function openTab(evt, tabName) {
-        // Déclaration de toutes les variables
-        let i, tabcontent, tablinks;
-
-        // Récupère tous les éléments avec la classe "tabcontent" et les cache
-        tabcontent = document.getElementsByClassName('tabcontent');
-        for (i = 0; i < tabcontent.length; i++) {
-            tabcontent[i].style.display = 'none';
-        }
-
-        // Récupère tous les éléments avec la classe "tablink" et enlève la classe "active"
-        tablinks = document.getElementsByClassName('tablink');
-        for (i = 0; i < tablinks.length; i++) {
-            tablinks[i].className = tablinks[i].className.replace(' active', '');
-        }
-
-        // Affiche l'onglet courant, et ajoute une classe "active" au bouton qui a ouvert l'onglet
-        document.getElementById(tabName).style.display = 'block';
-        evt.currentTarget.className += ' active';
-    }
-
-    // Définit l'onglet par défaut (Derniers Posts)
-    document.querySelector('.tablink.active').click();
-</script>

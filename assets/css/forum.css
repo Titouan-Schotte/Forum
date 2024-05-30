@@ -1,4 +1,3 @@
-/* Mise en page globale et couleurs de base */
 body, html {
     height: 100%;
     margin: 0;
@@ -30,7 +29,7 @@ body.light-mode {
 
 .sidebar {
     width: 250px;
-    background: rgba(47, 79, 79, 0.9); /* Vert ardoise foncé, semi-transparent */
+    background: rgba(47, 79, 79, 0.9);
     padding: 20px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     display: flex;
@@ -51,8 +50,8 @@ body.light-mode {
 }
 
 .sidebar h1 {
-    font-family: 'Permanent Marker', cursive; /* Police de type 'tag' */
-    color: #32CD32; /* Vert lime */
+    font-family: 'Permanent Marker', cursive;
+    color: #32CD32;
 }
 
 .sidebar nav ul {
@@ -63,11 +62,12 @@ body.light-mode {
 
 .sidebar nav ul li {
     margin-bottom: 15px;
+    position: relative;
 }
 
 .sidebar nav ul li a,
 .sidebar nav ul li button {
-    background: #6B8E23; /* Vert olive terne */
+    background: #6B8E23;
     color: white;
     padding: 10px;
     border: none;
@@ -83,7 +83,7 @@ body.light-mode {
 
 .sidebar nav ul li a:hover,
 .sidebar nav ul li button:hover {
-    background: #556B2F; /* Vert olive foncé */
+    background: #556B2F;
 }
 
 .sidebar .icon {
@@ -92,46 +92,67 @@ body.light-mode {
     margin-right: 10px;
 }
 
-.button {
-    background: #6B8E23; /* Vert olive terne */
+.badge {
+    background-color: red;
     color: white;
-    padding: 10px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    transition: background 0.3s;
-    width: 100%;
-    text-align: left;
-}
-
-.button:hover {
-    background: #556B2F; /* Vert olive foncé */
-}
-
-#toggleMode {
-    background: #6B8E23; /* Vert olive terne */
-    color: white;
-    padding: 10px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    transition: background 0.3s;
-    width: 100%;
-    text-align: left;
-}
-
-#toggleMode:hover {
-    background: #556B2F; /* Vert olive foncé */
+    border-radius: 50%;
+    padding: 2px 8px;
+    font-size: 12px;
+    position: absolute;
+    top: 5px;
+    right: 15px;
 }
 
 .content {
     flex: 1;
     padding: 20px;
     overflow-y: auto;
+}
+
+.search-container {
+    margin-bottom: 20px;
+}
+
+#search-bar {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.categories {
+    margin-bottom: 20px;
+}
+
+.category-group {
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+}
+
+.category-group span {
+    display: block;
+    font-weight: bold;
+    margin-right: 10px;
+}
+
+.beauty-rating,
+.danger-rating {
+    display: flex;
+    align-items: center;
+}
+
+.beauty-rating span,
+.danger-rating span {
+    cursor: pointer;
+    margin-right: 5px;
+    opacity: 0.5;
+    transition: opacity 0.3s;
+}
+
+.beauty-rating span.active,
+.danger-rating span.active {
+    opacity: 1;
 }
 
 .tabs {
@@ -176,6 +197,67 @@ body.light-mode {
     padding: 10px;
     border-radius: 4px;
     margin-bottom: 10px;
+}
+
+.notifications-panel {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(47, 79, 79, 0.95);
+    color: white;
+    z-index: 1000;
+    padding: 20px;
+    overflow-y: auto;
+}
+
+.notifications-content {
+    max-width: 600px;
+    margin: 0 auto;
+    background: rgba(0, 0, 0, 0.8);
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.notifications-panel h2 {
+    font-family: 'Permanent Marker', cursive;
+    color: #32CD32;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.notification-item {
+    display: flex;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.1);
+    padding: 10px;
+    border-radius: 4px;
+    margin-bottom: 10px;
+}
+
+.notification-item img {
+    width: 24px;
+    height: 24px;
+    margin-right: 10px;
+}
+
+.close-button {
+    display: block;
+    margin: 0 auto;
+    background: #6B8E23;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.close-button:hover {
+    background: #556B2F;
 }
 
 /* Responsive Design pour petits écrans */
