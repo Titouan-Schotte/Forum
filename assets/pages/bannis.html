@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <link href="https://fonts.googleapis.com/css2?family=Permanent+Marker&display=swap" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Utilisateurs Bannis - Urbex</title>
+    <link rel="stylesheet" href="/assets/css/bannis.css">
+</head>
+<body>
+<img src="/assets/images/imageadmin.jpg" id="background-image" alt="Background Image">
+<div class="main-container">
+    <h1>Utilisateurs Bannis</h1>
+    <input type="text" id="search-bar" placeholder="Rechercher un utilisateur..." onkeyup="searchUser()">
+    <div class="banned-users-container">
+        <div class="banned-users" id="banned-users">
+
+        </div>
+    </div>
+    <div class="pagination-controls">
+        <button id="prev-page" onclick="prevPage()">Page précédente</button>
+        <button id="next-page" onclick="nextPage()">Page suivante</button>
+    </div>
+</div>
+<script src="/assets/js/bannis.js"></script>
+</body>
+</html>

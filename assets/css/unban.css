@@ -1,0 +1,131 @@
+body, html {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    font-family: 'Arial', sans-serif;
+}
+
+#background-image {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: -1;
+    filter: brightness(50%) grayscale(30%);
+}
+
+.main-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+    background: rgba(47, 79, 79, 0.8);
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(10px);
+    text-align: center;
+    overflow: hidden;
+    position: relative;
+}
+
+h1 {
+    font-family: 'Permanent Marker', cursive;
+    color: #32CD32;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+#search-bar {
+    width: 80%;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    margin-bottom: 20px;
+}
+
+.unban-users-container {
+    position: relative;
+    width: 100%;
+    max-width: 1200px;
+    overflow: hidden;
+}
+
+.unban-users {
+    display: flex;
+    gap: 20px;
+    padding: 10px;
+    transition: transform 0.8s cubic-bezier(0.68, -0.55, 0.27, 1.55), opacity 0.8s ease-in-out;
+}
+
+.user-column {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    min-width: 300px; /* Pour garantir que chaque colonne ait une largeur minimale */
+}
+
+.user-card {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    padding: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s, box-shadow 0.3s;
+    color: #fff;
+}
+
+.user-card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+}
+
+.user-card p {
+    margin: 0;
+    font-size: 16px;
+}
+
+.user-card p strong {
+    font-size: 18px;
+    color: #ADD8E6;
+}
+
+.unban-button {
+    background: #6B8E23;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 10px;
+    cursor: pointer;
+    transition: background 0.3s;
+    margin-top: 10px;
+}
+
+.unban-button:hover {
+    background: #556B2F;
+}
+
+.pagination-controls {
+    display: flex;
+    justify-content: space-between;
+    width: 80%;
+    margin-top: 20px;
+}
+
+.pagination-controls button {
+    background: #6B8E23;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.pagination-controls button:hover {
+    background: #556B2F;
+}
