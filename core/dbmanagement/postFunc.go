@@ -129,56 +129,6 @@ func (post *Post) DislikePost(email string, password string) bool {
 	return false
 }
 
-func (post *Post) UnlikePost(email string, password string) bool {
-	// Décrémenter le compteur de likes du post
-	if post.Like > 0 {
-		post.Like--
-		post.EditPost(email, password)
-
-		user, success := IsUserConnected(email, password)
-		if !success || user.IsBan || post.Author.Email != user.Email {
-			return false
-		}
-		// Vérifier si l'utilisateur a déjà aimé le post
-		var count int
-		DB.core.QueryRow("SELECT COUNT(*) FROM Likes WHERE AuthorEmail = ? AND PostId = ?", email, post.Id).Scan(&count)
-		if count > 0 {
-			// Supprimer le like enregistré
-			_, err := DB.core.Exec("DELETE FROM Likes WHERE AuthorEmail = ? AND PostId = ?", email, post.Id)
-			if err != nil {
-				return false
-			}
-			return true
-		}
-	}
-	return false
-}
-
-func (post *Post) UndislikePost(email string, password string) bool {
-	// Décrémenter le compteur de dislikes du post
-	if post.Dislike > 0 {
-		post.Dislike--
-		post.EditPost(email, password)
-
-		user, success := IsUserConnected(email, password)
-		if !success || user.IsBan || post.Author.Email != user.Email {
-			return false
-		}
-		// Vérifier si l'utilisateur a déjà disliké le post
-		var count int
-		DB.core.QueryRow("SELECT COUNT(*) FROM Dislikes WHERE AuthorEmail = ? AND PostId = ?", email, post.Id).Scan(&count)
-		if count > 0 {
-			// Supprimer le dislike enregistré
-			_, err := DB.core.Exec("DELETE FROM Dislikes WHERE AuthorEmail = ? AND PostId = ?", email, post.Id)
-			if err != nil {
-				return false
-			}
-			return true
-		}
-	}
-	return false
-}
-
 func (post *Post) DeletePost(email string) bool {
 	// Vérifier les autorisations de l'utilisateur
 	if post.Author.Email != email || post.Author.IsBan {

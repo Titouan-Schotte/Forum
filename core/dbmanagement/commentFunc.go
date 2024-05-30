@@ -142,55 +142,6 @@ func (comment *Comment) DislikeComment(email string, password string) bool {
 	return false
 }
 
-func (comment *Comment) UnlikeComment(email string, password string) bool {
-	// Décrémenter le compteur de likes du commentaire
-	if comment.Like > 0 {
-		comment.Like--
-		comment.EditComment(email, password)
-
-		user, success := IsUserConnected(email, password)
-		if !success || user.IsBan || comment.Author.Email != user.Email {
-			return false
-		}
-		// Vérifier si l'utilisateur a déjà aimé le commentaire
-		var count int
-		DB.core.QueryRow("SELECT COUNT(*) FROM LikesComments WHERE AuthorEmail = ? AND CommentId = ?", email, comment.Id).Scan(&count)
-		if count > 0 {
-			// Supprimer le like enregistré
-			_, err := DB.core.Exec("DELETE FROM LikesComments WHERE AuthorEmail = ? AND CommentId = ?", email, comment.Id)
-			if err != nil {
-				return false
-			}
-			return true
-		}
-	}
-	return false
-}
-
-func (comment *Comment) UndislikeComment(email string, password string) bool {
-	// Décrémenter le compteur de dislikes du commentaire
-	if comment.Dislike > 0 {
-		comment.Dislike--
-		comment.EditComment(email, password)
-
-		user, success := IsUserConnected(email, password)
-		if !success || user.IsBan || comment.Author.Email != user.Email {
-			return false
-		}
-		// Vérifier si l'utilisateur a déjà disliké le commentaire
-		var count int
-		DB.core.QueryRow("SELECT COUNT(*) FROM DislikesComments WHERE AuthorEmail = ? AND CommentId = ?", email, comment.Id).Scan(&count)
-		if count > 0 {
-			// Supprimer le dislike enregistré
-			_, err := DB.core.Exec("DELETE FROM DislikesComments WHERE AuthorEmail = ? AND CommentId = ?", email, comment.Id)
-			if err != nil {
-				return false
-			}
-			return true
-		}
-	}
-	return false
-}
 func (post *Post) LoadComments() []Comment {
 	// Connexion à la base de données
 

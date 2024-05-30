@@ -10,6 +10,7 @@ type ForumPostsGetter struct {
 	RecentPosts []dbmanagement.Post
 	TopPosts    []dbmanagement.Post
 	UnePosts    []dbmanagement.Post
+	UserLog     dbmanagement.User
 }
 
 var forumPostsData = ForumPostsGetter{}
@@ -18,7 +19,7 @@ func ForumHandler(w http.ResponseWriter, r *http.Request) {
 
 	//LOGIN IN !!
 	if loginData.UserLog.Email != "" {
-
+		forumPostsData.UserLog = loginData.UserLog
 	}
 
 	forumPostsData.RecentPosts = dbmanagement.DB.GetMostRecentsPosts(10)

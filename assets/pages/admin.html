@@ -12,10 +12,12 @@
 <div class="main-container">
     <h1>Gestion Administrateur</h1>
     <div class="admin-buttons">
-        <button class="admin-button" onclick="location.href='/banni'">Banni</button>
-        <button class="admin-button" onclick="location.href='/unban'">Unban</button>
-        <button class="admin-button" onclick="location.href='/grade'">Grade</button>
-        <button class="admin-button" onclick="location.href='/ajoutercategorie'">Ajouter Catégorie</button>
+        <button class="admin-button" onclick="location.href='/panel-ban'">Banni</button>
+        <button class="admin-button" onclick="location.href='/panel-unban'">Unban</button>
+        {{ if eq .UserLog.IsAdmin true }}
+        <button class="admin-button" onclick="location.href='/panel-grade'">Grade</button>
+        {{end}}
+        <button class="admin-button" onclick="location.href='/panel-addcat'">Ajouter Catégorie</button>
     </div>
 </div>
 </body>

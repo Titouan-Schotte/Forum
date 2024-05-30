@@ -4,16 +4,16 @@
     <link href="https://fonts.googleapis.com/css2?family=Permanent+Marker&display=swap" rel="stylesheet">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Débannir Utilisateurs - Urbex</title>
-    <link rel="stylesheet" href="/assets/css/unban.css">
+    <title>Utilisateurs Bannis - Urbex</title>
+    <link rel="stylesheet" href="/assets/css/bannis.css">
 </head>
 <body>
 <img src="/assets/images/imageadmin.jpg" id="background-image" alt="Background Image">
 <div class="main-container">
-    <h1>Débannir Utilisateurs</h1>
+    <h1>Débannir un Utilisateur</h1>
     <input type="text" id="search-bar" placeholder="Rechercher un utilisateur..." onkeyup="searchUser()">
-    <div class="unban-users-container">
-        <div class="unban-users" id="unban-users">
+    <div class="banned-users-container">
+        <div class="banned-users" id="banned-users">
 
         </div>
     </div>
@@ -22,6 +22,92 @@
         <button id="next-page" onclick="nextPage()">Page suivante</button>
     </div>
 </div>
-<script src="/assets/js/unban.js"></script>
 </body>
 </html>
+
+<script>
+    const users = [
+        {{ range .AllUsers }}
+    {{if eq .IsBan true}}
+    { name: "{{ .Pseudo }}", email: "{{ .Email }}" },
+    {{end}}
+    {{end}}
+    ];
+
+    const itemsPerPage = 9;
+    let currentPage = 0;
+
+    function renderUsers() {
+        const bannedUsersContainer = document.getElementById('banned-users');
+        bannedUsersContainer.innerHTML = '';
+
+        const start = currentPage * itemsPerPage;
+        const end = start + itemsPerPage;
+        const paginatedUsers = users.slice(start, end);
+
+        let column;
+        paginatedUsers.forEach((user, index) => {
+            if (index % 3 === 0) {
+                column = document.createElement('div');
+                column.classList.add('user-column');
+                bannedUsersContainer.appendChild(column);
+            }
+            const userCard = document.createElement('div');
+            userCard.classList.add('user-card');
+            userCard.innerHTML = `<p><strong>${user.name}</strong></p>`;
+            userCard.onclick = function() {
+                window.location.href = `/panel-action-unban?Email=${user.email}`;
+            };
+            column.appendChild(userCard);
+        });
+    }
+
+    function searchUser() {
+        const input = document.getElementById('search-bar').value.toLowerCase();
+        const userCards = document.querySelectorAll('.user-card');
+
+        userCards.forEach(card => {
+            const username = card.querySelector('p strong').textContent.toLowerCase();
+            if (username.includes(input)) {
+                card.style.display = '';
+            } else {
+                card.style.display = 'none';
+            }
+        });
+    }
+
+    function nextPage() {
+        if ((currentPage + 1) * itemsPerPage < users.length) {
+            currentPage++;
+            transitionEffect('next');
+        }
+    }
+
+    function prevPage() {
+        if (currentPage > 0) {
+            currentPage--;
+            transitionEffect('prev');
+        }
+    }
+
+    function transitionEffect(direction) {
+        const bannedUsersContainer = document.getElementById('banned-users');
+        bannedUsersContainer.style.opacity = 0;
+
+        setTimeout(() => {
+            renderUsers();
+            if (direction === 'next') {
+                bannedUsersContainer.style.transform = 'translateX(100%)';
+            } else {
+                bannedUsersContainer.style.transform = 'translateX(-100%)';
+            }
+            bannedUsersContainer.style.opacity = 1;
+            setTimeout(() => {
+                bannedUsersContainer.style.transform = 'translateX(0)';
+            }, 50);
+        }, 400);
+    }
+
+    document.addEventListener('DOMContentLoaded', renderUsers);
+
+</script>

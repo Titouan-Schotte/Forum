@@ -120,7 +120,7 @@ body.light-mode {
     display: flex;
     align-items: center;
     transition: background 0.3s;
-    width: 100%;
+    width:112%;
     text-align: left;
 }
 
@@ -176,6 +176,9 @@ body.light-mode {
     padding: 10px;
     border-radius: 4px;
     margin-bottom: 10px;
+    color: white;
+    text-underline: none;
+    text-decoration: none;
 }
 
 /* Responsive Design pour petits écrans */
