@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <link href="https://fonts.googleapis.com/css2?family=Permanent+Marker&display=swap" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ajouter Catégorie - Urbex</title>
+    <link rel="stylesheet" href="/assets/css/addcategories.css">
+</head>
+<body>
+<img src="/assets/images/imageadmin.jpg" id="background-image" alt="Background Image">
+<div class="main-container">
+    <h1>Ajouter Catégorie</h1>
+    <form action="/submit-categorie" method="POST">
+        <div class="form-group">
+            <label for="categorie">Nouvelle Catégorie:</label>
+            <input type="text" id="categorie" name="categorie" required>
+        </div>
+        <button type="submit">Ajouter</button>
+    </form>
+</div>
+</body>
+</html>
