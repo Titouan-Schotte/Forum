@@ -37,10 +37,14 @@ func (s WebServer) Router() {
 	s.Core.HandleFunc("/dislikepost", handlers.DislikePostHandler)
 	s.Core.HandleFunc("/likecomment", handlers.LikeCommentHandler)
 	s.Core.HandleFunc("/dislikecomment", handlers.DislikeCommentHandler)
-	s.Core.HandleFunc("/unlikepost", handlers.UnlikePostHandler)
-	s.Core.HandleFunc("/undislikepost", handlers.UndislikePostHandler)
-	s.Core.HandleFunc("/unlikecomment", handlers.UnlikeCommentHandler)
-	s.Core.HandleFunc("/undislikecomment", handlers.UndislikeCommentHandler)
+	s.Core.HandleFunc("/panel", handlers.PanelAdminHandler)
+	s.Core.HandleFunc("/panel-ban", handlers.PanelBanHandler)
+	s.Core.HandleFunc("/panel-unban", handlers.PanelUnbanHandler)
+	s.Core.HandleFunc("/panel-grade", handlers.PanelGradeHandler)
+	s.Core.HandleFunc("/panel-addcat", handlers.PanelAddCatHandler)
+	s.Core.HandleFunc("/panel-action-ban", handlers.PanelActionBanHandler)
+	s.Core.HandleFunc("/panel-action-unban", handlers.PanelActionUnbanHandler)
+	s.Core.HandleFunc("/panel-changegrade", handlers.PanelActionChangeGradeHandler)
 }
 
 // Launch starts the web server.

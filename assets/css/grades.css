@@ -30,6 +30,8 @@ body, html {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
     backdrop-filter: blur(10px);
     text-align: center;
+    overflow: hidden;
+    position: relative;
 }
 
 h1 {
@@ -39,10 +41,33 @@ h1 {
     margin-bottom: 20px;
 }
 
+#search-bar {
+    width: 80%;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    margin-bottom: 20px;
+}
+
+.graded-users-container {
+    position: relative;
+    width: 100%;
+    max-width: 1200px;
+    overflow: hidden;
+}
+
 .graded-users {
+    display: flex;
+    gap: 20px;
+    padding: 10px;
+    transition: transform 0.8s cubic-bezier(0.68, -0.55, 0.27, 1.55), opacity 0.8s ease-in-out;
+}
+
+.user-column {
     display: flex;
     flex-direction: column;
     gap: 20px;
+    min-width: 300px; /* Pour garantir que chaque colonne ait une largeur minimale */
 }
 
 .user-card {
@@ -67,4 +92,58 @@ h1 {
 .user-card p strong {
     font-size: 18px;
     color: #ADD8E6;
+}
+
+.user-card form {
+    margin-top: 10px;
+}
+
+.user-card label {
+    font-size: 14px;
+    color: #ADD8E6;
+    margin-right: 10px;
+}
+
+.user-card select {
+    padding: 5px;
+    border-radius: 5px;
+    border: none;
+    background: rgba(255, 255, 255, 0.8);
+    color: #000;
+}
+
+.user-card button {
+    padding: 5px 10px;
+    margin-left: 10px;
+    border-radius: 5px;
+    border: none;
+    background: #32CD32;
+    color: #fff;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.user-card button:hover {
+    background: #228B22;
+}
+
+.pagination-controls {
+    display: flex;
+    justify-content: space-between;
+    width: 80%;
+    margin-top: 20px;
+}
+
+.pagination-controls button {
+    background: #6B8E23;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.pagination-controls button:hover {
+    background: #556B2F;
 }

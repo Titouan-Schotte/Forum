@@ -11,17 +11,114 @@
 <img src="/assets/images/imageadmin.jpg" id="background-image" alt="Background Image">
 <div class="main-container">
     <h1>Gérer les Grades</h1>
-    <div class="graded-users">
-        <div class="user-card">
-            <p><strong>Utilisateur 1</strong> - Admin</p>
-        </div>
-        <div class="user-card">
-            <p><strong>Utilisateur 2</strong> - Modérateur</p>
-        </div>
-        <div class="user-card">
-            <p><strong>Utilisateur 3</strong> - Utilisateur</p>
+    <input type="text" id="search-bar" placeholder="Rechercher un utilisateur..." onkeyup="searchUser()">
+    <div class="graded-users-container">
+        <div class="graded-users" id="graded-users">
+
         </div>
     </div>
+    <div class="pagination-controls">
+        <button id="prev-page" onclick="prevPage()">Page précédente</button>
+        <button id="next-page" onclick="nextPage()">Page suivante</button>
+    </div>
 </div>
+<script>
+    const users = [
+        {{ range .AllUsers }}
+    { name: "{{ .Pseudo }}", email: "{{ .Email }}", isAdmin: {{ .IsAdmin }}, isModo: {{ .IsModo }} },
+    {{ end }}
+    ];
+
+    const itemsPerPage = 9;
+    let currentPage = 0;
+
+    function renderUsers() {
+        const gradedUsersContainer = document.getElementById('graded-users');
+        gradedUsersContainer.innerHTML = '';
+
+        const start = currentPage * itemsPerPage;
+        const end = start + itemsPerPage;
+        const paginatedUsers = users.slice(start, end);
+
+        let column;
+        paginatedUsers.forEach((user, index) => {
+            if (index % 3 === 0) {
+                column = document.createElement('div');
+                column.classList.add('user-column');
+                gradedUsersContainer.appendChild(column);
+            }
+            const userCard = document.createElement('div');
+            userCard.classList.add('user-card');
+            userCard.innerHTML = `
+                <p><strong>${user.name}</strong> - ${user.isAdmin ? 'Administrateur' : (user.isModo ? 'Modérateur' : 'Normal')}</p>
+                <form onsubmit="return handleGradeChange(event, '${user.email}')">
+                    <label for="grade-${user.email}">Changer le grade:</label>
+                    <select id="grade-${user.email}" name="grade">
+                        <option value="Normal" ${!user.isAdmin && !user.isModo ? 'selected' : ''}>Normal</option>
+                        <option value="Modérateur" ${user.isModo ? 'selected' : ''}>Modérateur</option>
+                        <option value="Administrateur" ${user.isAdmin ? 'selected' : ''}>Administrateur</option>
+                    </select>
+                    <button type="submit">Changer</button>
+                </form>
+            `;
+            column.appendChild(userCard);
+        });
+    }
+
+    function searchUser() {
+        const input = document.getElementById('search-bar').value.toLowerCase();
+        const userCards = document.querySelectorAll('.user-card');
+
+        userCards.forEach(card => {
+            const username = card.querySelector('p strong').textContent.toLowerCase();
+            if (username.includes(input)) {
+                card.style.display = '';
+            } else {
+                card.style.display = 'none';
+            }
+        });
+    }
+
+    function nextPage() {
+        if ((currentPage + 1) * itemsPerPage < users.length) {
+            currentPage++;
+            transitionEffect('next');
+        }
+    }
+
+    function prevPage() {
+        if (currentPage > 0) {
+            currentPage--;
+            transitionEffect('prev');
+        }
+    }
+
+    function transitionEffect(direction) {
+        const gradedUsersContainer = document.getElementById('graded-users');
+        gradedUsersContainer.style.opacity = 0;
+
+        setTimeout(() => {
+            renderUsers();
+            if (direction === 'next') {
+                gradedUsersContainer.style.transform = 'translateX(100%)';
+            } else {
+                gradedUsersContainer.style.transform = 'translateX(-100%)';
+            }
+            gradedUsersContainer.style.opacity = 1;
+            setTimeout(() => {
+                gradedUsersContainer.style.transform = 'translateX(0)';
+            }, 50);
+        }, 400);
+    }
+
+    function handleGradeChange(event, email) {
+        event.preventDefault();
+        const grade = event.target.grade.value;
+        window.location.href = `/panel-changegrade?Email=${email}&Grade=${grade}`;
+        return false;
+    }
+
+    document.addEventListener('DOMContentLoaded', renderUsers);
+</script>
 </body>
 </html>
