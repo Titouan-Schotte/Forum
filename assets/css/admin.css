@@ -1,0 +1,84 @@
+/* Mise en page globale et couleurs de base */
+body, html {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+#background-image {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: -1;
+    filter: brightness(50%) grayscale(30%); /* Assombrir légèrement et désaturer l'image */
+}
+
+.main-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+    background: rgba(47, 79, 79, 0.9); /* Vert ardoise foncé, semi-transparent */
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Ombre douce */
+}
+
+h1 {
+    font-family: 'Permanent Marker', cursive; /* Police de type 'tag' */
+    color: #32CD32; /* Vert lime */
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.admin-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 100%;
+    max-width: 600px;
+}
+
+.admin-button {
+    width: 100%;
+    padding: 20px;
+    background: #6B8E23; /* Vert olive terne */
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 24px;
+    cursor: pointer;
+    transition: background 0.3s;
+    text-align: center;
+}
+
+.admin-button:hover {
+    background: #556B2F; /* Vert olive foncé */
+}
+
+/* Responsive Design pour petits écrans */
+@media (max-width: 600px) {
+    .main-container {
+        width: 100%;
+        border-radius: 0;
+    }
+
+    .admin-button {
+        font-size: 20px;
+        padding: 15px;
+    }
+}
