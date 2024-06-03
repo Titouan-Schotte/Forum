@@ -59,19 +59,21 @@
                     <span class="danger-icon" data-value="5">☠️</span>
                 </div>
             </div>
-            <label><input type="checkbox" class="category" value="house"> Maison 🏠</label>
-            <label><input type="checkbox" class="category" value="building"> Immeuble 🏢</label>
+
+            {{ range .Categories }}
+            <label><input type="checkbox" class="category" value="{{.Nom}}"> {{.Nom}} </label>
+            {{ end }}
         </div>
         <div class="tabs">
-            <button class="tablink active" onclick="openTab(event, 'latest')">Derniers Posts</button>
-            <button class="tablink" onclick="openTab(event, 'featured')">À la Une</button>
-            <button class="tablink" onclick="openTab(event, 'popular')">Posts Populaires</button>
+            <button class="tablink active" data-tab="latest">Derniers Posts</button>
+            <button class="tablink" data-tab="featured">À la Une</button>
+            <button class="tablink" data-tab="popular">Posts Populaires</button>
         </div>
         <div id="latest" class="tabcontent">
             <div class="feed-section">
                 <h2>Derniers Posts</h2>
                 {{ range .RecentPosts }}
-                <div class="post" data-categories="{{ .Categories }}" data-beauty="{{ .Beauty }}" data-danger="{{ .Danger }}">{{ .Title }}</div>
+                <div class="post" data-categories="{{ range .Categories }}{{.Nom}},{{end}}" data-beauty="{{ .Beauty }}" data-danger="{{ .Danger }}">{{ .Title }}</div>
                 {{ end }}
             </div>
         </div>
@@ -79,7 +81,7 @@
             <div class="feed-section">
                 <h2>À la Une</h2>
                 {{ range .UnePosts }}
-                <div class="post" data-categories="{{ .Categories }}" data-beauty="{{ .Beauty }}" data-danger="{{ .Danger }}">{{ .Title }}</div>
+                <div class="post" data-categories="{{ range .Categories }}{{.Nom}},{{end}}" data-beauty="{{ .Beauty }}" data-danger="{{ .Danger }}">{{ .Title }}</div>
                 {{ end }}
             </div>
         </div>
@@ -87,12 +89,12 @@
             <div class="feed-section">
                 <h2>Posts Populaires</h2>
                 {{ range .TopPosts }}
-                <div class="post" data-categories="{{ .Categories }}" data-beauty="{{ .Beauty }}" data-danger="{{ .Danger }}">{{ .Title }}</div>
+                <div class="post" data-categories="{{ range .Categories }}{{.Nom}},{{end}}" data-beauty="{{ .Beauty }}" data-danger="{{ .Danger }}">{{ .Title }}</div>
                 {{ end }}
+
             </div>
         </div>
     </main>
-    <a href="/reglement" class="reglement-button">Règlement</a>
 </div>
 <div id="notifications-panel" class="notifications-panel">
     <div class="notifications-content">
@@ -105,5 +107,6 @@
 </div>
 <script src="/assets/js/forum.js" defer></script>
 <script src="/assets/js/notifications.js" defer></script>
+<script src="/assets/js/filters.js" defer></script>
 </body>
 </html>

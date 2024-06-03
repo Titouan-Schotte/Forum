@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"Forum/core/dbmanagement"
+	"fmt"
 	"net/http"
 	"strconv"
 )
@@ -14,10 +15,10 @@ func LikePostHandler(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Invalid post ID", http.StatusBadRequest)
 		return
 	}
-
+	fmt.Println("WAW", postID)
 	// Call the function to like the post
 	postIn := dbmanagement.DB.GetPostById(loginData.UserLog.Email, loginData.UserLog.Password, postID)
-	postIn.LikePost(loginData.UserLog.Email, loginData.UserLog.Password)
+	fmt.Println(postIn.LikePost(loginData.UserLog.Email, loginData.UserLog.Password))
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return

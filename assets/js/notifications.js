@@ -1,37 +1,44 @@
-document.addEventListener('DOMContentLoaded', function() {
-    // Exemple de notifications
+function openNotifications() {
+    document.getElementById('notifications-panel').style.display = 'block';
+}
+
+function closeNotifications() {
+    document.getElementById('notifications-panel').style.display = 'none';
+}
+
+// Mock notifications for demonstration
+document.addEventListener('DOMContentLoaded', () => {
+    const notificationsList = document.getElementById('notifications-list');
+
     const notifications = [
-        { message: 'Votre post a été créé avec succès.', type: 'success' },
-        { message: 'Vous avez reçu un like sur votre post.', type: 'like' },
-        { message: 'Vous avez reçu un dislike sur votre post.', type: 'dislike' },
-        { message: 'Un utilisateur a commenté votre post.', type: 'comment' },
+        { type: 'like', message: 'Votre post a reçu un like' },
+        { type: 'dislike', message: 'Votre post a reçu un dislike' },
+        { type: 'comment', message: 'Un commentaire a été posté sous votre post' },
+        { type: 'success', message: 'Votre post a été créé avec succès' }
     ];
 
-    const notificationsList = document.getElementById('notifications-list');
-    const notificationCount = document.getElementById('notification-count');
+    notifications.forEach(notification => {
+        const notificationElement = document.createElement('div');
+        notificationElement.classList.add('notification');
 
-    const icons = {
-        success: '/assets/images/success.png',
-        like: '/assets/images/like.png',
-        dislike: '/assets/images/dislike.png',
-        comment: '/assets/images/message.png'
-    };
+        const icon = document.createElement('img');
+        switch (notification.type) {
+            case 'like':
+                icon.src = '/assets/images/like.png';
+                break;
+            case 'dislike':
+                icon.src = '/assets/images/dislike.png';
+                break;
+            case 'comment':
+                icon.src = '/assets/images/comment.png';
+                break;
+            case 'success':
+                icon.src = '/assets/images/success.png';
+                break;
+        }
 
-    notifications.forEach((notification, index) => {
-        const notificationItem = document.createElement('div');
-        notificationItem.className = 'notification-item';
-
-        const img = document.createElement('img');
-        img.src = icons[notification.type];
-        img.alt = notification.type;
-
-        const message = document.createElement('span');
-        message.innerText = notification.message;
-
-        notificationItem.appendChild(img);
-        notificationItem.appendChild(message);
-        notificationsList.appendChild(notificationItem);
+        notificationElement.appendChild(icon);
+        notificationElement.appendChild(document.createTextNode(notification.message));
+        notificationsList.appendChild(notificationElement);
     });
-
-    notificationCount.innerText = notifications.length;
 });

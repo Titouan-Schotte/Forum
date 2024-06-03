@@ -7,9 +7,10 @@ import (
 )
 
 type LoginData struct {
-	ErrorMessage    string
-	RegisterSuccess bool
-	UserLog         dbmanagement.User
+	ErrorMessage        string
+	RegisterSuccess     bool
+	UserLog             dbmanagement.User
+	CategoriesAvailable []dbmanagement.Categorie
 }
 
 var loginData = LoginData{

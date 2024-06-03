@@ -44,7 +44,8 @@ func (s WebServer) Router() {
 	s.Core.HandleFunc("/panel-addcat", handlers.PanelAddCatHandler)
 	s.Core.HandleFunc("/panel-action-ban", handlers.PanelActionBanHandler)
 	s.Core.HandleFunc("/panel-action-unban", handlers.PanelActionUnbanHandler)
-	s.Core.HandleFunc("/panel-changegrade", handlers.PanelActionChangeGradeHandler)
+	s.Core.HandleFunc("/add-comment", handlers.PanelAddCommentHandler)
+	s.Core.HandleFunc("/disconnect", handlers.DisconnectHandler)
 }
 
 // Launch starts the web server.

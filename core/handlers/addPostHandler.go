@@ -76,10 +76,24 @@ func AddPostHandler(w http.ResponseWriter, r *http.Request) {
 			imageUUIDs = append(imageUUIDs, imageUUID.String()+filepath.Ext(fileHeader.Filename))
 		}
 
-		loginData.UserLog.AddPost(loginData.UserLog.Email, loginData.UserLog.Password, r.FormValue("title"), r.FormValue("description"), imageUUIDs, danger, beauty, []int{1, 2})
+		// Retrieve the categories from the form
+		categoryIds := r.Form["categories"]
+		var categories []dbmanagement.Categorie
+		for _, categoryId := range categoryIds {
+			id, _ := strconv.Atoi(categoryId)
+			categoryIn, _ := dbmanagement.DB.GetCategorie(id)
+			categories = append(categories, categoryIn)
+		}
+
+		post, _ := loginData.UserLog.AddPost(loginData.UserLog.Email, loginData.UserLog.Password, r.FormValue("title"), r.FormValue("description"), imageUUIDs, danger, beauty, []int{})
+
+		for _, category := range categories {
+			post.AddToCategorie(category)
+		}
 	}
 
 	loginData.UserLog, _, _ = dbmanagement.DB.ConnectToAccount(loginData.UserLog.Email, loginData.UserLog.Password)
+	loginData.CategoriesAvailable = dbmanagement.DB.GetCategories(loginData.UserLog.Email, loginData.UserLog.Password)
 	// Load the home page template
 	tmpl, err := template.ParseFiles("./assets/pages/addpost.html")
 	if err != nil {

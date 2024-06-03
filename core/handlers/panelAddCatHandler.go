@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"Forum/core/dbmanagement"
 	"html/template"
 	"net/http"
 )
@@ -13,6 +14,11 @@ func PanelAddCatHandler(w http.ResponseWriter, r *http.Request) {
 	if !loginData.UserLog.IsModo && !loginData.UserLog.IsAdmin {
 		http.Redirect(w, r, "/", http.StatusSeeOther)
 		return
+	}
+
+	if r.Method == http.MethodPost {
+		categorieName := r.FormValue("categorieName")
+		dbmanagement.DB.AddCategorie(loginData.UserLog.Email, loginData.UserLog.Password, categorieName)
 	}
 
 	// Load the home page template

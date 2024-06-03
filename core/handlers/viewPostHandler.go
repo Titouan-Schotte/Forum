@@ -57,9 +57,14 @@ func ViewPostHandler(w http.ResponseWriter, r *http.Request) {
 		IsUserLikedCommentaries:    []bool{},
 		IsUserDislikedCommentaries: []bool{},
 	}
-	for _, comment := range viewPostStruct.Post.Comments {
+	for i, comment := range viewPostStruct.Post.Comments {
 		viewPostStruct.IsUserLikedCommentaries = append(viewPostStruct.IsUserLikedCommentaries, loginData.UserLog.IsLikedComment(comment.Id))
 		viewPostStruct.IsUserDislikedCommentaries = append(viewPostStruct.IsUserDislikedCommentaries, loginData.UserLog.IsDislikedComment(comment.Id))
+		fmt.Println(comment.Author.Email)
+		fmt.Println(comment.Author.Pseudo)
+		viewPostStruct.Post.Comments[i].Author, _, _ = dbmanagement.DB.GetUser(comment.Author.Email)
+		fmt.Println(viewPostStruct.Post.Comments[i].Author.Pseudo)
+
 	}
 	fmt.Println(viewPostStruct.IsUserLiked)
 	// Parse the template with the custom function

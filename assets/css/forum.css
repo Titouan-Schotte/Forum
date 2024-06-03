@@ -185,6 +185,7 @@ body.light-mode {
     padding: 10px;
     background: rgba(0, 0, 0, 0.1);
     border-radius: 4px;
+    background: white;
 }
 
 .feed-section h2 {
@@ -303,7 +304,7 @@ body.light-mode {
 }
 
 
-/* Responsive Design pour petits écrans */
+/* Responsive Design pour petits Ã©crans */
 @media (max-width: 600px) {
     .sidebar {
         width: 100%;

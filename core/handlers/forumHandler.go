@@ -11,6 +11,7 @@ type ForumPostsGetter struct {
 	TopPosts    []dbmanagement.Post
 	UnePosts    []dbmanagement.Post
 	UserLog     dbmanagement.User
+	Categories  []dbmanagement.Categorie
 }
 
 var forumPostsData = ForumPostsGetter{}
@@ -25,6 +26,7 @@ func ForumHandler(w http.ResponseWriter, r *http.Request) {
 	forumPostsData.RecentPosts = dbmanagement.DB.GetMostRecentsPosts(10)
 	forumPostsData.TopPosts = dbmanagement.DB.GetTopPosts(10)
 	forumPostsData.UnePosts = dbmanagement.DB.GetRandomPosts(10)
+	forumPostsData.Categories = dbmanagement.DB.GetCategories(loginData.UserLog.Email, loginData.UserLog.Password)
 
 	// Load the home page template
 	tmpl, err := template.ParseFiles("./assets/pages/forum.html")
@@ -34,8 +36,4 @@ func ForumHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	// Execute the template using the game data (dataGame)
 	err = tmpl.Execute(w, forumPostsData)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
 }

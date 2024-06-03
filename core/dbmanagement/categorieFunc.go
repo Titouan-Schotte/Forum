@@ -151,7 +151,7 @@ func (db *DBForum) GetCategories(email string, password string) []Categorie {
 	return categories
 }
 
-func (post *Post) addToCategorie(categorie Categorie) {
+func (post *Post) AddToCategorie(categorie Categorie) {
 	stmt, err := DB.core.Prepare("INSERT INTO PostCategorie(PostId, CategorieId) VALUES(?, ?)")
 	if err != nil {
 		log.Fatal("Erreur lors de la préparation de la requête d'insertion de la catégorie:", err)
@@ -162,7 +162,7 @@ func (post *Post) addToCategorie(categorie Categorie) {
 	stmt.Exec(post.Id, categorie.Id)
 
 }
-func (post *Post) deleteOfCategorie(categorie Categorie) {
+func (post *Post) DeleteOfCategorie(categorie Categorie) {
 	stmt, err := DB.core.Prepare("DELETE FROM PostCategorie WHERE PostId = ? AND CategorieId = ?")
 	if err != nil {
 		log.Fatal("Erreur lors de la préparation de la requête d'insertion de la catégorie:", err)
@@ -173,7 +173,7 @@ func (post *Post) deleteOfCategorie(categorie Categorie) {
 	stmt.Exec(post.Id, categorie.Id)
 }
 
-func (post *Post) getCategories() []Categorie {
+func (post *Post) GetCategories() []Categorie {
 	// Créer une slice pour stocker les utilisateurs récupérés
 	rows, _ := DB.core.Query("SELECT CategorieId FROM PostCategorie WHERE PostId = ?", post.Id)
 	defer rows.Close()

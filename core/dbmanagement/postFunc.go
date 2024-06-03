@@ -51,9 +51,9 @@ func (user *User) AddPost(email string, password string, titlePost string, descr
 	}
 	for _, v := range categorie {
 		cat, _ := DB.GetCategorie(v)
-		newPost.addToCategorie(cat)
+		newPost.AddToCategorie(cat)
 	}
-	newPost.Categories = newPost.getCategories()
+	newPost.Categories = newPost.GetCategories()
 	// Retourner le nouveau post et true pour indiquer que l'opération a réussi
 	return newPost, true
 }
@@ -311,7 +311,7 @@ func (db *DBForum) GetPostById(email, password string, id int) Post {
 		post.Photos = strings.Split(photos, ";")
 
 		post.Comments = post.LoadComments()
-		post.Categories = post.getCategories()
+		post.Categories = post.GetCategories()
 	}
 
 	// Vérification des erreurs éventuelles lors du parcours des résultats
@@ -348,7 +348,7 @@ func (db *DBForum) GetMostRecentsPosts(numberOfPost int) []Post {
 
 		// Diviser la chaîne de photos en une slice de chaînes
 		post.Photos = strings.Split(photos, ";")
-		post.Categories = post.getCategories()
+		post.Categories = post.GetCategories()
 		post.Comments = post.LoadComments()
 		// Ajout du post à la slice des posts
 		posts = append(posts, post)
@@ -387,7 +387,7 @@ func (db *DBForum) GetTopPosts(numberOfPost int) []Post {
 
 		// Diviser la chaîne de photos en une slice de chaînes
 		post.Photos = strings.Split(photos, ";")
-		post.Categories = post.getCategories()
+		post.Categories = post.GetCategories()
 		post.Comments = post.LoadComments()
 		// Ajout du post à la slice des posts
 		posts = append(posts, post)
@@ -427,7 +427,7 @@ func (db *DBForum) GetRandomPosts(numberOfPost int) []Post {
 
 		// Diviser la chaîne de photos en une slice de chaînes
 		post.Photos = strings.Split(photos, ";")
-		post.Categories = post.getCategories()
+		post.Categories = post.GetCategories()
 		post.Comments = post.LoadComments()
 		// Ajout du post à la slice des posts
 		posts = append(posts, post)

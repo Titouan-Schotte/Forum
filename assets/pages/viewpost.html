@@ -32,11 +32,11 @@
         Dans {{ range .Post.Categories }} {{ .Nom }}, {{ end }}
 
         <div class="post-actions">
-            {{ .Post.Like }}
+            <span id="like-count">{{ .Post.Like }}</span>
             <button id="like-button" onclick="toggleLike(this, {{ .Post.Id }})" class="{{if .IsUserLiked}}liked{{end}}">
                 <img src="/assets/images/likevide.png" alt="Like" class="action-button">
             </button>
-            {{ .Post.Dislike }}
+            <span id="dislike-count">{{ .Post.Dislike }}</span>
             <button id="dislike-button" onclick="toggleDislike(this, {{ .Post.Id }})" class="{{if .IsUserDisliked}}disliked{{end}}">
                 <img src="/assets/images/dislikevide.png" alt="Dislike" class="action-button">
             </button>
@@ -50,9 +50,11 @@
             <div class="comment">
                 <p><strong>{{ $comment.Author.Pseudo }}:</strong> {{ $comment.Content }}</p>
                 <div class="comment-actions">
+                    <span class="comment-like-count">{{ $comment.Like }}</span>
                     <button onclick="toggleLike(this, {{ $comment.Id }}, true)" class="{{if index $.IsUserLikedCommentaries $index}}liked{{end}}">
                         <img src="/assets/images/likevide.png" alt="Like" class="action-button">
                     </button>
+                    <span class="comment-dislike-count">{{ $comment.Dislike }}</span>
                     <button onclick="toggleDislike(this, {{ $comment.Id }}, true)" class="{{if index $.IsUserDislikedCommentaries $index}}disliked{{end}}">
                         <img src="/assets/images/dislikevide.png" alt="Dislike" class="action-button">
                     </button>
@@ -60,11 +62,11 @@
             </div>
             {{ end }}
             <form id="form-newcomment" action="/add-comment" method="GET">
-            <div class="add-comment">
-                <label for="new-comment">Ajouter un commentaire:</label>
-                <textarea name="Content" id="new-comment" rows="4"></textarea>
-                <input type="submit" class="submit-comment" value="Envoyer">
-            </div>
+                <div class="add-comment">
+                    <label for="new-comment">Ajouter un commentaire:</label>
+                    <textarea name="Content" id="new-comment" rows="4"></textarea>
+                    <input type="submit" class="submit-comment" value="Envoyer">
+                </div>
             </form>
         </div>
     </div>
@@ -103,6 +105,17 @@
         // Toggle the class for CSS styling if needed
         button.classList.toggle('liked', !isLiked);
 
+        // Update the like count
+        let likeCountElement;
+        if (isComment) {
+            likeCountElement = button.parentElement.querySelector('.comment-like-count');
+        } else {
+            likeCountElement = document.getElementById('like-count');
+        }
+
+        const currentCount = parseInt(likeCountElement.textContent);
+        likeCountElement.textContent = isLiked ? currentCount - 1 : currentCount + 1;
+
         const url = isComment ? `/likecomment?id=${id}` : `/likepost?id=${id}`;
         fetch(url, { method: 'GET' })
             .then(response => {
@@ -121,6 +134,17 @@
 
         // Toggle the class for CSS styling if needed
         button.classList.toggle('disliked', !isDisliked);
+
+        // Update the dislike count
+        let dislikeCountElement;
+        if (isComment) {
+            dislikeCountElement = button.parentElement.querySelector('.comment-dislike-count');
+        } else {
+            dislikeCountElement = document.getElementById('dislike-count');
+        }
+
+        const currentCount = parseInt(dislikeCountElement.textContent);
+        dislikeCountElement.textContent = isDisliked ? currentCount - 1 : currentCount + 1;
 
         const url = isComment ? `/dislikecomment?id=${id}` : `/dislikepost?id=${id}`;
         fetch(url, { method: 'GET' })

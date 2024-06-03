@@ -47,18 +47,12 @@ func PanelActionChangeGradeHandler(w http.ResponseWriter, r *http.Request) {
 		http.Redirect(w, r, "/panel", http.StatusSeeOther)
 	}
 	emailTarget := r.URL.Query().Get("Email")
-	//gradeIn := r.URL.Query().Get("Grade")
+	gradeIn := r.URL.Query().Get("Grade")
 	userTarget, _, _ := dbmanagement.DB.GetUser(emailTarget)
 
-	//switch gradeIn {
-	//case "Normal":
-	//	userTarget.IsModo = false
-	//	userTarget.IsAdmin = false
-	//case
-	//}
 	//Refuse ban !!
-	if userTarget.IsModo || userTarget.IsAdmin || userTarget.Email == loginData.UserLog.Email {
-		tmpl, err := template.ParseFiles("./assets/pages/refuse-ban.html")
+	if userTarget.IsAdmin || userTarget.Email == loginData.UserLog.Email {
+		tmpl, err := template.ParseFiles("./assets/pages/refuse-changegrade.html")
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
@@ -70,9 +64,19 @@ func PanelActionChangeGradeHandler(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 	}
-
-	panelStruct.UserLog.BanAccountModo(emailTarget)
-	tmpl, err := template.ParseFiles("./assets/pages/success-ban.html")
+	switch gradeIn {
+	case "Normal":
+		userTarget.IsModo = false
+		userTarget.IsAdmin = false
+		break
+	case "Administrateur":
+		userTarget.IsAdmin = true
+	case "Moderateur":
+		userTarget.IsModo = true
+		break
+	}
+	userTarget.EditUser()
+	tmpl, err := template.ParseFiles("./assets/pages/success-changegrade.html")
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
