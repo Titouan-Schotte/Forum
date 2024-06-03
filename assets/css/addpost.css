@@ -43,6 +43,7 @@ video#bgVideo {
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Ombre douce */
+    position: relative; /* Ajout pour positionner le bouton de retour */
 }
 
 .back-button {
@@ -54,6 +55,11 @@ video#bgVideo {
     cursor: pointer;
     margin-bottom: 20px;
     display: block;
+    position: absolute; /* Pour positionner le bouton de retour */
+    top: 10px; /* Positionnement en haut */
+    left: 10px; /* Positionnement à gauche */
+    text-align: center;
+    text-decoration: none;
 }
 
 .back-button:hover {

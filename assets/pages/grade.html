@@ -25,8 +25,8 @@
 <script>
     const users = [
         {{ range .AllUsers }}
-    { name: "{{ .Pseudo }}", email: "{{ .Email }}", isAdmin: {{ .IsAdmin }}, isModo: {{ .IsModo }} },
-    {{ end }}
+            { name: "{{ .Pseudo }}", email: "{{ .Email }}", isAdmin: {{ .IsAdmin }}, isModo: {{ .IsModo }} },
+        {{ end }}
     ];
 
     const itemsPerPage = 9;

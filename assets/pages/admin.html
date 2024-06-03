@@ -4,21 +4,47 @@
     <link href="https://fonts.googleapis.com/css2?family=Permanent+Marker&display=swap" rel="stylesheet">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gestion Administrateur - Urbex</title>
+    <title>Panneau d'Administration</title>
     <link rel="stylesheet" href="/assets/css/admin.css">
 </head>
 <body>
-<img src="/assets/images/imageadmin.jpg" id="background-image" alt="Background Image">
 <div class="main-container">
-    <h1>Gestion Administrateur</h1>
-    <div class="admin-buttons">
-        <button class="admin-button" onclick="location.href='/panel-ban'">Banni</button>
-        <button class="admin-button" onclick="location.href='/panel-unban'">Unban</button>
-        {{ if eq .UserLog.IsAdmin true }}
-        <button class="admin-button" onclick="location.href='/panel-grade'">Grade</button>
-        {{end}}
-        <button class="admin-button" onclick="location.href='/panel-addcat'">Ajouter Catégorie</button>
-    </div>
+    <aside class="sidebar">
+        <div class="logo-container">
+            <img src="/assets/images/logo.png" alt="Logo" class="logo">
+            <h1>Admin Panel</h1>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="/"><img src="/assets/images/home.png" alt="Accueil" class="icon"> Accueil</a></li>
+                {{if ne .UserLog.Email ""}}
+                <li><a href="/settings"><img src="/assets/images/parametre.png" alt="Paramètres" class="icon"> Paramètres</a></li>
+                <li><a href="/disconnect"><img src="/assets/images/deconnexion.png" alt="Déconnexion" class="icon"> Déconnexion</a></li>
+                <li><a href="/profil"><img src="/assets/images/profil.png" alt="Profil" class="icon"> Profil</a></li>
+                <li><a href="/add-post"><img src="/assets/images/addposte.png" alt="Ajouter un Post" class="icon"> Ajouter un Post</a></li>
+                {{ if or (eq .UserLog.IsModo true) (eq .UserLog.IsAdmin true) }}
+                <li><a href="/panel"><img src="/assets/images/profil.png" alt="Ajouter un Post" class="icon"> Panel Admin</a></li>
+                {{end}}
+                {{else}}
+                <li><a href="/login"><img src="/assets/images/deconnexion.png" alt="Ajouter un Post" class="icon"> Se Connecter</a></li>
+                <li><a href="/register"><img src="/assets/images/addposte.png" alt="Ajouter un Post" class="icon"> S'enregistrer</a></li>
+                {{ end }}
+                <li><button id="toggleMode"><img src="/assets/images/sombreclair.png" alt="Mode" class="icon"> Mode Sombre/Clair</button></li>
+            </ul>
+        </nav>
+    </aside>
+    <main class="content">
+        <div class="admin-container">
+            <h1>Panneau d'Administration</h1>
+            <div class="admin-buttons">
+                <a href="/panel-ban" class="admin-button">Bannir un Utilisateur</a>
+                <a href="/panel-unban" class="admin-button">Débannir un Utilisateur</a>
+                <a href="/panel-grade" class="admin-button">Attribuer un Grade</a>
+                <a href="/panel-addcat" class="admin-button">Ajouter une Catégorie</a>
+            </div>
+        </div>
+    </main>
 </div>
+<script src="/assets/js/toggleMode.js" defer></script>
 </body>
 </html>

@@ -16,7 +16,15 @@ body.dark-mode {
     background-color: #333;
     color: #fff;
 }
-
+.post {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 10px;
+    border-radius: 4px;
+    margin-bottom: 10px;
+    color: white;
+    text-underline: none;
+    text-decoration: none;
+}
 body.light-mode {
     background-color: #fff;
     color: #000;

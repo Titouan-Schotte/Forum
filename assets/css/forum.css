@@ -118,6 +118,7 @@ body.light-mode {
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 4px;
+    background-color: white;
 }
 
 .categories {
@@ -199,6 +200,28 @@ body.light-mode {
     margin-bottom: 10px;
 }
 
+.reglement-button {
+    display: block;
+    background: #6B8E23;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    transition: background 0.3s;
+    margin-top: 20px;
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+}
+
+.reglement-button:hover {
+    background: #556B2F;
+    color: white;
+}
+
 .notifications-panel {
     display: none;
     position: fixed;
@@ -259,6 +282,26 @@ body.light-mode {
 .close-button:hover {
     background: #556B2F;
 }
+
+.reglement-button {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    background: #6B8E23;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background 0.3s;
+    font-size: 14px;
+}
+
+.reglement-button:hover {
+    background: #556B2F;
+}
+
 
 /* Responsive Design pour petits écrans */
 @media (max-width: 600px) {

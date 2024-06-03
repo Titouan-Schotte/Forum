@@ -18,16 +18,17 @@
             <ul>
                 <li><a href="/"><img src="/assets/images/home.png" alt="Accueil" class="icon"> Accueil</a></li>
                 {{if ne .UserLog.Email ""}}
-                    <li><a href="/settings"><img src="/assets/images/parametre.png" alt="Paramètres" class="icon"> Paramètres</a></li>
-                    <li><a href="/disconnect"><img src="/assets/images/deconnexion.png" alt="Déconnexion" class="icon"> Déconnexion</a></li>
-                    <li><a href="/profil"><img src="/assets/images/profil.png" alt="Profil" class="icon"> Profil</a></li>
-                    <li><a href="/add-post"><img src="/assets/images/addposte.png" alt="Ajouter un Post" class="icon"> Ajouter un Post</a></li>
-                    {{ if or (eq .UserLog.IsModo true) (eq .UserLog.IsAdmin true) }}
-                        <li><a href="/panel"><img src="/assets/images/profil.png" alt="Ajouter un Post" class="icon"> Panel Admin</a></li>
-                    {{end}}
+                <li><a href="/settings"><img src="/assets/images/parametre.png" alt="Paramètres" class="icon"> Paramètres</a></li>
+                <li><a href="/disconnect"><img src="/assets/images/deconnexion.png" alt="Déconnexion" class="icon"> Déconnexion</a></li>
+                <li><a href="/profil"><img src="/assets/images/profil.png" alt="Profil" class="icon"> Profil</a></li>
+                <li><a href="javascript:void(0);" onclick="openNotifications()"><img src="/assets/images/notification.png" alt="Notifications" class="icon"> Notifications <span id="notification-count" class="badge">3</span></a></li>
+                <li><a href="/add-post"><img src="/assets/images/addposte.png" alt="Ajouter un Post" class="icon"> Ajouter un Post</a></li>
+                {{ if or (eq .UserLog.IsModo true) (eq .UserLog.IsAdmin true) }}
+                <li><a href="/panel"><img src="/assets/images/profil.png" alt="Panel Admin" class="icon"> Panel Admin</a></li>
+                {{end}}
                 {{else}}
-                <li><a href="/login"><img src="/assets/images/deconnexion.png" alt="Ajouter un Post" class="icon"> Se Connecter</a></li>
-                <li><a href="/register"><img src="/assets/images/addposte.png" alt="Ajouter un Post" class="icon"> S'enregistrer</a></li>
+                <li><a href="/login"><img src="/assets/images/deconnexion.png" alt="Se Connecter" class="icon"> Se Connecter</a></li>
+                <li><a href="/register"><img src="/assets/images/addposte.png" alt="S'enregistrer" class="icon"> S'enregistrer</a></li>
                 {{ end }}
                 <li><button id="toggleMode"><img src="/assets/images/sombreclair.png" alt="Mode" class="icon"> Mode Sombre/Clair</button></li>
             </ul>
@@ -70,7 +71,7 @@
             <div class="feed-section">
                 <h2>Derniers Posts</h2>
                 {{ range .RecentPosts }}
-                <a href="/viewpost?PostId={{ .Id }}"><div class="post" data-categories="{{ .Categories }}" data-beauty="{{ .Beauty }}" data-danger="{{ .Danger }}">{{ .Title }}</div></a>
+                <div class="post" data-categories="{{ .Categories }}" data-beauty="{{ .Beauty }}" data-danger="{{ .Danger }}">{{ .Title }}</div>
                 {{ end }}
             </div>
         </div>
@@ -78,9 +79,7 @@
             <div class="feed-section">
                 <h2>À la Une</h2>
                 {{ range .UnePosts }}
-                <a href="/viewpost?PostId={{ .Id }}">
                 <div class="post" data-categories="{{ .Categories }}" data-beauty="{{ .Beauty }}" data-danger="{{ .Danger }}">{{ .Title }}</div>
-                </a>
                 {{ end }}
             </div>
         </div>
@@ -88,68 +87,23 @@
             <div class="feed-section">
                 <h2>Posts Populaires</h2>
                 {{ range .TopPosts }}
-                <a href="/viewpost?PostId={{ .Id }}"><div class="post" data-categories="{{ .Categories }}" data-beauty="{{ .Beauty }}" data-danger="{{ .Danger }}">{{ .Title }}</div></a>
-
+                <div class="post" data-categories="{{ .Categories }}" data-beauty="{{ .Beauty }}" data-danger="{{ .Danger }}">{{ .Title }}</div>
                 {{ end }}
-
             </div>
         </div>
     </main>
+    <a href="/reglement" class="reglement-button">Règlement</a>
 </div>
 <div id="notifications-panel" class="notifications-panel">
-    <h2>Notifications</h2>
-    <div id="notifications-list">
-        <!-- Les notifications seront ajoutées ici -->
+    <div class="notifications-content">
+        <h2>Notifications</h2>
+        <div id="notifications-list">
+            <!-- Les notifications seront ajoutées ici -->
+        </div>
+        <button class="close-button" onclick="closeNotifications()">Fermer</button>
     </div>
-    <button class="close-button" onclick="closeNotifications()">Fermer</button>
 </div>
 <script src="/assets/js/forum.js" defer></script>
 <script src="/assets/js/notifications.js" defer></script>
 </body>
 </html>
-<script src="../js/forum.js" defer></script>
-<script>
-    //TODO A FIX TOM
-    function openTab(evt, tabName) {
-        // Déclaration de toutes les variables
-        let i, tabcontent, tablinks;
-
-        // Récupère tous les éléments avec la classe "tabcontent" et les cache
-        tabcontent = document.getElementsByClassName('tabcontent');
-        for (i = 0; i < tabcontent.length; i++) {
-            tabcontent[i].style.display = 'none';
-        }
-
-        // Récupère tous les éléments avec la classe "tablink" et enlève la classe "active"
-        tablinks = document.getElementsByClassName('tablink');
-        for (i = 0; i < tablinks.length; i++) {
-            tablinks[i].className = tablinks[i].className.replace(' active', '');
-        }
-
-        // Affiche l'onglet courant, et ajoute une classe "active" au bouton qui a ouvert l'onglet
-        document.getElementById(tabName).style.display = 'block';
-        evt.currentTarget.className += ' active';
-    }
-
-    // Définit l'onglet par défaut (Derniers Posts)
-    document.querySelector('.tablink.active').click();
-
-    document.addEventListener('DOMContentLoaded', () => {
-        const toggleModeButton = document.getElementById('toggleMode');
-        const body = document.body;
-
-        toggleModeButton.addEventListener('click', () => {
-            if (body.classList.contains('dark-mode')) {
-                body.classList.remove('dark-mode');
-                body.classList.add('light-mode');
-            } else {
-                body.classList.remove('light-mode');
-                body.classList.add('dark-mode');
-            }
-        });
-
-    });
-
-
-
-</script>

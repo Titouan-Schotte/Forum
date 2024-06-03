@@ -59,16 +59,35 @@
                 </div>
             </div>
             {{ end }}
+            <form id="form-newcomment" action="/add-comment" method="GET">
             <div class="add-comment">
                 <label for="new-comment">Ajouter un commentaire:</label>
-                <textarea id="new-comment" rows="4"></textarea>
-                <button class="submit-comment">Envoyer</button>
+                <textarea name="Content" id="new-comment" rows="4"></textarea>
+                <input type="submit" class="submit-comment" value="Envoyer">
             </div>
+            </form>
         </div>
     </div>
 </div>
 <script src="/assets/js/post.js" defer></script>
 <script>
+    //Add postid for comment form
+    const urlParams = new URLSearchParams(window.location.search);
+    const paramValue = urlParams.get('PostId');
+
+    // Sélectionner le formulaire par son ID
+    const form = document.getElementById("form-newcomment");
+
+    // Créer un nouvel élément input
+    const hiddenInput = document.createElement('input');
+
+    // Définir les attributs de l'input caché
+    hiddenInput.type = 'hidden'; // Champ caché
+    hiddenInput.name = 'PostId'; // Nom du champ, à remplacer par votre nom de champ souhaité
+    hiddenInput.value = paramValue; // Valeur récupérée du paramètre de l'URL
+
+    // Ajouter l'input caché au formulaire
+    form.appendChild(hiddenInput);
     let currentCarouselIndex = 0;
 
     function toggleComments() {

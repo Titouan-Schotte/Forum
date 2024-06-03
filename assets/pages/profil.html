@@ -52,13 +52,14 @@
             <h3>Posts Créés</h3>
             <div id="created-posts">
                 {{ range .UserLog.Posts }}
-                <li>{{ .Title }}</li>
+                <a href="/viewpost?PostId={{ .Id }}"> <div class="post">{{ .Title }}</div></a>
                 {{ end }}
+
             </div>
             <h3>Posts Likés</h3>
             <div id="liked-posts">
                 {{ range .UserLog.Likes }}
-                <li>{{ .Title }}</li>
+                <a href="/viewpost?PostId={{ .Id }}"> <div class="post">{{ .Title }}</div></a>
                 {{ end }}
             </div>
         </div>

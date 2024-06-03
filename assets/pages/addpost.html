@@ -13,6 +13,7 @@
     Your browser does not support HTML5 video.
 </video>
 <div class="container">
+    <a href="/forum" class="back-button">Retour au Forum</a>
     <h1>Ajouter un Post</h1>
     <form action="/add-post" method="POST" enctype="multipart/form-data">
         <div class="form-group">
@@ -32,11 +33,11 @@
             <div class="category-rating">
                 <label>Beauté:</label>
                 <div class="beauty-rating">
-                    <span class="beauty-emoji" data-index="1" onmouseover="hoverEmoji(this, 'beauty')" onmouseout="unhoverEmoji(this, 'beauty')" onclick="setRating(this, 'beauty')">☢️</span>
-                    <span class="beauty-emoji" data-index="2" onmouseover="hoverEmoji(this, 'beauty')" onmouseout="unhoverEmoji(this, 'beauty')" onclick="setRating(this, 'beauty')">☢️</span>
-                    <span class="beauty-emoji" data-index="3" onmouseover="hoverEmoji(this, 'beauty')" onmouseout="unhoverEmoji(this, 'beauty')" onclick="setRating(this, 'beauty')">☢️</span>
-                    <span class="beauty-emoji" data-index="4" onmouseover="hoverEmoji(this, 'beauty')" onmouseout="unhoverEmoji(this, 'beauty')" onclick="setRating(this, 'beauty')">☢️</span>
-                    <span class="beauty-emoji" data-index="5" onmouseover="hoverEmoji(this, 'beauty')" onmouseout="unhoverEmoji(this, 'beauty')" onclick="setRating(this, 'beauty')">☢️</span>
+                    <span class="beauty-emoji" data-index="1" onmouseover="hoverEmoji(this, 'beauty')" onmouseout="unhoverEmoji(this, 'beauty')" onclick="setRating(this, 'beauty')">🌸</span>
+                    <span class="beauty-emoji" data-index="2" onmouseover="hoverEmoji(this, 'beauty')" onmouseout="unhoverEmoji(this, 'beauty')" onclick="setRating(this, 'beauty')">🌸</span>
+                    <span class="beauty-emoji" data-index="3" onmouseover="hoverEmoji(this, 'beauty')" onmouseout="unhoverEmoji(this, 'beauty')" onclick="setRating(this, 'beauty')">🌸</span>
+                    <span class="beauty-emoji" data-index="4" onmouseover="hoverEmoji(this, 'beauty')" onmouseout="unhoverEmoji(this, 'beauty')" onclick="setRating(this, 'beauty')">🌸</span>
+                    <span class="beauty-emoji" data-index="5" onmouseover="hoverEmoji(this, 'beauty')" onmouseout="unhoverEmoji(this, 'beauty')" onclick="setRating(this, 'beauty')">🌸</span>
                 </div>
                 <input type="hidden" id="beauty-rating" name="beauty-rating">
             </div>
@@ -52,7 +53,7 @@
                 <input type="hidden" id="danger-rating" name="danger-rating">
             </div>
         </div>
-        <button type="submit">Soumettre le Post</button>
+        <a href="/"><button>Soumettre le Post</button></a>
     </form>
 </div>
 <script src="/assets/js/addpost.js"></script>
