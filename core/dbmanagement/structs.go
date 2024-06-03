@@ -50,4 +50,5 @@ type User struct {
 type Notification struct {
 	Message string
 	Date    string
+	Type    string
 }

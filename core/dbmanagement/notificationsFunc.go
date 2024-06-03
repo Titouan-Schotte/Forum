@@ -9,7 +9,7 @@ func (user *User) GetAllNotifications() []Notification {
 	// Connexion à la base de données
 
 	// Exécution de la requête SQL pour récupérer les posts de la catégorie donnée
-	rows, err := DB.core.Query("SELECT Message,DatePost FROM Notifications WHERE ReceiverEmail = ? ORDER BY DatePost DESC LIMIT ?", user.Email, 5)
+	rows, err := DB.core.Query("SELECT Message,Type,DatePost FROM Notifications WHERE ReceiverEmail = ? ORDER BY DatePost DESC LIMIT ?", user.Email, 5)
 	if err != nil {
 		return nil
 	}
@@ -23,7 +23,7 @@ func (user *User) GetAllNotifications() []Notification {
 		var notification Notification
 
 		// Scan des colonnes de la table Post dans les champs correspondants de la structure Post
-		rows.Scan(&notification.Message, &notification.Date)
+		rows.Scan(&notification.Message, &notification.Type, &notification.Date)
 		// Ajout du post à la slice des posts
 		notifications = append(notifications, notification)
 	}
@@ -36,7 +36,7 @@ func (user *User) GetNotificationById(id int) Notification {
 	// Connexion à la base de données
 
 	// Exécution de la requête SQL pour récupérer les posts de la catégorie donnée
-	rows, err := DB.core.Query("SELECT Message,DatePost FROM Notifications WHERE ReceiverEmail = ? AND Id = ?", user.Email, id)
+	rows, err := DB.core.Query("SELECT Message,Type,DatePost FROM Notifications WHERE ReceiverEmail = ? AND Id = ?", user.Email, id)
 	if err != nil {
 		return Notification{}
 	}
@@ -50,7 +50,7 @@ func (user *User) GetNotificationById(id int) Notification {
 		var notification Notification
 
 		// Scan des colonnes de la table Post dans les champs correspondants de la structure Post
-		rows.Scan(&notification.Message, &notification.Date)
+		rows.Scan(&notification.Message, &notification.Type, &notification.Date)
 		// Ajout du post à la slice des posts
 		notifications = append(notifications, notification)
 	}
@@ -59,7 +59,7 @@ func (user *User) GetNotificationById(id int) Notification {
 	return notifications[0]
 }
 
-func (user *User) AddNotification(message string) bool {
+func (user *User) AddNotification(message string, typeIn string) bool {
 	// Démarrer une transaction
 	tx, err := DB.core.Begin()
 	if err != nil {
@@ -72,7 +72,7 @@ func (user *User) AddNotification(message string) bool {
 		}
 	}()
 
-	stmtInsert, err := tx.Prepare("INSERT INTO Notifications(Message, ReceiverEmail, DatePost) VALUES(?, ?, ?)")
+	stmtInsert, err := tx.Prepare("INSERT INTO Notifications(Message, Type, ReceiverEmail, DatePost) VALUES(?, ?, ?, ?)")
 	if err != nil {
 		fmt.Println("Erreur lors de la préparation de la requête INSERT:", err)
 		return false
@@ -83,7 +83,7 @@ func (user *User) AddNotification(message string) bool {
 	formattedTime := currentTime.Format("2006-01-02 15:04:05")
 
 	// Exécuter la requête INSERT
-	_, err = stmtInsert.Exec(message, user.Email, formattedTime)
+	_, err = stmtInsert.Exec(message, typeIn, user.Email, formattedTime)
 	if err != nil {
 		fmt.Println("Erreur lors de l'exécution de la requête INSERT:", err)
 		return false

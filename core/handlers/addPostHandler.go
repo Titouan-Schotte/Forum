@@ -90,6 +90,9 @@ func AddPostHandler(w http.ResponseWriter, r *http.Request) {
 		for _, category := range categories {
 			post.AddToCategorie(category)
 		}
+
+		http.Redirect(w, r, "/", http.StatusSeeOther)
+
 	}
 
 	loginData.UserLog, _, _ = dbmanagement.DB.ConnectToAccount(loginData.UserLog.Email, loginData.UserLog.Password)

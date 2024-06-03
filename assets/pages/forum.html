@@ -100,15 +100,22 @@
     <div class="notifications-content">
         <h2>Notifications</h2>
         <div id="notifications-list">
-            {{ range .UserLog.Notifications }}
-                {{ .Message }}
-            {{ end }}
+
         </div>
         <button class="close-button" onclick="closeNotifications()">Fermer</button>
     </div>
 </div>
 <script src="/assets/js/forum.js" defer></script>
-<script src="/assets/js/notifications.js" defer></script>
+<script>
+    const notifications = [
+        {{ range .UserLog.Notifications }}
+    { type:     {{ .Type }}, message:     {{ .Message }} },
+
+
+
+        {{ end }}
+    ];
+</script>
 <script src="/assets/js/filters.js" defer></script>
 </body>
 </html>
