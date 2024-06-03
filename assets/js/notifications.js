@@ -11,10 +11,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const notificationsList = document.getElementById('notifications-list');
 
     const notifications = [
-        { type: 'like', message: 'Votre post a reçu un like' },
-        { type: 'dislike', message: 'Votre post a reçu un dislike' },
-        { type: 'comment', message: 'Un commentaire a été posté sous votre post' },
-        { type: 'success', message: 'Votre post a été créé avec succès' }
     ];
 
     notifications.forEach(notification => {

@@ -100,7 +100,9 @@
     <div class="notifications-content">
         <h2>Notifications</h2>
         <div id="notifications-list">
-            <!-- Les notifications seront ajoutées ici -->
+            {{ range .UserLog.Notifications }}
+                {{ .Message }}
+            {{ end }}
         </div>
         <button class="close-button" onclick="closeNotifications()">Fermer</button>
     </div>

@@ -52,6 +52,7 @@ func (db *DBForum) ConnectToAccount(email string, password string) (User, bool, 
 	user.Subscription = user.GetAllFollowedAccount()
 	user.Posts = user.GetAllUserPosts()
 	user.Likes = user.GetAllLikedPosts()
+	user.Notifications = user.GetAllNotifications()
 	user.TotalLikes = 0
 	for _, v := range user.Posts {
 		user.TotalLikes += v.Like

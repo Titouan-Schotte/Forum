@@ -32,16 +32,22 @@ type Post struct {
 }
 
 type User struct {
-	Pseudo       string
-	Email        string
-	Password     string
-	IsCertified  bool
-	IsModo       bool
-	IsAdmin      bool
-	IsBan        bool
-	Followers    []User
-	Subscription []User
-	Posts        []Post
-	Likes        []Post
-	TotalLikes   int
+	Pseudo        string
+	Email         string
+	Password      string
+	IsCertified   bool
+	IsModo        bool
+	IsAdmin       bool
+	IsBan         bool
+	Followers     []User
+	Subscription  []User
+	Posts         []Post
+	Likes         []Post
+	TotalLikes    int
+	Notifications []Notification
+}
+
+type Notification struct {
+	Message string
+	Date    string
 }
