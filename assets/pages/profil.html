@@ -8,7 +8,11 @@
     <link rel="stylesheet" href="/assets/css/profile.css">
     <script src="/assets/js/profile.js" defer></script>
 </head>
-<body class="dark-mode">
+<body class="dark-mode"><video autoplay muted loop id="bgVideo">
+    <source src="/assets/video/videofondpost.mp4" type="video/mp4">
+    Your browser does not support HTML5 video.
+</video>
+
 <div class="main-container">
     <aside class="sidebar">
         <div class="logo-container">
@@ -22,6 +26,7 @@
                 <li><a href="/settings"><img src="/assets/images/parametre.png" alt="Paramètres" class="icon"> Paramètres</a></li>
                 <li><a href="/disconnect"><img src="/assets/images/deconnexion.png" alt="Déconnexion" class="icon"> Déconnexion</a></li>
                 <li><a href="/profil"><img src="/assets/images/profil.png" alt="Profil" class="icon"> Profil</a></li>
+                <li><a href="javascript:void(0);" onclick="openNotifications()"><img src="/assets/images/notification.png" alt="Notifications" class="icon"> Notifications <span id="notification-count" class="badge">3</span></a></li>
                 <li><a href="/add-post"><img src="/assets/images/addposte.png" alt="Ajouter un Post" class="icon"> Ajouter un Post</a></li>
                 {{ if or (eq .UserLog.IsModo true) (eq .UserLog.IsAdmin true) }}
                 <li><a href="/panel"><img src="/assets/images/profil.png" alt="Ajouter un Post" class="icon"> Panel Admin</a></li>
@@ -30,7 +35,7 @@
                 <li><a href="/login"><img src="/assets/images/deconnexion.png" alt="Ajouter un Post" class="icon"> Se Connecter</a></li>
                 <li><a href="/register"><img src="/assets/images/addposte.png" alt="Ajouter un Post" class="icon"> S'enregistrer</a></li>
                 {{ end }}
-                <li><button id="toggleMode"><img src="/assets/images/sombreclair.png" alt="Mode" class="icon"> Mode Sombre/Clair</button></li>
+                <li><button style="width: 111%" id="toggleMode"><img src="/assets/images/sombreclair.png" alt="Mode" class="icon"> Mode Sombre/Clair</button></li>
             </ul>
         </nav>
     </aside>
@@ -48,22 +53,226 @@
                 <span>Likes reçus: <strong id="likes">{{.UserLog.TotalLikes}}</strong></span>
             </div>
         </div>
-        <div class="posts">
-            <h3>Posts Créés</h3>
-            <div id="created-posts">
-                {{ range .UserLog.Posts }}
-                <a href="/viewpost?PostId={{ .Id }}"> <div class="post">{{ .Title }}</div></a>
-                {{ end }}
-
+        <div class="tabs">
+            <button class="tablink active" data-tab="created">Posts Crées</button>
+            <button class="tablink" data-tab="liked">Posts Likés</button>
+        </div>
+        <div id="created" class="tabcontent">
+            <div class="feed-section post-container" id="created-posts">
+                <h2>Posts Crées</h2>
+                <!-- Les posts seront chargés ici dynamiquement -->
             </div>
-            <h3>Posts Likés</h3>
-            <div id="liked-posts">
-                {{ range .UserLog.Likes }}
-                <a href="/viewpost?PostId={{ .Id }}"> <div class="post">{{ .Title }}</div></a>
-                {{ end }}
+        </div>
+        <div id="liked" class="tabcontent">
+            <div class="feed-section post-container" id="liked-posts">
+                <h2>Posts Likés</h2>
+                <!-- Les posts seront chargés ici dynamiquement -->
             </div>
         </div>
     </main>
 </div>
+<div id="notifications-panel" class="notifications-panel">
+    <div class="notifications-content">
+        <h2>Notifications</h2>
+        <div id="notifications-list">
+            <!-- Notifications will be loaded here -->
+        </div>
+        <button class="close-button" onclick="closeNotifications()">Fermer</button>
+    </div>
+</div>
 </body>
+
+<script>
+    function openNotifications() {
+        document.getElementById('notifications-panel').style.display = 'block';
+    }
+
+    function closeNotifications() {
+        document.getElementById('notifications-panel').style.display = 'none';
+    }
+    document.addEventListener('DOMContentLoaded', function () {
+        const notifications = [
+            {{ range .UserLog.Notifications }}
+        { type:     {{ .Type }}, message:     {{ .Message }} },
+
+
+
+        {{ end }}
+    ];
+
+
+        const notificationsList = document.getElementById('notifications-list');
+        const notificationCount = document.getElementById('notification-count');
+        const icons = {
+            success: '/assets/images/success.png',
+            like: '/assets/images/like.png',
+            dislike: '/assets/images/dislike.png',
+            comment: '/assets/images/message.png'
+        };
+
+        notifications.forEach(notification => {
+            const notificationItem = document.createElement('div');
+            notificationItem.className = 'notification-item';
+
+            const img = document.createElement('img');
+            img.src = icons[notification.type];
+            img.alt = notification.type;
+
+            const message = document.createElement('span');
+            message.innerText = notification.message;
+
+            notificationItem.appendChild(img);
+            notificationItem.appendChild(message);
+            notificationsList.appendChild(notificationItem);
+        });
+
+        notificationCount.innerText = notifications.length;
+
+    document.querySelectorAll('.tablink').forEach(tab => {
+        tab.addEventListener('click', function () {
+            openTab(event, this.getAttribute('data-tab'));
+        });
+    });
+
+    function openTab(evt, tabName) {
+        let i, tabcontent, tablinks;
+        tabcontent = document.getElementsByClassName('tabcontent');
+        for (i = 0; i < tabcontent.length; i++) {
+            tabcontent[i].style.display = 'none';
+        }
+        tablinks = document.getElementsByClassName('tablink');
+        for (i = 0; i < tablinks.length; i++) {
+            tablinks[i].className = tablinks[i].className.replace(' active', '');
+        }
+        document.getElementById(tabName).style.display = 'block';
+        evt.currentTarget.className += ' active';
+    }
+
+    // Initial tab display
+    document.querySelector('.tablink.active').click();
+
+    window.likePost = function(postId) {
+        const post = document.querySelector(`.post[data-id='${postId}']`);
+        const likeSpan = post.querySelector('.like');
+        let likes = parseInt(likeSpan.textContent.split(' ')[1]);
+        likeSpan.textContent = `👍 ${++likes}`;
+    }
+
+    window.dislikePost = function(postId) {
+        const post = document.querySelector(`.post[data-id='${postId}']`);
+        const dislikeSpan = post.querySelector('.dislike');
+        let dislikes = parseInt(dislikeSpan.textContent.split(' ')[1]);
+        dislikeSpan.textContent = `👎 ${++dislikes}`;
+    }
+
+    const postsSelf = [
+        {{range .UserLog.Posts}}
+    {
+        Id: {{.Id}},
+        Title: {{.Title}},
+        Description: {{.Description}},
+        Photos: [{{range .Photos}}"{{.}}",{{end}}],
+        Author: { Pseudo: {{.Author.Pseudo}} },
+        Date: {{.Date}},
+        Beauty: {{.Beauty}},
+        Danger: {{.Danger}},
+        Like: {{.Like}},
+        Dislike: {{.Dislike}},
+        Categories: [ {{range .Categories}}{Nom :{{.Nom}}}, {{ end }}]
+    },{{ end }} ];
+
+    const postsLiked = [
+        {{range .UserLog.Likes}}
+    {
+        Id: {{.Id}},
+        Title: {{.Title}},
+        Description: {{.Description}},
+        Photos: [{{range .Photos}}"{{.}}",{{end}}],
+        Author: { Pseudo: {{.Author.Pseudo}} },
+        Date: {{.Date}},
+        Beauty: {{.Beauty}},
+        Danger: {{.Danger}},
+        Like: {{.Like}},
+        Dislike: {{.Dislike}},
+        Categories: [ {{range .Categories}}{Nom :{{.Nom}}}, {{ end }}]
+    },{{ end }} ];
+
+
+    function renderPosts(posts, containerId) {
+        const container = document.getElementById(containerId);
+        container.innerHTML = "";
+        posts.forEach(post => {
+            const postElement = document.createElement('div');
+            postElement.className = 'post';
+            postElement.setAttribute('data-categories', post.Categories.map(cat => cat.Nom).join(','));
+            postElement.setAttribute('data-beauty', post.Beauty);
+            postElement.setAttribute('data-danger', post.Danger);
+            postElement.setAttribute('data-id', post.Id);
+
+            postElement.innerHTML = `
+                    <div onclick="document.location='/viewpost?PostId=${post.Id}'" class="post-link">
+                        <div class="carousel">
+                            <div class="carousel-wrapper">
+                                ${post.Photos.map(photo => `<img class="carousel-image" src="./assets/storage/${photo}" alt="">`).join('')}
+                            </div>
+                        </div>
+                        <div class="post-info">
+                            <h3>${post.Title}</h3>
+                            <p>${post.Description}</p>
+                            <p>de ${post.Author.Pseudo} le ${post.Date}</p>
+                            <p>🌸 ${post.Beauty} ☠️ ${post.Danger}</p>
+                            <p>Dans ${post.Categories.map(cat => cat.Nom).join(', ')}</p>
+                        </div>
+                        <div class="post-meta">
+                            <span class="like" onclick="likePost(${post.Id})">👍 ${post.Like}</span>
+                            <span class="dislike" onclick="dislikePost(${post.Id})">👎 ${post.Dislike}</span>
+                        </div>
+                    </div>
+                `;
+            container.appendChild(postElement);
+        });
+    }
+
+    // Rendre les posts dans chaque onglet
+    renderPosts(postsSelf, 'created');
+    renderPosts(postsLiked, 'liked');
+
+
+    // Carrousel Functionality
+    const carousels = document.querySelectorAll('.carousel');
+
+    carousels.forEach(carousel => {
+        const wrapper = carousel.querySelector('.carousel-wrapper');
+        const images = wrapper.querySelectorAll('img');
+        const totalImages = images.length;
+        let currentIndex = 0;
+
+        const leftNav = document.createElement('button');
+        leftNav.classList.add('carousel-nav', 'left');
+        leftNav.innerHTML = '&#9664;';
+        leftNav.addEventListener('click', (event) => {
+            event.stopPropagation();
+            currentIndex = (currentIndex > 0) ? currentIndex - 1 : totalImages - 1;
+            updateCarousel();
+        });
+
+        const rightNav = document.createElement('button');
+        rightNav.classList.add('carousel-nav', 'right');
+        rightNav.innerHTML = '&#9654;';
+        rightNav.addEventListener('click', (event) => {
+            event.stopPropagation();
+            currentIndex = (currentIndex < totalImages - 1) ? currentIndex + 1 : 0;
+            updateCarousel();
+        });
+
+        carousel.appendChild(leftNav);
+        carousel.appendChild(rightNav);
+
+        function updateCarousel() {
+            wrapper.style.transform = `translateX(-${currentIndex * 50}%)`;
+        }
+    });
+    });
+
+</script>
 </html>

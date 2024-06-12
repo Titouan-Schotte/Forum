@@ -114,11 +114,10 @@ body.light-mode {
 }
 
 #search-bar {
-    width: 100%;
+    width: 98%;
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 4px;
-    background-color: white;
 }
 
 .categories {
@@ -185,7 +184,6 @@ body.light-mode {
     padding: 10px;
     background: rgba(0, 0, 0, 0.1);
     border-radius: 4px;
-    background: white;
 }
 
 .feed-section h2 {
@@ -194,33 +192,34 @@ body.light-mode {
     margin-bottom: 10px;
 }
 
+.post-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
 .post {
     background: rgba(255, 255, 255, 0.1);
     padding: 10px;
     border-radius: 4px;
     margin-bottom: 10px;
+    width: calc(33.333% - 20px);
+    box-sizing: border-box;
 }
 
-.reglement-button {
-    display: block;
-    background: #6B8E23;
-    color: white;
-    padding: 10px 20px;
-    border: none;
+.post img {
+    width: 100%;
     border-radius: 4px;
-    cursor: pointer;
-    text-align: center;
-    text-decoration: none;
-    transition: background 0.3s;
-    margin-top: 20px;
-    position: absolute;
-    bottom: 10px;
-    left: 10px;
 }
 
-.reglement-button:hover {
-    background: #556B2F;
-    color: white;
+.post-info {
+    padding: 10px 0;
+}
+
+.post-meta {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
 }
 
 .notifications-panel {
@@ -284,25 +283,60 @@ body.light-mode {
     background: #556B2F;
 }
 
-.reglement-button {
-    position: fixed;
-    bottom: 20px;
-    left: 20px;
-    background: #6B8E23;
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
+.post-link {
     text-decoration: none;
-    transition: background 0.3s;
-    font-size: 14px;
+    color: inherit;
 }
 
-.reglement-button:hover {
-    background: #556B2F;
+.post-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
 }
 
+.like, .dislike {
+    cursor: pointer;
+}
+
+.carousel {
+    display: flex;
+    overflow: hidden;
+    position: relative;
+}
+
+.carousel-wrapper {
+    display: flex;
+    transition: transform 0.3s ease-in-out;
+}
+
+.carousel img {
+    flex-shrink: 0;
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    margin-right: 10px;
+    border-radius: 4px;
+}
+
+.carousel-nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0, 0, 0, 0.5);
+    color: white;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+}
+
+.carousel-nav.left {
+    left: 10px;
+}
+
+.carousel-nav.right {
+    right: 10px;
+}
 
 /* Responsive Design pour petits Ã©crans */
 @media (max-width: 600px) {
@@ -327,4 +361,43 @@ body.light-mode {
         width: 100%;
         margin-bottom: 5px;
     }
+
+    .post {
+        width: 100%;
+    }
+}
+
+.post-link:hover{
+    cursor: grab;
+}
+
+.searchBar {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+#search-bar {
+    width: 100%;
+    height: 2.8rem;
+    background: #f5f5f5;
+    outline: none;
+    border: none;
+    border-radius: 4px;
+    padding: 0 3.5rem 0 1.5rem;
+    font-size: 1rem;
+}
+
+#searchQuerySubmit {
+    width: 3.5rem;
+    height: 2.8rem;
+    margin-left: -3.5rem;
+    background: none;
+    border: none;
+    outline: none;
+}
+
+#searchQuerySubmit:hover {
+    cursor: pointer;
 }

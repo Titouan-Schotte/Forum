@@ -363,37 +363,6 @@ func (user *User) GetAllFollowedAccount() []User {
 	return users
 }
 
-func (User *User) IsLikedComment(id int) bool {
-	// Connexion à la base de données
-	// Exécution de la requête SQL pour récupérer les posts de la catégorie donnée
-	rows, _ := DB.core.Query("SELECT * FROM LikesComments WHERE CommentId = ? AND AuthorEmail = ?", id, User.Email)
-
-	defer rows.Close()
-
-	// Parcours des résultats et création des structures Post
-
-	if rows.Next() {
-		return true
-	}
-
-	return false
-}
-
-func (User *User) IsDislikedComment(id int) bool {
-	// Connexion à la base de données
-	// Exécution de la requête SQL pour récupérer les posts de la catégorie donnée
-	rows, _ := DB.core.Query("SELECT * FROM DislikesComments WHERE CommentId = ? AND AuthorEmail = ?", id, User.Email)
-
-	defer rows.Close()
-
-	// Parcours des résultats et création des structures Post
-
-	if rows.Next() {
-		return true
-	}
-
-	return false
-}
 func (User *User) IsLikedPost(id int) bool {
 	// Connexion à la base de données
 	// Exécution de la requête SQL pour récupérer les posts de la catégorie donnée

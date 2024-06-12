@@ -2,10 +2,34 @@ body, html {
     height: 100%;
     margin: 0;
     padding: 0;
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f9;
 }
 
+body {
+    font-family: 'Arial', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+video#bgVideo {
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    min-width: 100%;
+    min-height: 100%;
+    width: auto;
+    height: auto;
+    z-index: -100;
+    background-size: cover;
+    filter: brightness(50%) grayscale(30%); /* Assombrir légèrement et désaturer la vidéo */
+}
+
+h1 {
+    font-family: 'Permanent Marker', cursive; /* Police de type 'tag' */
+    color: #32CD32; /* Vert lime */
+    text-align: center;
+    margin-bottom: 20px;
+}
 .post-container {
     width: 90%;
     max-width: 800px;
@@ -15,13 +39,6 @@ body, html {
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     color: white;
-}
-
-h1 {
-    font-family: 'Permanent Marker', cursive; /* Police de type 'tag' */
-    color: #32CD32; /* Vert lime */
-    text-align: center;
-    margin-bottom: 20px;
 }
 
 .post-content {
@@ -41,17 +58,25 @@ h1 {
     width: 100%;
     max-width: 600px;
     overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
 }
 
 #carousel {
     display: flex;
     transition: transform 0.5s ease;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
 }
 
 .carousel-image {
     display: none;
-    width: 100%;
+    max-height: 350px;
     border-radius: 8px;
+    margin: auto; /* Centrer l'image horizontalement */
 }
 
 .carousel-prev,

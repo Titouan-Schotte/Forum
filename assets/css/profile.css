@@ -11,7 +11,18 @@ body {
     display: flex;
     transition: background-color 0.3s, color 0.3s;
 }
-
+video#bgVideo {
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    min-width: 100%;
+    min-height: 100%;
+    width: auto;
+    height: auto;
+    z-index: -100;
+    background-size: cover;
+    filter: brightness(50%) grayscale(30%); /* Assombrir légèrement et désaturer la vidéo */
+}
 body.dark-mode {
     background-color: #333;
     color: #fff;
@@ -24,6 +35,8 @@ body.dark-mode {
     color: white;
     text-underline: none;
     text-decoration: none;
+    width: 100%; /* Afficher trois postes par ligne */
+    box-sizing: border-box;
 }
 body.light-mode {
     background-color: #fff;
@@ -177,23 +190,6 @@ body.light-mode {
     border-radius: 4px;
 }
 
-.posts {
-    margin-top: 20px;
-}
-
-.posts h3 {
-    font-family: 'Permanent Marker', cursive;
-    color: #32CD32;
-    margin-bottom: 10px;
-}
-
-.posts #created-posts,
-.posts #liked-posts {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
-
 /* Responsive Design pour petits écrans */
 @media (max-width: 600px) {
     .sidebar {
@@ -213,4 +209,151 @@ body.light-mode {
         flex-direction: column;
         gap: 5px;
     }
+}
+
+.like, .dislike {
+    cursor: pointer;
+}
+
+.carousel {
+    display: flex;
+    overflow: hidden;
+    position: relative;
+}
+
+.carousel-wrapper {
+    display: flex;
+    transition: transform 0.3s ease-in-out;
+}
+
+.carousel img {
+    flex-shrink: 0;
+    margin-left: 50px;
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    margin-right: 10px;
+    border-radius: 4px;
+}
+
+.carousel-nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0, 0, 0, 0.5);
+    color: white;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+}
+
+.carousel-nav.left {
+    left: 10px;
+}
+
+.carousel-nav.right {
+    right: 10px;
+}
+
+
+.tabs {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 20px;
+}
+
+.tablink {
+    background-color: #6B8E23;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: 16px;
+    border-radius: 4px;
+    transition: background 0.3s;
+}
+
+.tablink:hover {
+    background-color: #556B2F;
+}
+
+.tablink.active {
+    background-color: #32CD32;
+}
+
+
+.notifications-panel {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(47, 79, 79, 0.95);
+    color: white;
+    z-index: 1000;
+    padding: 20px;
+    overflow-y: auto;
+}
+
+.notifications-content {
+    max-width: 600px;
+    margin: 0 auto;
+    background: rgba(0, 0, 0, 0.8);
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.notifications-panel h2 {
+    font-family: 'Permanent Marker', cursive;
+    color: #32CD32;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.notification-item {
+    display: flex;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.1);
+    padding: 10px;
+    border-radius: 4px;
+    margin-bottom: 10px;
+}
+
+.notification-item img {
+    width: 24px;
+    height: 24px;
+    margin-right: 10px;
+}
+
+.close-button {
+    display: block;
+    margin: 0 auto;
+    background: #6B8E23;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.close-button:hover {
+    background: #556B2F;
+}
+.badge {
+    background-color: red;
+    color: white;
+    border-radius: 50%;
+    padding: 2px 8px;
+    font-size: 12px;
+    top: 5px;
+    right: 15px;
+}
+
+.content {
+    flex: 1;
+    padding: 20px;
+    overflow-y: auto;
 }

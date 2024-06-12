@@ -35,8 +35,6 @@ func (s WebServer) Router() {
 	s.Core.HandleFunc("/viewpost", handlers.ViewPostHandler)
 	s.Core.HandleFunc("/likepost", handlers.LikePostHandler)
 	s.Core.HandleFunc("/dislikepost", handlers.DislikePostHandler)
-	s.Core.HandleFunc("/likecomment", handlers.LikeCommentHandler)
-	s.Core.HandleFunc("/dislikecomment", handlers.DislikeCommentHandler)
 	s.Core.HandleFunc("/panel", handlers.PanelAdminHandler)
 	s.Core.HandleFunc("/panel-ban", handlers.PanelBanHandler)
 	s.Core.HandleFunc("/panel-unban", handlers.PanelUnbanHandler)

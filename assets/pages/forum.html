@@ -30,14 +30,23 @@
                 <li><a href="/login"><img src="/assets/images/deconnexion.png" alt="Se Connecter" class="icon"> Se Connecter</a></li>
                 <li><a href="/register"><img src="/assets/images/addposte.png" alt="S'enregistrer" class="icon"> S'enregistrer</a></li>
                 {{ end }}
-                <li><button id="toggleMode"><img src="/assets/images/sombreclair.png" alt="Mode" class="icon"> Mode Sombre/Clair</button></li>
+                <li><button style="width: 111%" id="toggleMode"><img src="/assets/images/sombreclair.png" alt="Mode" class="icon"> Mode Sombre/Clair</button></li>
             </ul>
         </nav>
     </aside>
     <main class="content">
-        <div class="search-container">
-            <input type="text" id="search-bar" placeholder="Rechercher des posts...">
+
+        <div class="searchBar">
+            <input id="search-bar" type="text" name="searchQueryInput" placeholder="Search" value="" />
+            <button id="searchQuerySubmit" type="submit" name="searchQuerySubmit">
+                <svg style="width:24px;height:24px" viewBox="0 0 24 24"><path fill="#666666" d="M9.5,3A6.5,6.5 0 0,1 16,9.5C16,11.11 15.41,12.59 14.44,13.73L14.71,14H15.5L20.5,19L19,20.5L14,15.5V14.71L13.73,14.44C12.59,15.41 11.11,16 9.5,16A6.5,6.5 0 0,1 3,9.5A6.5,6.5 0 0,1 9.5,3M9.5,5C7,5 5,7 5,9.5C5,12 7,14 9.5,14C12,14 14,12 14,9.5C14,7 12,5 9.5,5Z" />
+                </svg>
+            </button>
         </div>
+        <br>
+        {{ range .Categories }}
+        <label><input type="checkbox" class="category" value="{{.Nom}}"> {{.Nom}} </label>
+        {{ end }}
         <div class="categories">
             <div class="category-group">
                 <span>Beauté:</span>
@@ -59,10 +68,6 @@
                     <span class="danger-icon" data-value="5">☠️</span>
                 </div>
             </div>
-
-            {{ range .Categories }}
-            <label><input type="checkbox" class="category" value="{{.Nom}}"> {{.Nom}} </label>
-            {{ end }}
         </div>
         <div class="tabs">
             <button class="tablink active" data-tab="latest">Derniers Posts</button>
@@ -70,28 +75,21 @@
             <button class="tablink" data-tab="popular">Posts Populaires</button>
         </div>
         <div id="latest" class="tabcontent">
-            <div class="feed-section">
+            <div class="feed-section post-container" id="latest-posts">
                 <h2>Derniers Posts</h2>
-                {{ range .RecentPosts }}
-                <div class="post" data-categories="{{ range .Categories }}{{.Nom}},{{end}}" data-beauty="{{ .Beauty }}" data-danger="{{ .Danger }}">{{ .Title }}</div>
-                {{ end }}
+                <!-- Les posts seront chargés ici dynamiquement -->
             </div>
         </div>
         <div id="featured" class="tabcontent" style="display:none">
-            <div class="feed-section">
+            <div class="feed-section post-container" id="featured-posts">
                 <h2>À la Une</h2>
-                {{ range .UnePosts }}
-                <div class="post" data-categories="{{ range .Categories }}{{.Nom}},{{end}}" data-beauty="{{ .Beauty }}" data-danger="{{ .Danger }}">{{ .Title }}</div>
-                {{ end }}
+                <!-- Les posts seront chargés ici dynamiquement -->
             </div>
         </div>
         <div id="popular" class="tabcontent" style="display:none">
-            <div class="feed-section">
+            <div class="feed-section post-container" id="popular-posts">
                 <h2>Posts Populaires</h2>
-                {{ range .TopPosts }}
-                <div class="post" data-categories="{{ range .Categories }}{{.Nom}},{{end}}" data-beauty="{{ .Beauty }}" data-danger="{{ .Danger }}">{{ .Title }}</div>
-                {{ end }}
-
+                <!-- Les posts seront chargés ici dynamiquement -->
             </div>
         </div>
     </main>
@@ -100,22 +98,295 @@
     <div class="notifications-content">
         <h2>Notifications</h2>
         <div id="notifications-list">
-
+            <!-- Notifications will be loaded here -->
         </div>
         <button class="close-button" onclick="closeNotifications()">Fermer</button>
     </div>
 </div>
-<script src="/assets/js/forum.js" defer></script>
 <script>
-    const notifications = [
-        {{ range .UserLog.Notifications }}
-    { type:     {{ .Type }}, message:     {{ .Message }} },
+    function openNotifications() {
+        document.getElementById('notifications-panel').style.display = 'block';
+    }
+
+    function closeNotifications() {
+        document.getElementById('notifications-panel').style.display = 'none';
+    }
+    document.addEventListener('DOMContentLoaded', function () {
+        const notifications = [
+            {{ range .UserLog.Notifications }}
+        { type:     {{ .Type }}, message:     {{ .Message }} },
 
 
 
         {{ end }}
+        ];
+
+
+        const notificationsList = document.getElementById('notifications-list');
+        const notificationCount = document.getElementById('notification-count');
+        const icons = {
+            success: '/assets/images/success.png',
+            like: '/assets/images/like.png',
+            dislike: '/assets/images/dislike.png',
+            comment: '/assets/images/message.png'
+        };
+
+        notifications.forEach(notification => {
+            const notificationItem = document.createElement('div');
+            notificationItem.className = 'notification-item';
+
+            const img = document.createElement('img');
+            img.src = icons[notification.type];
+            img.alt = notification.type;
+
+            const message = document.createElement('span');
+            message.innerText = notification.message;
+
+            notificationItem.appendChild(img);
+            notificationItem.appendChild(message);
+            notificationsList.appendChild(notificationItem);
+        });
+
+        notificationCount.innerText = notifications.length;
+
+        document.querySelectorAll('.tablink').forEach(tab => {
+            tab.addEventListener('click', function () {
+                openTab(event, this.getAttribute('data-tab'));
+            });
+        });
+
+        function openTab(evt, tabName) {
+            let i, tabcontent, tablinks;
+            tabcontent = document.getElementsByClassName('tabcontent');
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].style.display = 'none';
+            }
+            tablinks = document.getElementsByClassName('tablink');
+            for (i = 0; i < tablinks.length; i++) {
+                tablinks[i].className = tablinks[i].className.replace(' active', '');
+            }
+            document.getElementById(tabName).style.display = 'block';
+            evt.currentTarget.className += ' active';
+        }
+
+        document.querySelector('.tablink.active').click();
+
+        const toggleModeButton = document.getElementById('toggleMode');
+        const body = document.body;
+
+        toggleModeButton.addEventListener('click', () => {
+            if (body.classList.contains('dark-mode')) {
+                body.classList.remove('dark-mode');
+                body.classList.add('light-mode');
+            } else {
+                body.classList.remove('light-mode');
+                body.classList.add('dark-mode');
+            }
+        });
+
+        document.getElementById('search-bar').addEventListener('input', filterPosts);
+        document.querySelectorAll('.category').forEach(category => {
+            category.addEventListener('change', filterPosts);
+        });
+        document.querySelectorAll('.beauty-icon').forEach(icon => {
+            icon.addEventListener('click', function () {
+                setBeautyRating(parseInt(this.getAttribute('data-value'), 10));
+            });
+        });
+        document.querySelectorAll('.danger-icon').forEach(icon => {
+            icon.addEventListener('click', function () {
+                setDangerRating(parseInt(this.getAttribute('data-value'), 10));
+            });
+        });
+
+        let currentBeautyRating = 0;
+        let currentDangerRating = 0;
+
+        function filterPosts() {
+            const searchQuery = document.getElementById('search-bar').value.toLowerCase();
+            const selectedCategories = Array.from(document.querySelectorAll('.category:checked')).map(cb => cb.value);
+            const posts = document.querySelectorAll('.post');
+
+            posts.forEach(post => {
+                const title = post.querySelector('.post-info h3').textContent.toLowerCase();
+                const categories = post.getAttribute('data-categories').split(',');
+                const postBeauty = parseInt(post.getAttribute('data-beauty'), 10);
+                const postDanger = parseInt(post.getAttribute('data-danger'), 10);
+
+                const matchesSearch = title.includes(searchQuery);
+                const matchesCategory = selectedCategories.length === 0 || selectedCategories.some(category => categories.includes(category));
+                const matchesBeauty = postBeauty >= currentBeautyRating;
+                const matchesDanger = postDanger >= currentDangerRating;
+
+                if (matchesSearch && matchesCategory && matchesBeauty && matchesDanger) {
+                    post.style.display = 'block';
+                } else {
+                    post.style.display = 'none';
+                }
+            });
+        }
+
+        function setBeautyRating(rating) {
+            currentBeautyRating = rating;
+            const beautyIcons = document.querySelectorAll('.beauty-icon');
+            beautyIcons.forEach(icon => {
+                icon.classList.remove('active');
+                if (parseInt(icon.getAttribute('data-value'), 10) <= rating) {
+                    icon.classList.add('active');
+                }
+            });
+            filterPosts();
+        }
+
+        function setDangerRating(rating) {
+            currentDangerRating = rating;
+            const dangerIcons = document.querySelectorAll('.danger-icon');
+            dangerIcons.forEach(icon => {
+                icon.classList.remove('active');
+                if (parseInt(icon.getAttribute('data-value'), 10) <= rating) {
+                    icon.classList.add('active');
+                }
+            });
+            filterPosts();
+        }
+
+        window.likePost = function(postId) {
+            const post = document.querySelector(`.post[data-id='${postId}']`);
+            const likeSpan = post.querySelector('.like');
+            let likes = parseInt(likeSpan.textContent.split(' ')[1]);
+            likeSpan.textContent = `👍 ${++likes}`;
+        }
+
+        window.dislikePost = function(postId) {
+            const post = document.querySelector(`.post[data-id='${postId}']`);
+            const dislikeSpan = post.querySelector('.dislike');
+            let dislikes = parseInt(dislikeSpan.textContent.split(' ')[1]);
+            dislikeSpan.textContent = `👎 ${++dislikes}`;
+        }
+
+        // Simulate fetching posts from a backend
+        const postsDataLatest = [
+            {{range .RecentPosts}}
+        {
+            Id: {{.Id}},
+            Title: {{.Title}},
+            Description: {{.Description}},
+            Photos: [{{range .Photos}}"{{.}}",{{end}}],
+            Author: { Pseudo: {{.Author.Pseudo}} },
+            Date: {{.Date}},
+            Beauty: {{.Beauty}},
+            Danger: {{.Danger}},
+            Like: {{.Like}},
+            Dislike: {{.Dislike}},
+            Categories: [ {{range .Categories}}{Nom :{{.Nom}}}, {{ end }}]
+        },{{ end }} ];
+        const postDataPopulars = [
+            {{range .TopPosts}}
+        {
+            Id: {{.Id}},
+            Title: {{.Title}},
+            Description: {{.Description}},
+            Photos: [{{range .Photos}}"{{.}}",{{end}}],
+            Author: { Pseudo: {{.Author.Pseudo}} },
+            Date: {{.Date}},
+            Beauty: {{.Beauty}},
+            Danger: {{.Danger}},
+            Like: {{.Like}},
+            Dislike: {{.Dislike}},
+            Categories: [ {{range .Categories}}{Nom :{{.Nom}}}, {{ end }}]
+        },{{ end }} ];
+        const postUneData = [
+            {{range .UnePosts}}
+        {
+            Id: {{.Id}},
+            Title: {{.Title}},
+            Description: {{.Description}},
+            Photos: [{{range .Photos}}"{{.}}",{{end}}],
+            Author: { Pseudo: {{.Author.Pseudo}} },
+            Date: {{.Date}},
+            Beauty: {{.Beauty}},
+            Danger: {{.Danger}},
+            Like: {{.Like}},
+            Dislike: {{.Dislike}},
+            Categories: [ {{range .Categories}}{Nom :{{.Nom}}}, {{ end }}]
+        },{{ end }}
     ];
+
+        function renderPosts(posts, containerId) {
+            const container = document.getElementById(containerId);
+            container.innerHTML = "";
+            posts.forEach(post => {
+                const postElement = document.createElement('div');
+                postElement.className = 'post';
+                postElement.setAttribute('data-categories', post.Categories.map(cat => cat.Nom).join(','));
+                postElement.setAttribute('data-beauty', post.Beauty);
+                postElement.setAttribute('data-danger', post.Danger);
+                postElement.setAttribute('data-id', post.Id);
+
+                postElement.innerHTML = `
+                    <div onclick="document.location='/viewpost?PostId=${post.Id}'" class="post-link">
+                        <div class="carousel">
+                            <div class="carousel-wrapper">
+                                ${post.Photos.map(photo => `<img class="carousel-image" src="./assets/storage/${photo}" alt="">`).join('')}
+                            </div>
+                        </div>
+                        <div class="post-info">
+                            <h3>${post.Title}</h3>
+                            <p>${post.Description}</p>
+                            <p>de ${post.Author.Pseudo} le ${post.Date}</p>
+                            <p>🌸 ${post.Beauty} ☠️ ${post.Danger}</p>
+                            <p>Dans ${post.Categories.map(cat => cat.Nom).join(', ')}</p>
+                        </div>
+                        <div class="post-meta">
+                            <span class="like" onclick="likePost(${post.Id})">👍 ${post.Like}</span>
+                            <span class="dislike" onclick="dislikePost(${post.Id})">👎 ${post.Dislike}</span>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(postElement);
+            });
+        }
+
+        // Rendre les posts dans chaque onglet
+        renderPosts(postsDataLatest, 'latest-posts');
+        renderPosts(postUneData, 'featured-posts');
+        renderPosts(postDataPopulars, 'popular-posts');
+
+        // Carrousel Functionality
+        const carousels = document.querySelectorAll('.carousel');
+
+        carousels.forEach(carousel => {
+            const wrapper = carousel.querySelector('.carousel-wrapper');
+            const images = wrapper.querySelectorAll('img');
+            const totalImages = images.length;
+            let currentIndex = 0;
+
+            const leftNav = document.createElement('button');
+            leftNav.classList.add('carousel-nav', 'left');
+            leftNav.innerHTML = '&#9664;';
+            leftNav.addEventListener('click', (event) => {
+                event.stopPropagation();
+                currentIndex = (currentIndex > 0) ? currentIndex - 1 : totalImages - 1;
+                updateCarousel();
+            });
+
+            const rightNav = document.createElement('button');
+            rightNav.classList.add('carousel-nav', 'right');
+            rightNav.innerHTML = '&#9654;';
+            rightNav.addEventListener('click', (event) => {
+                event.stopPropagation();
+                currentIndex = (currentIndex < totalImages - 1) ? currentIndex + 1 : 0;
+                updateCarousel();
+            });
+
+            carousel.appendChild(leftNav);
+            carousel.appendChild(rightNav);
+
+            function updateCarousel() {
+                wrapper.style.transform = `translateX(-${currentIndex * 50}%)`;
+            }
+        });
+    });
 </script>
-<script src="/assets/js/filters.js" defer></script>
 </body>
 </html>

@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"Forum/core/dbmanagement"
+	"fmt"
 	"html/template"
 	"net/http"
 )
@@ -21,6 +22,7 @@ var loginData = LoginData{
 
 func LoginHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method == http.MethodPost || r.Method == http.MethodGet {
+		fmt.Print("QUOICOU")
 		var emailIn string
 		var passwordIn string
 		if r.Method == http.MethodPost {
@@ -36,10 +38,17 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) {
 		if success {
 			loginData.UserLog = user
 			loginData.RegisterSuccess = true
-		} else {
+		} else if emailIn != "" {
+			fmt.Println(emailIn)
 			loginData.UserLog = dbmanagement.User{}
 			loginData.RegisterSuccess = false
 			loginData.ErrorMessage = "Error connect: " + errorMsg
+		} else {
+			loginData = LoginData{
+				ErrorMessage:    "",
+				RegisterSuccess: false,
+				UserLog:         dbmanagement.User{},
+			}
 		}
 	}
 

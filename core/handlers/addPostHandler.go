@@ -90,7 +90,7 @@ func AddPostHandler(w http.ResponseWriter, r *http.Request) {
 		for _, category := range categories {
 			post.AddToCategorie(category)
 		}
-
+		loginData.UserLog.AddNotification("Votre post "+r.FormValue("title")+" a bien été ajouté !", "success")
 		http.Redirect(w, r, "/", http.StatusSeeOther)
 
 	}

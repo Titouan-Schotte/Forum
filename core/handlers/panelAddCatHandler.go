@@ -19,6 +19,18 @@ func PanelAddCatHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method == http.MethodPost {
 		categorieName := r.FormValue("categorieName")
 		dbmanagement.DB.AddCategorie(loginData.UserLog.Email, loginData.UserLog.Password, categorieName)
+		tmpl, err := template.ParseFiles("./assets/pages/success-addcat.html")
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+		// Execute the template using the game data (dataGame)
+		err = tmpl.Execute(w, panelStruct)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+		return
 	}
 
 	// Load the home page template

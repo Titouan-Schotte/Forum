@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', function() {
         success: '/assets/images/success.png',
         like: '/assets/images/like.png',
         dislike: '/assets/images/dislike.png',
-        comment: '/assets/images/comment.png'
+        comment: '/assets/images/message.png'
     };
 
     notifications.forEach((notification, index) => {

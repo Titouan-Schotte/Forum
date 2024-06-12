@@ -23,6 +23,7 @@
             <label for="password">Mot de passe:</label>
             <input type="password" id="password" name="password" required>
         </div>
+        <p style="color: red">{{.ErrorMessage}}</p>
         <button type="submit">Se connecter</button>
     </form>
     <p>Pas encore inscrit ? <a href="/register">S'inscrire</a></p>
