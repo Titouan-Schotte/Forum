@@ -18,6 +18,8 @@ func LikePostHandler(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("WAW", postID)
 	// Call the function to like the post
 	postIn := dbmanagement.DB.GetPostById(loginData.UserLog.Email, loginData.UserLog.Password, postID)
+	postIn.Author.AddNotification("Votre post "+r.FormValue("title")+" a été liké par "+loginData.UserLog.Pseudo, "like")
+
 	fmt.Println(postIn.LikePost(loginData.UserLog.Email, loginData.UserLog.Password))
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -38,7 +40,10 @@ func DislikePostHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Call the function to dislike the post
+
 	postIn := dbmanagement.DB.GetPostById(loginData.UserLog.Email, loginData.UserLog.Password, postID)
+	postIn.Author.AddNotification("Votre post "+r.FormValue("title")+" a été disliké par "+loginData.UserLog.Pseudo, "dislike")
+
 	postIn.DislikePost(loginData.UserLog.Email, loginData.UserLog.Password)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)

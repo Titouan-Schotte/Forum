@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"Forum/core/dbmanagement"
+	"fmt"
 	"html/template"
 	"net/http"
 )
@@ -75,6 +76,7 @@ func PanelActionChangeGradeHandler(w http.ResponseWriter, r *http.Request) {
 		userTarget.IsModo = true
 		break
 	}
+	fmt.Println(userTarget.IsModo, userTarget.IsAdmin)
 	userTarget.EditUser()
 	tmpl, err := template.ParseFiles("./assets/pages/success-changegrade.html")
 	if err != nil {

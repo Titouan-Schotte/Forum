@@ -67,3 +67,14 @@ p {
 .button:hover {
     background: #556B2F;
 }
+.button {
+    display: inline-block;
+    background: #6B8E23;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background 0.3s;
+}

@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="ALL" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="b2e6d158-17a8-4526-8fa3-71c4f6a12e5e" name="Changes" comment="add big file videofondpost.mp4">
+      <change beforePath="$PROJECT_DIR$/assets/css/addcategories.css" beforeDir="false" afterPath="$PROJECT_DIR$/assets/css/addcategories.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/css/addpost.css" beforeDir="false" afterPath="$PROJECT_DIR$/assets/css/addpost.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/css/bannis.css" beforeDir="false" afterPath="$PROJECT_DIR$/assets/css/bannis.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/css/changegrade.css" beforeDir="false" afterPath="$PROJECT_DIR$/assets/css/changegrade.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/css/grades.css" beforeDir="false" afterPath="$PROJECT_DIR$/assets/css/grades.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/css/unban.css" beforeDir="false" afterPath="$PROJECT_DIR$/assets/css/unban.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/css/viewpost.css" beforeDir="false" afterPath="$PROJECT_DIR$/assets/css/viewpost.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/db/forum.db" beforeDir="false" afterPath="$PROJECT_DIR$/assets/db/forum.db" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/pages/addcategories.html" beforeDir="false" afterPath="$PROJECT_DIR$/assets/pages/addcategories.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/pages/addpost.html" beforeDir="false" afterPath="$PROJECT_DIR$/assets/pages/addpost.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/pages/admin.html" beforeDir="false" afterPath="$PROJECT_DIR$/assets/pages/admin.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/pages/bannis.html" beforeDir="false" afterPath="$PROJECT_DIR$/assets/pages/bannis.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/pages/forum.html" beforeDir="false" afterPath="$PROJECT_DIR$/assets/pages/forum.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/pages/grade.html" beforeDir="false" afterPath="$PROJECT_DIR$/assets/pages/grade.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/pages/unban.html" beforeDir="false" afterPath="$PROJECT_DIR$/assets/pages/unban.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/pages/viewpost.html" beforeDir="false" afterPath="$PROJECT_DIR$/assets/pages/viewpost.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/dbmanagement/categorieFunc.go" beforeDir="false" afterPath="$PROJECT_DIR$/core/dbmanagement/categorieFunc.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/dbmanagement/commentFunc.go" beforeDir="false" afterPath="$PROJECT_DIR$/core/dbmanagement/commentFunc.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/dbmanagement/dbFunc.go" beforeDir="false" afterPath="$PROJECT_DIR$/core/dbmanagement/dbFunc.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/dbmanagement/notificationsFunc.go" beforeDir="false" afterPath="$PROJECT_DIR$/core/dbmanagement/notificationsFunc.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/dbmanagement/postFunc.go" beforeDir="false" afterPath="$PROJECT_DIR$/core/dbmanagement/postFunc.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/dbmanagement/structs.go" beforeDir="false" afterPath="$PROJECT_DIR$/core/dbmanagement/structs.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/dbmanagement/userAdminFunc.go" beforeDir="false" afterPath="$PROJECT_DIR$/core/dbmanagement/userAdminFunc.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/dbmanagement/userFunc.go" beforeDir="false" afterPath="$PROJECT_DIR$/core/dbmanagement/userFunc.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/dbmanagement/userModoFunc.go" beforeDir="false" afterPath="$PROJECT_DIR$/core/dbmanagement/userModoFunc.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/handlers/addCommentHandler.go" beforeDir="false" afterPath="$PROJECT_DIR$/core/handlers/addCommentHandler.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/handlers/addPostHandler.go" beforeDir="false" afterPath="$PROJECT_DIR$/core/handlers/addPostHandler.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/handlers/disconnectHandler.go" beforeDir="false" afterPath="$PROJECT_DIR$/core/handlers/disconnectHandler.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/handlers/forumHandler.go" beforeDir="false" afterPath="$PROJECT_DIR$/core/handlers/forumHandler.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/handlers/likesHandler.go" beforeDir="false" afterPath="$PROJECT_DIR$/core/handlers/likesHandler.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/handlers/loginHandler.go" beforeDir="false" afterPath="$PROJECT_DIR$/core/handlers/loginHandler.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/handlers/panelAddCatHandler.go" beforeDir="false" afterPath="$PROJECT_DIR$/core/handlers/panelAddCatHandler.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/handlers/panelAdmin.go" beforeDir="false" afterPath="$PROJECT_DIR$/core/handlers/panelAdmin.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/handlers/panelBanHandler.go" beforeDir="false" afterPath="$PROJECT_DIR$/core/handlers/panelBanHandler.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/handlers/panelGradeHandler.go" beforeDir="false" afterPath="$PROJECT_DIR$/core/handlers/panelGradeHandler.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/handlers/panelUnbanHandler.go" beforeDir="false" afterPath="$PROJECT_DIR$/core/handlers/panelUnbanHandler.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/handlers/postDetailsHandler.go" beforeDir="false" afterPath="$PROJECT_DIR$/core/handlers/postDetailsHandler.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/handlers/profilHandler.go" beforeDir="false" afterPath="$PROJECT_DIR$/core/handlers/profilHandler.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/handlers/registerHandler.go" beforeDir="false" afterPath="$PROJECT_DIR$/core/handlers/registerHandler.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/handlers/settingsHandler.go" beforeDir="false" afterPath="$PROJECT_DIR$/core/handlers/settingsHandler.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/handlers/viewPostHandler.go" beforeDir="false" afterPath="$PROJECT_DIR$/core/handlers/viewPostHandler.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/server.go" beforeDir="false" afterPath="$PROJECT_DIR$/core/server.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/main.go" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="HTML File" />
+        <option value="JavaScript File" />
+        <option value="Go File" />
+      </list>
+    </option>
+  </component>
+  <component name="GOROOT" url="file://$PROJECT_DIR$/../../../../../../../../Program Files/Go" />
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/assets/pages/forum.html" root0="SKIP_INSPECTION" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
+  </component>
+  <component name="ProjectId" id="2gruGJOAVEAEpFOiOXL8Ur9Oe6T" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;DefaultGoTemplateProperty&quot;: &quot;Go File&quot;,
+    &quot;DefaultHtmlFileTemplate&quot;: &quot;HTML File&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.go.format.on.save.advertiser.fired&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.go.formatter.settings.were.checked&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.go.migrated.go.modules.settings&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.go.modules.go.list.on.any.changes.was.set&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.go.watchers.conflict.with.on.save.actions.check.performed&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;go.import.settings.migrated&quot;: &quot;true&quot;,
+    &quot;go.sdk.automatically.set&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/titou/Documents/TRAVAIL/YNOV/B1/Forum-project/Forum/assets/pages&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;
+  },
+  &quot;keyToStringList&quot;: {
+    &quot;DatabaseDriversLRU&quot;: [
+      &quot;sqlite&quot;
+    ]
+  }
+}</component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\titou\Documents\TRAVAIL\YNOV\B1\Forum-project\Forum\assets\pages" />
+      <recent name="C:\Users\titou\Documents\TRAVAIL\YNOV\B1\Forum-project\Forum\core\handlers" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\titou\Documents\TRAVAIL\YNOV\B1\Forum-project\Forum\core\handlers" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Go Build.go build Forum">
+    <configuration name="go build Forum" type="GoApplicationRunConfiguration" factoryName="Go Application" singleton="true" temporary="true" nameIsGenerated="true">
+      <module name="Forum" />
+      <working_directory value="$PROJECT_DIR$" />
+      <kind value="PACKAGE" />
+      <package value="Forum" />
+      <directory value="$PROJECT_DIR$" />
+      <filePath value="$PROJECT_DIR$/test-titouan.go" />
+      <method v="2" />
+    </configuration>
+    <configuration name="go test Forum" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
+      <module name="Forum" />
+      <working_directory value="$PROJECT_DIR$" />
+      <kind value="DIRECTORY" />
+      <package value="Forum" />
+      <directory value="$PROJECT_DIR$" />
+      <filePath value="$PROJECT_DIR$" />
+      <framework value="gotest" />
+      <method v="2" />
+    </configuration>
+    <configuration name="forum.html" type="JavascriptDebugType" temporary="true" nameIsGenerated="true" uri="http://localhost:63342/Forum/assets/pages/forum.html" useBuiltInWebServerPort="true">
+      <method v="2" />
+    </configuration>
+    <list>
+      <item itemvalue="Go Build.go build Forum" />
+      <item itemvalue="Go Test.go test Forum" />
+      <item itemvalue="JavaScript Debug.forum.html" />
+    </list>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Go Build.go build Forum" />
+        <item itemvalue="Go Test.go test Forum" />
+        <item itemvalue="JavaScript Debug.forum.html" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="like &amp; dislike comments" />
+    <MESSAGE value="- add follow &amp; unfollow&#10;- get all followers, all followed&#10;- get base profil page with go templating adaptation of tom's html" />
+    <MESSAGE value="- Add forum go templating &amp; handler" />
+    <MESSAGE value="- add base settings&#10;- add forum fixs&#10;- Tom todo : fix js on forum" />
+    <MESSAGE value="- add post go templating&#10;- settings go templating&#10;- view post base go templating" />
+    <MESSAGE value="- base view post&#10;- base like sync go templating &amp; adding routes for like/dislike/unlike/undislike" />
+    <MESSAGE value="- modif navbar add go templating for managing avalaibles buttons&#10;- base panel admin&#10;- panel restriction access&#10;- panel admin : ban &#10;- panel admin : unban&#10;- panel admin : change grade (to fix)" />
+    <MESSAGE value="fix multiple things" />
+    <MESSAGE value="fix html&#10;- add base notif management" />
+    <MESSAGE value="add notif system" />
+    <MESSAGE value="fix multiple forum things&#10;add cards&#10;add cards to profil&#10;change profil&#10;todo : fix like &amp; dislikes on viewpost" />
+    <MESSAGE value="change video" />
+    <MESSAGE value="Finish V1&#10;- add like &amp; dislike unique time&#10;- fix html&#10;- fix panel admin" />
+    <MESSAGE value="add big file videofondpost.mp4" />
+    <option name="LAST_COMMIT_MESSAGE" value="add big file videofondpost.mp4" />
+  </component>
+  <component name="VgoProject">
+    <settings-migrated>true</settings-migrated>
+  </component>
+  <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/Forum$go_test_Forum.out" NAME="go test Forum Coverage Results" MODIFIED="1717408591155" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="GoCoverage" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
+  </component>
+</project>

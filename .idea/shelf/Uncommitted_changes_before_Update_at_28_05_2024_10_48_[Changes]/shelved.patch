@@ -1,0 +1,174 @@
+Index: assets/css/posteajout.css
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/assets/css/posteajout.css b/assets/css/addpost.css
+rename from assets/css/posteajout.css
+rename to assets/css/addpost.css
+--- a/assets/css/posteajout.css	
++++ b/assets/css/addpost.css	
+@@ -1,45 +1,119 @@
+-body {
+-    font-family: Arial, sans-serif;
++/* Mise en page globale et couleurs de base */
++body, html {
++    height: 100%;
+     margin: 0;
+-    padding: 20px;
+-    background-color: #f4f4f9;
++    padding: 0;
++    overflow: hidden;
++}
++
++body {
++    font-family: 'Arial', sans-serif;
++    display: flex;
++    justify-content: center;
++    align-items: center;
++    background: #2F4F4F; /* Vert ardoise foncé */
++    background: linear-gradient(45deg, #2F4F4F, #556B2F); /* Ajout d'un dégradé subtil */
++}
++
++video#bgVideo {
++    position: fixed;
++    right: 0;
++    bottom: 0;
++    min-width: 100%;
++    min-height: 100%;
++    width: auto;
++    height: auto;
++    z-index: -100;
++    background-size: cover;
++    filter: brightness(50%) grayscale(30%); /* Assombrir légèrement et désaturer la vidéo */
+ }
+ 
+-section {
+-    background-color: white;
++.main-container {
++    display: flex;
++    justify-content: center;
++    align-items: center;
++    height: 100%;
++    width: 100%;
++}
++
++.container {
++    width: 90%;
++    max-width: 600px;
++    background: rgba(47, 79, 79, 0.9); /* Vert ardoise foncé, semi-transparent */
+     padding: 20px;
+-    margin: 20px;
+     border-radius: 8px;
+-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
++    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Ombre douce */
++}
++
++.back-button {
++    background: #6B8E23; /* Vert olive terne */
++    color: white;
++    padding: 10px;
++    border: none;
++    border-radius: 4px;
++    cursor: pointer;
++    margin-bottom: 20px;
++    display: block;
++}
++
++.back-button:hover {
++    background: #556B2F; /* Vert olive foncé */
+ }
+ 
+-form {
+-    display: flex;
+-    flex-direction: column;
++h1 {
++    font-family: 'Permanent Marker', cursive; /* Police de type 'tag' */
++    color: #32CD32; /* Vert lime */
++    text-align: center;
++    margin-bottom: 20px;
+ }
+ 
+-label {
++/* Styles des éléments du formulaire */
++.form-group {
++    margin-bottom: 15px;
++}
++
++.form-group label {
++    display: block;
+     margin-bottom: 5px;
++    color: #ADD8E6; /* Bleu clair */
+ }
+ 
+-input[type="text"],
+-input[type="email"],
+-input[type="password"] {
++.form-group input[type="email"],
++.form-group input[type="text"],
++.form-group input[type="file"],
++.form-group textarea {
++    width: 100%;
+     padding: 8px;
+-    margin-bottom: 10px;
+-    border: 1px solid #ccc;
++    border: none;
+     border-radius: 4px;
++    background: #333333; /* Fond sombre */
++    color: #ffffff;
++}
++
++textarea {
++    height: 100px;
++    resize: none; /* Empêcher le redimensionnement */
+ }
+ 
+-button {
+-    background-color: #5c67f2;
++button[type="submit"] {
++    width: 100%;
++    padding: 10px;
++    background: #6B8E23; /* Vert olive terne */
+     color: white;
+     border: none;
+-    padding: 10px 20px;
+     border-radius: 4px;
+     cursor: pointer;
++    transition: background 0.3s;
++}
++
++button[type="submit"]:hover {
++    background: #556B2F; /* Vert olive foncé */
+ }
+ 
+-button:hover {
+-    background-color: #4a54e1;
+-}
++/* Responsive Design pour petits écrans */
++@media (max-width: 600px) {
++    .container {
++        width: 100%;
++        border-radius: 0;
++    }
++}
+\ No newline at end of file
+Index: assets/pages/postajout.html
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/assets/pages/postajout.html b/assets/pages/addpost.html
+rename from assets/pages/postajout.html
+rename to assets/pages/addpost.html
+--- a/assets/pages/postajout.html	
++++ b/assets/pages/addpost.html	
+@@ -5,7 +5,8 @@
+     <meta charset="UTF-8">
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <title>Ajouter un Post - Urbex</title>
+-    <link rel="stylesheet" href="/assets/css/posteajout.css">
++    <link rel="stylesheet" href="/assets/css/addpost.css">
++    <link rel="stylesheet" href="/assets/css/login.css">
+ </head>
+ <body>
+ <video autoplay muted loop id="bgVideo">

@@ -21,6 +21,8 @@
         <button id="prev-page" onclick="prevPage()">Page précédente</button>
         <button id="next-page" onclick="nextPage()">Page suivante</button>
     </div>
+    <a href="/panel" class="button">Retour au Panel</a>
+
 </div>
 <script>
     const users = [
@@ -114,7 +116,7 @@
     function handleGradeChange(event, email) {
         event.preventDefault();
         const grade = event.target.grade.value;
-        window.location.href = `/panel-changegrade?Email=${email}&Grade=${grade}`;
+        window.location.href = `/panel-action-changegrade?Email=${email}&Grade=${grade}`;
         return false;
     }
 

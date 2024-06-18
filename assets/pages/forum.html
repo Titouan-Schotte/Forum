@@ -323,6 +323,9 @@
                 postElement.setAttribute('data-danger', post.Danger);
                 postElement.setAttribute('data-id', post.Id);
 
+                if(post.Description.length > 100){
+                    post.Description = post.Description.substr(0,100)+"..."
+                }
                 postElement.innerHTML = `
                     <div onclick="document.location='/viewpost?PostId=${post.Id}'" class="post-link">
                         <div class="carousel">

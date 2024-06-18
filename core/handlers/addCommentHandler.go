@@ -38,6 +38,8 @@ func PanelAddCommentHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	postIn := dbmanagement.DB.GetPostById(loginData.UserLog.Email, loginData.UserLog.Password, postId)
+	postIn.Author.AddNotification("Votre post "+r.FormValue("title")+" a été commenté par "+loginData.UserLog.Pseudo, "comment")
+
 	postIn.AddComment(loginData.UserLog.Email, loginData.UserLog.Password, content)
 	http.Redirect(w, r, "/viewpost?PostId="+r.URL.Query().Get("PostId"), http.StatusSeeOther)
 

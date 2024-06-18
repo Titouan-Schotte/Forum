@@ -12,6 +12,7 @@
     <source src="/assets/video/videofondpost.mp4" type="video/mp4">
     Your browser does not support HTML5 video.
 </video>
+<a href="/" class="button">Retour au Forum</a>
 <div class="post-container">
 
     <h1>{{ .Post.Title }}</h1>
@@ -30,19 +31,19 @@
         <div class="post-description">
             <p>{{ .Post.Description }}</p>
         </div>
-        de {{ .Post.Author.Pseudo }} le {{ .Post.Date }} <br>
+        de <a href="/viewpost?email={{ .Post.Author.Email }}">{{ .Post.Author.Pseudo }}</a> le {{ .Post.Date }} <br>
         🌸 {{ .Post.Beauty }} <br>
-        ☠️ {{ .Post.Danger }}
+        ☠️ {{ .Post.Danger }} <br>
         Dans {{ range .Post.Categories }} {{ .Nom }}, {{ end }}
 
         <div class="post-actions">
             <span id="like-count">{{ .Post.Like }}</span>
             <button id="like-button" onclick="handleLike({{ .Post.Id }})" class="{{if .IsUserLiked}}liked{{end}}">
-                <img src="/assets/images/likevide.png" alt="Like" class="action-button">
+                <img src="/assets/images/likevide.png" id="like-button-img" alt="Like" class="action-button">
             </button>
             <span id="dislike-count">{{ .Post.Dislike }}</span>
             <button id="dislike-button" onclick="handleDislike({{ .Post.Id }})" class="{{if .IsUserDisliked}}disliked{{end}}">
-                <img src="/assets/images/dislikevide.png" alt="Dislike" class="action-button">
+                <img src="/assets/images/dislikevide.png" id="dislike-button-img" alt="Dislike" class="action-button">
             </button>
             <button class="comment-button" onclick="toggleComments()">
                 <img src="/assets/images/comment.png" alt="Commentaire" class="action-button">
@@ -71,7 +72,7 @@
     //Add postid for comment form
     const urlParams = new URLSearchParams(window.location.search);
     const paramValue = urlParams.get('PostId');
-
+    let currentCarouselIndex = 0;
     // Sélectionner le formulaire par son ID
     const form = document.getElementById("form-newcomment");
 
@@ -99,6 +100,7 @@
                     const currentCount = parseInt(likeCountElement.textContent);
                     likeCountElement.textContent = currentCount + 1;
                     document.getElementById('like-button').disabled = true;
+                    document.getElementById('like-button-img').src = "/assets/images/like.png";
                     document.getElementById('dislike-button').disabled = true;
                 } else {
                     throw new Error('Network response was not ok');
@@ -114,6 +116,8 @@
                     const dislikeCountElement = document.getElementById('dislike-count');
                     const currentCount = parseInt(dislikeCountElement.textContent);
                     dislikeCountElement.textContent = currentCount + 1;
+                    document.getElementById('dislike-button-img').src = "/assets/images/dislike.png";
+
                     document.getElementById('like-button').disabled = true;
                     document.getElementById('dislike-button').disabled = true;
                 } else {
@@ -136,13 +140,15 @@
 
         const isUserLiked = {{.IsUserLiked}};
         const isUserDisliked = {{.IsUserDisliked}};
-
+        console.log(isUserLiked, isUserDisliked)
         if (isUserLiked) {
+            document.getElementById('like-button-img').src = "/assets/images/like.png";
             document.getElementById('like-button').disabled = true;
             document.getElementById('dislike-button').disabled = true;
         }
 
         if (isUserDisliked) {
+            document.getElementById('dislike-button-img').src = "/assets/images/dislike.png";
             document.getElementById('like-button').disabled = true;
             document.getElementById('dislike-button').disabled = true;
         }
