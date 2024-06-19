@@ -1,3 +1,9 @@
+/*
+Titouan Schotté
+
+Panel Add Comment Handler
+*/
+
 package handlers
 
 import (
@@ -22,14 +28,12 @@ func PanelAddCommentHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	postId, _ := strconv.Atoi(r.URL.Query().Get("PostId"))
 	content := r.URL.Query().Get("Content")
-	//Refuse ban !!
 	if loginData.UserLog.IsBan {
 		tmpl, err := template.ParseFiles("./assets/pages/isban.html")
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
-		// Execute the template using the game data (dataGame)
 		err = tmpl.Execute(w, panelStruct)
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -39,7 +43,6 @@ func PanelAddCommentHandler(w http.ResponseWriter, r *http.Request) {
 
 	postIn := dbmanagement.DB.GetPostById(loginData.UserLog.Email, loginData.UserLog.Password, postId)
 	postIn.Author.AddNotification("Votre post "+r.FormValue("title")+" a été commenté par "+loginData.UserLog.Pseudo, "comment")
-
 	postIn.AddComment(loginData.UserLog.Email, loginData.UserLog.Password, content)
 	http.Redirect(w, r, "/viewpost?PostId="+r.URL.Query().Get("PostId"), http.StatusSeeOther)
 

@@ -1,3 +1,8 @@
+/*
+Titouan Schotté
+Base Structs
+*/
+
 package dbmanagement
 
 type Categorie struct {

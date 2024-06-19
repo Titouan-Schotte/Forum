@@ -1,3 +1,8 @@
+/*
+Titouan Schotté
+
+Forum "/" handler
+*/
 package handlers
 
 import (
@@ -17,8 +22,6 @@ type ForumPostsGetter struct {
 var forumPostsData = ForumPostsGetter{}
 
 func ForumHandler(w http.ResponseWriter, r *http.Request) {
-
-	//LOGIN IN !!
 	if loginData.UserLog.Email != "" {
 		forumPostsData.UserLog = loginData.UserLog
 	}
@@ -28,12 +31,10 @@ func ForumHandler(w http.ResponseWriter, r *http.Request) {
 	forumPostsData.UnePosts = dbmanagement.DB.GetRandomPosts(10)
 	forumPostsData.Categories = dbmanagement.DB.GetCategories(loginData.UserLog.Email, loginData.UserLog.Password)
 	forumPostsData.UserLog.Notifications = forumPostsData.UserLog.GetAllNotifications()
-	// Load the home page template
 	tmpl, err := template.ParseFiles("./assets/pages/forum.html")
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
-	// Execute the template using the game data (dataGame)
 	err = tmpl.Execute(w, forumPostsData)
 }

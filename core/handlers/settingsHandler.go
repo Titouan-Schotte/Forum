@@ -1,3 +1,8 @@
+/*
+Titouan Schotté
+
+Settings page handler & actions handlers
+*/
 package handlers
 
 import (
@@ -7,13 +12,11 @@ import (
 )
 
 func SettingsHandler(w http.ResponseWriter, r *http.Request) {
-	// Load the home page template
 	tmpl, err := template.ParseFiles("./assets/pages/settings.html")
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
-	// Execute the template using the game data (dataGame)
 	err = tmpl.Execute(w, forumPostsData)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -27,7 +30,6 @@ func SettingsPasswordChange(w http.ResponseWriter, r *http.Request) {
 		newPassword := r.FormValue("new-password")
 		confirmPassword := r.FormValue("confirm-new-password")
 
-		// Simple validation
 		if newPassword != confirmPassword {
 			http.Redirect(w, r, "/settings?errormessage=Mots de passes actuel différents.", http.StatusSeeOther)
 			return
@@ -69,7 +71,7 @@ func SettingsDeleteAccount(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		success, errMsg := user.DeleteAccount() //TODO FIX
+		success, errMsg := user.DeleteAccount()
 		if !success {
 			http.Error(w, errMsg, http.StatusInternalServerError)
 			return

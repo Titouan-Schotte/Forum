@@ -1,3 +1,8 @@
+/*
+Titouan Schotté
+
+Panel add cat handler
+*/
 package handlers
 
 import (
@@ -24,7 +29,6 @@ func PanelAddCatHandler(w http.ResponseWriter, r *http.Request) {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
-		// Execute the template using the game data (dataGame)
 		err = tmpl.Execute(w, panelStruct)
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -33,13 +37,11 @@ func PanelAddCatHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Load the home page template
 	tmpl, err := template.ParseFiles("./assets/pages/addcategories.html")
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
-	// Execute the template using the game data (dataGame)
 	err = tmpl.Execute(w, loginData)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)

@@ -1,3 +1,8 @@
+/*
+Titouan Schotté
+
+Panel admin base page handler
+*/
 package handlers
 
 import (
@@ -23,17 +28,13 @@ func PanelAdminHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	//Dump all users
-
 	panelStruct.AllUsers, _ = dbmanagement.DB.GetUsers()
 	panelStruct.UserLog = loginData.UserLog
-	// Load the home page template
 	tmpl, err := template.ParseFiles("./assets/pages/admin.html")
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
-	// Execute the template using the game data (dataGame)
 	err = tmpl.Execute(w, panelStruct)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)

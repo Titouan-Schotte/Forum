@@ -1,3 +1,8 @@
+/*
+Titouan Schotté
+
+Register new user handler
+*/
 package handlers
 
 import (
@@ -22,7 +27,6 @@ func RegisterHandler(w http.ResponseWriter, r *http.Request) {
 					loginData.UserLog = user
 					loginData.RegisterSuccess = true
 
-					// Redirect to login page with query parameters
 					redirectURL := "/login?email=" + user.Email + "&password=" + user.Password + "&registerSuccess=true"
 					http.Redirect(w, r, redirectURL, http.StatusSeeOther)
 					return
